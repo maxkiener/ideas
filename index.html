@@ -38,5 +38,37 @@
         <h2>4. Pay teachers bonuses based on the students performance (happiness?)</h2>
         <h2>5. Some other idea here</h2>
     </div>
+    <div class="container">
+        <h1>Welcome to Your Landing Page</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis purus in metus tempus, ac dignissim dolor scelerisque.</p>
+        <p>Nullam viverra justo id ante convallis, a facilisis turpis auctor. Vestibulum et lacinia justo. Integer pharetra lacinia fringilla.</p>
+        
+        <!-- Button to add new components -->
+        <button id="addComponent">+</button>
+        
+        <!-- Container for new components -->
+        <div id="componentContainer">
+            <!-- Newly created components will be added here -->
+        </div>
+    </div>
+
+    <!-- JavaScript code to handle component creation -->
+    <script>
+        // Function to create a new component
+        function createComponent() {
+            // Create a new component element (e.g., a div)
+            const newComponent = document.createElement("div");
+            newComponent.classList.add("component");
+            newComponent.textContent = "New Component";
+
+            // Append the new component to the container
+            const componentContainer = document.getElementById("componentContainer");
+            componentContainer.appendChild(newComponent);
+        }
+
+        // Event listener for the "+" button
+        const addButton = document.getElementById("addComponent");
+        addButton.addEventListener("click", createComponent);
+    </script>
 </body>
 </html>
