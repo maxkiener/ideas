@@ -21,7 +21,7 @@
             align-items: center; /* Center content vertically */
             min-height: 100vh; /* Ensure container takes up at least the viewport height */
             max-width: 100%; /* Width is 100% on mobile */
-            width: 400px; /* Width is 400px on desktops */
+            width: 700px; /* Width is 400px on desktops */
             margin: 0 auto; /* Center container horizontally */
             padding: 40px;
             background-color: #fff;
@@ -36,40 +36,55 @@
             font-size: 18px;
             color: #666;
         }
+        .component {
+            background-color: #f0f0f0; /* Light-grey background */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px;
+            margin: 20px 0;
+        }
+        h1 {
+            font-size: 36px;
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            color: #666;
+        }
         /* Additional CSS styles for the button */
         button {
             background-color: #007bff;
             color: #fff;
-            font-size: 24px;
+            font-size: 18px;
             border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            border-radius: 5px; /* Rounded corners for buttons */
+            padding: 10px 20px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-right: 10px;
+        }
+        /* Specific styling for the "good" button */
+        .good-button {
+            background-color: #28a745; /* Green color for "good" button */
+        }
+        /* Specific styling for the "bad" button */
+        .bad-button {
+            background-color: #dc3545; /* Red color for "bad" button */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>This is a testing ground to share and collect feedback on ideas.</h1>
-        <h2>1. Get rid of inheritance</h2>
-        <h2>2. Introduce a "driving licence" for meat eating</h2>
-        <h2>3. The packaging of a product must not be heavier than the product itself</h2>
-        <h2>4. Pay teachers bonuses based on the students performance (happiness?)</h2>
-        <h2>5. Some other idea here</h2>
-    </div>
-    <div class="container">
-        <h1>Welcome to Your Landing Page</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis purus in metus tempus, ac dignissim dolor scelerisque.</p>
-        <p>Nullam viverra justo id ante convallis, a facilisis turpis auctor. Vestibulum et lacinia justo. Integer pharetra lacinia fringilla.</p>
-        
         <!-- Button to add new components -->
         <button id="addComponent">+</button>
         
         <!-- Container for new components -->
         <div id="componentContainer">
             <!-- Newly created components will be added here -->
+            <h1>This is a testing ground to share and collect feedback on ideas.</h1>
+            <h2>1. Get rid of inheritance</h2>
+            <h2>2. Introduce a "driving licence" for meat eating</h2>
+            <h2>3. The packaging of a product must not be heavier than the product itself</h2>
+            <h2>4. Pay teachers bonuses based on the students performance (happiness?)</h2>
+            <h2>5. Some other idea here</h2>
         </div>
     </div>
 
@@ -77,10 +92,33 @@
     <script>
         // Function to create a new component
         function createComponent() {
-            // Create a new component element (e.g., a div)
+            // Create a new component element (a div)
             const newComponent = document.createElement("div");
             newComponent.classList.add("component");
-            newComponent.textContent = "New Component";
+
+            // Create a headline (h2)
+            const headline = document.createElement("h2");
+            headline.textContent = "Component Headline";
+
+            // Create body text (p)
+            const bodyText = document.createElement("p");
+            bodyText.textContent = "This is the body text of the component.";
+
+            // Create "good" button
+            const goodButton = document.createElement("button");
+            goodButton.textContent = "Good";
+            goodButton.classList.add("good-button");
+
+            // Create "bad" button
+            const badButton = document.createElement("button");
+            badButton.textContent = "Bad";
+            badButton.classList.add("bad-button");
+
+            // Append elements to the new component
+            newComponent.appendChild(headline);
+            newComponent.appendChild(bodyText);
+            newComponent.appendChild(goodButton);
+            newComponent.appendChild(badButton);
 
             // Append the new component to the container
             const componentContainer = document.getElementById("componentContainer");
