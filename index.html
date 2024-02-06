@@ -7,6 +7,7 @@
     <!-- You can add additional meta tags, styles, or scripts here -->
     <style>
         /* Add CSS styles here */
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -14,10 +15,18 @@
             padding: 0;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            text-align: left; /* Left-align text */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            min-height: 100vh; /* Ensure container takes up at least the viewport height */
+            max-width: 100%; /* Width is 100% on mobile */
+            width: 400px; /* Width is 400px on desktops */
+            margin: 0 auto; /* Center container horizontally */
             padding: 40px;
-            text-align: center;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
         h1 {
             font-size: 36px;
@@ -26,6 +35,18 @@
         p {
             font-size: 18px;
             color: #666;
+        }
+        /* Additional CSS styles for the button */
+        button {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 24px;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
