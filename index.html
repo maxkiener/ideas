@@ -174,9 +174,12 @@
             newComponent.appendChild(goodButton);
             newComponent.appendChild(badButton);
 
-            // Append the new component to the container
+            // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
-            componentContainer.appendChild(newComponent);
+            const buttonContainer = document.querySelector(".button-container");
+
+            // Insert the new component before the button container
+            componentContainer.insertBefore(newComponent, buttonContainer);
         }
 
         // Event listener for the "+" button
