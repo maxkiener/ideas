@@ -15,19 +15,21 @@
             padding: 0;
         }
         .container {
-            text-align: left; /* Left-align text */
+            text-align: left;
             display: flex;
-            justify-content: center; /* Center content horizontally */
-            align-items: center; /* Center content vertically */
-            min-height: 100vh; /* Ensure container takes up at least the viewport height */
-            max-width: 100%; /* Width is 100% on mobile */
-            width: 700px; /* Width is 400px on desktops */
-            margin: 0 auto; /* Center container horizontally */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            max-width: 100%;
+            width: 700px;
+            margin: 0 auto;
             padding: 40px;
             background-color: #fff;
             border-radius: 10px;
-            /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);*/
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
+        
         h1 {
             font-size: 36px;
             color: #333;
@@ -78,7 +80,7 @@
     <div class="container">
 
         <!-- Further ideas/todos: 
-            draw architecture chart of flow how to suggest an improvement and see other proposals
+            draw architecture chart of flow how to suggest an improvement and see other proposals: fetch from firebase list of ideas, create components from list of ideas
             Title images for ideas from dall.e
             hook up to firebase backend
             introduce comments
