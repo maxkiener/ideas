@@ -42,6 +42,14 @@
             padding: 20px;
             margin: 20px 0;
         }
+        h1 {
+            font-size: 36px;
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            color: #666;
+        }
         /* Additional CSS styles for the button */
         button {
             background-color: #007bff;
@@ -90,14 +98,14 @@
                 I'll get notified when you submit an improvement and can then approve it or reject it.<br>
                 In this first phase, I have two goals: 1. I want to get feedback on these ideas below and 2. I want to improve this site and build it as a community idea improvement tool. Please send me your suggestion about how to make the page better in idea #5.  
             </p>
-            <div class="component" id="abolishingInheritance">
+            <div class="component">
                 <h2>Abolishing Inheritance</h2>
                 <p>Where you are born and which parents you are born to is a lottery. So why is it just, that some people will be given large amounts of money while others stay poor. </br> The 5 richest families of Florence in 1470 are still the richest today. <br>Let people make as much money as they can within their lifetime, but give everything back at death and use it in education, science and research</p>
                 <button class="good-button">👍</button>
                 <button class="bad-button">👎</button>
             </div>
 
-            <div class="component" id="carnevourLicence">
+            <div class="component">
                 <h2>Carnevour Licence</h2>
                 <p>Introduce a "driving licence" for meat eating. Nothing wrong with eating meat. But if you do, you should be willing to kill an animal (which is what you are delegating when eating meat). <br> 
                     At age 15-20 people who want to eat meat should get a "meat licence", by killing an animal of their choice (pig, fish, chicken).</p>
@@ -105,21 +113,21 @@
                 <button class="bad-button">👎</button>
             </div>
 
-            <div class="component" id="limitExcessivePackaging">
+            <div class="component">
                 <h2>Limit Excessive Packaging</h2>
                 <p>The packaging of a product should not be allowed to be heavier than the product itself (eg. this is most bizarre with perfume)</p>
                 <button class="good-button">👍</button>
                 <button class="bad-button">👎</button>
             </div>
 
-            <div class="component" id="teacherBonusses">
+            <div class="component">
                 <h2>Teacher Bonusses</h2>
                 <p>Teacher's would get bonus payments, based on their students performance in later life. Eg. if a student reports a certain level of happiness after their first 5 years of professional life, 1% of their tax will be shared among the teachers they have had in school.</p>
                 <button class="good-button">👍</button>
                 <button class="bad-button">👎</button>
             </div>
 
-            <div class="component" id="thisWebsite">
+            <div class="component">
                 <h2>This Website</h2>
                 <p>This page should become a tool that groups like colleagues at work, parents of a kindergarden group, or even local governments can use to gather feedback about their ideas how to improve their communities. In its current form the originator of an idea can gather feedback and accept improvements or reject them until an idea is refined enough for them.</p>
                 <button class="good-button">👍</button>
@@ -127,84 +135,48 @@
             </div>
 
             <!-- Newly created components will be added here -->
+            
 
             <div class="button-container">
                 <button id="addComponent">+</button>
             </div>
-        </div>
     </div>
 
     <!-- JavaScript code to handle component creation -->
     <script>
-        // Function to create a "good button" component
-        function createGoodButton() {
-            const goodButton = document.createElement("button");
-            goodButton.innerHTML = "👍";
-            goodButton.classList.add("good-button");
-            return goodButton;
-        }
-
         // Function to create a new component
         function createComponent() {
             // Create a new component element (a div)
             const newComponent = document.createElement("div");
             newComponent.classList.add("component");
 
-            // Define the components
-            const components = [
-                {
-                    id: "abolishingInheritance",
-                    headline: "Abolishing Inheritance",
-                    description: "Where you are born and which parents you are born to is a lottery. So why is it just, that some people will be given large amounts of money while others stay poor. </br> The 5 richest families of Florence in 1470 are still the richest today. <br>Let people make as much money as they can within their lifetime, but give everything back at death and use it in education, science and research"
-                },
-                {
-                    id: "carnevourLicence",
-                    headline: "Carnevour Licence",
-                    description: "Introduce a 'driving licence' for meat eating. Nothing wrong with eating meat. But if you do, you should be willing to kill an animal (which is what you are delegating when eating meat). <br> At age 15-20 people who want to eat meat should get a 'meat licence', by killing an animal of their choice (pig, fish, chicken)."
-                },
-                {
-                    id: "limitExcessivePackaging",
-                    headline: "Limit Excessive Packaging",
-                    description: "The packaging of a product should not be allowed to be heavier than the product itself (eg. this is most bizarre with perfume)"
-                },
-                {
-                    id: "teacherBonusses",
-                    headline: "Teacher Bonusses",
-                    description: "Teacher's would get bonus payments, based on their students performance in later life. Eg. if a student reports a certain level of happiness after their first 5 years of professional life, 1% of their tax will be shared among the teachers they have had in school."
-                },
-                {
-                    id: "thisWebsite",
-                    headline: "This Website",
-                    description: "This page should become a tool that groups like colleagues at work, parents of a kindergarden group, or even local governments can use to gather feedback about their ideas how to improve their communities. In its current form the originator of an idea can gather feedback and accept improvements or reject them until an idea is refined enough for them."
-                }
-            ];
+            // Create a headline (h2)
+            const headline = document.createElement("h2");
+            headline.textContent = "Component Headline";
 
-            // Iterate over each component and create the HTML structure
-            components.forEach(component => {
-                // Create a new component element (a div)
-                const newComponent = document.createElement("div");
-                newComponent.classList.add("component");
+            // Create body text (p)
+            const bodyText = document.createElement("p");
+            bodyText.textContent = "This is the body text of the component.";
 
-                // Create a headline (h2)
-                const headline = document.createElement("h2");
-                headline.textContent = component.headline;
+            // Create "good" button
+            const goodButton = document.createElement("button");
+            goodButton.innerHTML = "👍";
+            goodButton.classList.add("good-button");
 
-                // Create body text (p)
-                const bodyText = document.createElement("p");
-                bodyText.innerHTML = component.description;
+            // Create "bad" button
+            const badButton = document.createElement("button");
+            badButton.innerHTML = "👎";
+            badButton.classList.add("bad-button");
 
-                // Create "good" button using the reusable function
-                const goodButton = createGoodButton();
+            // Append elements to the new component
+            newComponent.appendChild(headline);
+            newComponent.appendChild(bodyText);
+            newComponent.appendChild(goodButton);
+            newComponent.appendChild(badButton);
 
-                // Append elements to the new component
-                newComponent.appendChild(headline);
-                newComponent.appendChild(bodyText);
-                newComponent.appendChild(goodButton);
-
-                // Append the new component to the container
-                const componentContainer = document.getElementById(component.id);
-                componentContainer.appendChild(newComponent);
-            });
+            // Append the new component to the container
+            const componentContainer = document.getElementById("componentContainer");
+            componentContainer.appendChild(newComponent);
         }
 
         // Event listener for the "+" button
