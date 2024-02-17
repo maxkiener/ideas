@@ -148,14 +148,14 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import {} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-        import {} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js";
+        import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {getAnalytics} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import {getFirestore} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js";
         // Required for side-effects
         //import "firebase/firestore";
         // https://firebase.google.com/docs/web/setup#available-libraries
-        import { initializeApp } from "firebase/app";
-        import { getFirestore } from "firebase/firestore";
+        //import { initializeApp } from "firebase/app";
+        //import { getFirestore } from "firebase/firestore";
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
@@ -169,9 +169,9 @@
         };
       
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
+        export const app = initializeApp(firebaseConfig);
+        export const analytics = getAnalytics(app);
+        export const db = getFirestore(app);
     </script>
     
     <script>
