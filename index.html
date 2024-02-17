@@ -167,6 +167,7 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const db = firebase.firestore();
     </script>
     
     <script>
@@ -243,7 +244,7 @@ db.collection("users").doc(currentUserId).get()
   .then((ideaSnapshots) => {
     // Array to store idea details
     const ideas = [];
-    
+
     // Iterate through idea snapshots and extract idea details
     ideaSnapshots.forEach((ideaSnapshot) => {
       if (ideaSnapshot.exists) {
