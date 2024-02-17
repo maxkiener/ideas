@@ -188,7 +188,7 @@ db.collection("users").doc(currentUserId).get()
       const ideaPromises = [];
 
       // For each idea ID, query the "ideas" collection to fetch idea details
-      ideas.forEach((ideaId) => {
+      ideaIds.forEach((ideaId) => {
         const ideaPromise = db.collection("ideas").doc(ideaId).get();
         ideaPromises.push(ideaPromise);
       });
