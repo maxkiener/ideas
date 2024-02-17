@@ -224,6 +224,7 @@
         // Assuming you have the user ID of the current user
 const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
+import db;
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("users").doc(currentUserId).get()
   .then((userDoc) => {
