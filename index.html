@@ -173,58 +173,10 @@
         export const analytics = getAnalytics(app);
         const db = firebase.firestore(app);
 
-        export default db;
-    </script>
-    
-    <script>
-        // Function to create a new component
-        function createComponent() {
-            // Create a new component element (a div)
-            const newComponent = document.createElement("div");
-            newComponent.classList.add("component");
-
-            // Create a headline (h2)
-            const headline = document.createElement("h2");
-            headline.textContent = "Component Headline";
-
-            // Create body text (p)
-            const bodyText = document.createElement("p");
-            bodyText.textContent = "This is the body text of the component.";
-
-            // Create "good" button
-            const goodButton = document.createElement("button");
-            goodButton.innerHTML = "👍";
-            goodButton.classList.add("good-button");
-
-            // Create "bad" button
-            const badButton = document.createElement("button");
-            badButton.innerHTML = "👎";
-            badButton.classList.add("bad-button");
-
-            // Append elements to the new component
-            newComponent.appendChild(headline);
-            newComponent.appendChild(bodyText);
-            newComponent.appendChild(goodButton);
-            newComponent.appendChild(badButton);
-
-            // Get the container and the button container
-            const componentContainer = document.getElementById("componentContainer");
-            const buttonContainer = document.querySelector(".button-container");
-
-            // Insert the new component before the button container
-            componentContainer.insertBefore(newComponent, buttonContainer);
-        }
-
-        // Event listener for the "+" button
-        const addButton = document.getElementById("addComponent");
-        addButton.addEventListener("click", createComponent);
-    </script>
-
-    <script type="module">
-        // Assuming you have the user ID of the current user
+             // Assuming you have the user ID of the current user
 const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
-import db;
+
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("users").doc(currentUserId).get()
   .then((userDoc) => {
@@ -273,5 +225,50 @@ db.collection("users").doc(currentUserId).get()
   });
 
     </script>
+    
+    <script>
+        // Function to create a new component
+        function createComponent() {
+            // Create a new component element (a div)
+            const newComponent = document.createElement("div");
+            newComponent.classList.add("component");
+
+            // Create a headline (h2)
+            const headline = document.createElement("h2");
+            headline.textContent = "Component Headline";
+
+            // Create body text (p)
+            const bodyText = document.createElement("p");
+            bodyText.textContent = "This is the body text of the component.";
+
+            // Create "good" button
+            const goodButton = document.createElement("button");
+            goodButton.innerHTML = "👍";
+            goodButton.classList.add("good-button");
+
+            // Create "bad" button
+            const badButton = document.createElement("button");
+            badButton.innerHTML = "👎";
+            badButton.classList.add("bad-button");
+
+            // Append elements to the new component
+            newComponent.appendChild(headline);
+            newComponent.appendChild(bodyText);
+            newComponent.appendChild(goodButton);
+            newComponent.appendChild(badButton);
+
+            // Get the container and the button container
+            const componentContainer = document.getElementById("componentContainer");
+            const buttonContainer = document.querySelector(".button-container");
+
+            // Insert the new component before the button container
+            componentContainer.insertBefore(newComponent, buttonContainer);
+        }
+
+        // Event listener for the "+" button
+        const addButton = document.getElementById("addComponent");
+        addButton.addEventListener("click", createComponent);
+    </script>
+
 </body>
 </html>
