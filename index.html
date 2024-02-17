@@ -171,7 +171,9 @@
         // Initialize Firebase
         export const app = initializeApp(firebaseConfig);
         export const analytics = getAnalytics(app);
-        export const db = getFirestore(app);
+        const db = firebase.firestore();
+
+        export default db;
     </script>
     
     <script>
