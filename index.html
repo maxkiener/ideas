@@ -235,7 +235,7 @@ db.collection("users").doc(currentUserId).get()
                 title: title,
                 description: description,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
-                author: currentUser.uid // Add author's ID
+                author: currentUserId // Add author's ID, replace argument later with currentUser.uid
             };
             console.log(newIdea);
             // Add the idea to Firestore
