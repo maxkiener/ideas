@@ -206,7 +206,6 @@ db.collection("users").doc(currentUserId).get()
       ideaIds.forEach((ideaId) => {
         const ideaPromise = db.collection("ideas").doc(ideaId).get();
         ideaPromises.push(ideaPromise);
-        createIdeaDiv(ideaPromise.title, ideaPromise.description);
       });
 
       // Wait for all idea queries to complete
@@ -224,17 +223,20 @@ db.collection("users").doc(currentUserId).get()
     ideaSnapshots.forEach((ideaSnapshot) => {
       if (ideaSnapshot.exists) {
         const ideaData = ideaSnapshot.data();
+        
         ideas.push({
           id: ideaSnapshot.id,
           title: ideaData.title,
           description: ideaData.description,
           // Add other idea details as needed
         });
+        createIdeaDiv(ideaData.title, ideaData.description);
       }
     });
 
     // Use the "ideas" array to display the user's ideas on the website
     console.log("User's ideas:", ideas);
+    
   })
   .catch((error) => {
     console.error("Error getting user's ideas:", error);
