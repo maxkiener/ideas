@@ -206,6 +206,7 @@ db.collection("users").doc(currentUserId).get()
       ideaIds.forEach((ideaId) => {
         const ideaPromise = db.collection("ideas").doc(ideaId).get();
         ideaPromises.push(ideaPromise);
+        createIdeaDiv(ideaId.title, ideaId.description);
       });
 
       // Wait for all idea queries to complete
@@ -278,7 +279,7 @@ db.collection("users").doc(currentUserId).get()
         }
     }
 
-        function createIdeaDiv(title, description){
+        function createIdeaDiv(title, description, date, upvotes, downvotes, comments){
 
         
             // Create a new component element (a div)
@@ -287,11 +288,11 @@ db.collection("users").doc(currentUserId).get()
 
             // Create a headline (h2)
             const headline = document.createElement("h2");
-            headline.textContent = "Component Headline";
+            headline.textContent = title;
 
             // Create body text (p)
             const bodyText = document.createElement("p");
-            bodyText.textContent = "This is the body text of the component.";
+            bodyText.textContent = description;
 
             // Create "good" button
             const goodButton = document.createElement("button");
