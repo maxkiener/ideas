@@ -56,8 +56,8 @@
         }
         /* Additional CSS styles for the button */
         button {
-            /*background-color: #007bff;*/
-            color: #fff;
+            /*background-color: #007bff;
+            color: #fff;*/
             font-size: 18px;
             /*border: none;
             border-radius: 5px;  Rounded corners for buttons */
@@ -134,39 +134,9 @@
             </p>
             <br>
 
-
-            <div class="component">
-                <h2>Carnevour Licence</h2>
-                <p>Introduce a "driving licence" for meat eating. Nothing wrong with eating meat. But if you do, you should be willing to kill an animal (which is what you are delegating when eating meat). <br> 
-                    At age 15-20 people who want to eat meat should get a "meat licence", by killing an animal of their choice (pig, fish, chicken).</p>
-                <button class="good-button">👍</button>
-                <button class="bad-button">👎</button>
-            </div>
-
             <div class="component">
                 <h2>Limit Excessive Packaging</h2>
                 <p>The packaging of a product should not be allowed to be heavier than the product itself (eg. this is most bizarre with perfume)</p>
-                <button class="good-button">👍</button>
-                <button class="bad-button">👎</button>
-            </div>
-
-            <div class="component">
-                <h2>Teacher Bonusses</h2>
-                <p>Teacher's would get bonus payments, based on their students performance in later life. Eg. if a student reports a certain level of happiness after their first 5 years of professional life, 1% of their tax will be shared among the teachers they have had in school.</p>
-                <button class="good-button">👍</button>
-                <button class="bad-button">👎</button>
-            </div>
-
-            <div class="component">
-                <h2>Abolishing Inheritance</h2>
-                <p>Where you are born and which parents you are born to is a lottery. So why is it just, that some people will be given large amounts of money while others stay poor. </br> The 5 richest families of Florence in 1470 are still the richest today. <br>Let people make as much money as they can within their lifetime, but give everything back at death and use it in education, science and research</p>
-                <button class="good-button">👍</button>
-                <button class="bad-button">👎</button>
-            </div>
-
-            <div class="component">
-                <h2>This Website</h2>
-                <p>This page should become a tool that groups like colleagues at work, parents of a kindergarden group, or even local governments can use to gather feedback about their ideas how to improve their communities. In its current form the originator of an idea can gather feedback and accept improvements or reject them until an idea is refined enough for them.</p>
                 <button class="good-button">👍</button>
                 <button class="bad-button">👎</button>
             </div>
@@ -182,7 +152,6 @@
                   <span class="close">&times;</span>
                   <input type="text" id="ideaTitle" placeholder="Enter idea title">
                   <textarea id="ideaDescription" placeholder="Enter idea description"></textarea>
-                  <button id="cancelBtn">Cancel</button>
                   <button id="submitBtn">Submit</button>
                 </div>
             </div>
@@ -295,6 +264,7 @@ db.collection("users").doc(currentUserId).get()
                     })
                     .then(() => {
                         console.log("User document updated with idea ID");
+                        createIdeaDiv(newIdea.title, newIdea.description);
                     })
                     .catch((error) => {
                         console.error("Error updating user document: ", error);
@@ -306,8 +276,11 @@ db.collection("users").doc(currentUserId).get()
         } else {
             console.error("No user logged in");
         }
+    }
 
+        function createIdeaDiv(title, description){
 
+        
             // Create a new component element (a div)
             const newComponent = document.createElement("div");
             newComponent.classList.add("component");
@@ -381,10 +354,6 @@ db.collection("users").doc(currentUserId).get()
         // Attach event listener to submit button
         document.getElementById("submitBtn").addEventListener("click", submitForm);
 
-        // Attach event listener to cancel button
-        document.getElementById("cancelBtn").addEventListener("click", function() {
-            modal.style.display = "none";
-        });
     </script>
 
 </body>
