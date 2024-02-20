@@ -227,7 +227,7 @@ db.collection("users").doc(currentUserId).get()
         // Function to create a new component and add idea to Firestore
     function createComponent(title, description) {
         // Get reference to the currently logged-in user
-        const currentUser = "qApOg41YEEMmm9DgF2D6";//firebase.auth().currentUser;
+        //const currentUser = "qApOg41YEEMmm9DgF2D6";//firebase.auth().currentUser;
 
         if (currentUser) {
             // Construct a new idea object
@@ -237,7 +237,7 @@ db.collection("users").doc(currentUserId).get()
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
                 authorId: currentUser.uid // Add author's ID
             };
-
+            console.log(newIdea);
             // Add the idea to Firestore
             db.collection("ideas").add(newIdea)
                 .then((docRef) => {
@@ -245,7 +245,7 @@ db.collection("users").doc(currentUserId).get()
 
                     // Update user document with the idea ID
                     db.collection("users").doc(currentUser.uid).update({
-                        ideaIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+                        ideas: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                     })
                     .then(() => {
                         console.log("User document updated with idea ID");
