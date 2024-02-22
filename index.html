@@ -202,7 +202,7 @@
         const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
         // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.default.auth());
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
         ui.start('#firebaseui-auth-container', {
             signInOptions: [
                 {
