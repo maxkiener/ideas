@@ -198,13 +198,13 @@
         const app = firebase.initializeApp(firebaseConfig);
         //const analytics = firebase.analytics();
         const db = firebase.firestore();
-        const auth = firebase.auth();
+        const auth = firebase.getAuth();
 
              // Assuming you have the user ID of the current user
         const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
         // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        var ui = new firebaseui.auth.AuthUI(firebase.getAuth());
         ui.start('#firebaseui-auth-container', {
             signInOptions: [
                 {
