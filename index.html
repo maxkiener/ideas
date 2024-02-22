@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building On Our Ideas</title>
     <!-- You can add additional meta tags, styles, or scripts here -->
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
     <style>
         /* Add CSS styles here */
@@ -202,7 +202,7 @@
         const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
         // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        var ui = new firebaseui.auth.AuthUI(firebase.default.auth());
         ui.start('#firebaseui-auth-container', {
             signInOptions: [
                 {
