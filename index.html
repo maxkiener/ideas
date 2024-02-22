@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Building On Our Ideas</title>
     <!-- You can add additional meta tags, styles, or scripts here -->
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
     <style>
         /* Add CSS styles here */
 
@@ -115,18 +117,26 @@
     <div class="container">
 
         <!-- Further ideas/todos: 
-            draw architecture chart of flow how to suggest an improvement and see other proposals: fetch from firebase list of ideas, create components from list of ideas
+            draw architecture chart of flow how to suggest an improvement and see other proposals: 
             Title images for ideas from dall.e
-            hook up to firebase backend
+            
             introduce comments
             show details for an idea 
             suggest an improvement
             show rejected improvements with reason why they were rejected 
-            add fillgraderstiege - gemüsegrill as another example idea.   
+            add fillgraderstiege - gemüsegrill as another example idea.  
+            
+            what to do next in Stage 1: 
+            everybody should be able to create and get feedback?
+            or just me?
+            delete ideas if they are yours
+            how much of the account system is necessary? phone number? integrate with Austria Ident
         -->
         <!-- Container for new components -->
         <div id="componentContainer">
             <h1>Workshopping Ideas</h1>
+            <div id="firebaseui-auth-container"></div>
+            <div id="loader">Loading...</div>
             <p>
                 This page wants to become a Github for ideas. In the first stage I'll throw some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
                 I'll get notified when you submit an improvement and can then approve it or reject it.<br>
@@ -189,8 +199,48 @@
         const db = firebase.firestore();
 
              // Assuming you have the user ID of the current user
-const currentUserId = "qApOg41YEEMmm9DgF2D6";
+        const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', {
+            signInOptions: [
+                {
+                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+                requireDisplayName: true
+                }
+            ],
+            // Other config options...
+        });
+
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                // User successfully signed in.
+                // Return type determines whether we continue the redirect automatically
+                // or whether we leave that to developer to handle.
+                return true;
+                },
+                uiShown: function() {
+                // The widget is rendered.
+                // Hide the loader.
+                document.getElementById('loader').style.display = 'none';
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: 'ideas.maximiliankiener.com',
+            signInOptions: [
+                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+                requireDisplayName: true
+            ],
+            // Terms of service url.
+            tosUrl: '<your-tos-url>',
+            // Privacy policy url.
+            privacyPolicyUrl: '<your-privacy-policy-url>'
+        };
 
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("users").doc(currentUserId).get()
