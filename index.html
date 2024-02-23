@@ -230,7 +230,7 @@
             privacyPolicyUrl: '<your-privacy-policy-url>'
         };
         // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.getAuth());
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
         ui.start('#firebaseui-auth-container', uiConfig);
 
 // Query the "users" collection to retrieve the idea IDs of the current user
