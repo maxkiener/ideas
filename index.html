@@ -200,7 +200,9 @@
                 // User successfully signed in.
                 // Return type determines whether we continue the redirect automatically
                 // or whether we leave that to developer to handle.
-                modal.style.display = "none";
+                console.log("user logged in with id"+authResult);
+                //check if this is properly addressed. 
+                document.getElementById('firebase-auth-container').style.display = "none";
                 return true;
                 },
                 uiShown: function() {
