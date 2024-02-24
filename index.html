@@ -266,7 +266,7 @@
         }
 
         // Add event listeners to buttons (thumbs-up, thumbs-down, createComponent)
-        const buttons = document.querySelectorAll('.good-button, .bad-button, #addComponent');
+        const buttons = document.querySelectorAll('.bad-button, #addComponent');
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
                 if (!firebase.auth().currentUser) {
@@ -276,6 +276,46 @@
                     // User is signed in, allow interaction with the button
                     // Implement your button logic here
                     console.log("later this can be transformed into a logout button");
+                }
+            });
+        });
+
+        // Add event listener to thumbs-up button
+        const thumbsUpButtons = document.querySelectorAll('.good-button');
+        thumbsUpButtons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                // Check if user is signed in
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    // Get idea ID
+                    const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
+
+                    // Update idea's upvote counter in Firestore
+                    const ideaRef = db.collection('ideas').doc(ideaId);
+                    ideaRef.update({
+                        upvotes: firebase.firestore.FieldValue.increment(1)
+                    })
+                    .then(() => {
+                        console.log('Upvote count updated successfully');
+
+                        // Update user's upvotes in Firestore
+                        const userRef = db.collection('users').doc(currentUser.uid);
+                        userRef.update({
+                            upvotes: firebase.firestore.FieldValue.arrayUnion(ideaId)
+                        })
+                        .then(() => {
+                            console.log('User upvotes updated successfully');
+                        })
+                        .catch((error) => {
+                            console.error('Error updating user upvotes:', error);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Error updating upvote count:', error);
+                    });
+                } else {
+                    // User is not signed in, show sign-in prompt
+                    showSignInPrompt();
                 }
             });
         });
