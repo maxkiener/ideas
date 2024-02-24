@@ -137,6 +137,10 @@
             <h1>Workshopping Ideas</h1>
             <div id="firebaseui-auth-container"></div>
             <div id="loader">Loading...</div>
+            <div id="signin-prompt" style="display: none;">
+                <p>Please sign in to interact with the page.</p>
+                <button id="signin-btn">Sign In</button>
+            </div>
 
             <p>
                 This page wants to become a Github for ideas. In the first stage I'll throw some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
@@ -213,7 +217,7 @@
             },
             // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
             signInFlow: 'popup',
-            signInSuccessUrl: 'index.html',
+            signInSuccessUrl: '/',
             signInOptions: [
                 {
                 provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -227,7 +231,54 @@
         };
         // Initialize the FirebaseUI Widget using Firebase.
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        ui.start('#firebaseui-auth-container', uiConfig);
+        //var startSignUp = ui.start('#firebaseui-auth-container', uiConfig);
+
+        // Listen for authentication state changes
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                showAuthenticatedUI();
+            } else {
+                // User is signed out
+                showSignInPrompt();
+            }
+        });
+
+        // Show authenticated UI (enable buttons, hide loader, etc.)
+        function showAuthenticatedUI() {
+            document.getElementById('firebaseui-auth-container').style.display = 'none';
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('signin-prompt').style.display = 'none';
+            // Show other UI elements as needed
+        }
+
+        // Show sign-in prompt
+        function showSignInPrompt() {
+            document.getElementById('firebaseui-auth-container').style.display = 'none';
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('signin-prompt').style.display = 'block';
+
+            // Add event listener to sign-in button
+            document.getElementById('signin-btn').addEventListener('click', () => {
+                // Show FirebaseUI authentication container
+                ui.start('#firebaseui-auth-container', uiConfig);
+            });
+        }
+
+        // Add event listeners to buttons (thumbs-up, thumbs-down, createComponent)
+        const buttons = document.querySelectorAll('.good-button, .bad-button, #addComponent');
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                if (!firebase.auth().currentUser) {
+                    // User is not signed in, show sign-in prompt
+                    showSignInPrompt();
+                } else {
+                    // User is signed in, allow interaction with the button
+                    // Implement your button logic here
+                    console.log("later this can be transformed into a logout button");
+                }
+            });
+        });
 
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("users").doc(currentUserId).get()
