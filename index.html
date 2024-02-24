@@ -196,7 +196,7 @@
         const db = firebase.firestore();
 
              // Assuming you have the user ID of the current user
-        const currentUserId = "qApOg41YEEMmm9DgF2D6";
+        //const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
         var uiConfig = {
             callbacks: {
@@ -289,7 +289,7 @@
                 if (currentUser) {
                     // Get idea ID
                     const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
-
+                    console.log("ideaId is"+ ideaId);
                     // Update idea's upvote counter in Firestore
                     const ideaRef = db.collection('ideas').doc(ideaId);
                     ideaRef.update({
@@ -321,7 +321,7 @@
         });
 
 // Query the "users" collection to retrieve the idea IDs of the current user
-db.collection("users").doc(currentUserId).get()
+db.collection("users").doc(currentUser).get()
   .then((userDoc) => {
     if (userDoc.exists) {
       // Retrieve the idea IDs from the user document
@@ -381,7 +381,7 @@ db.collection("users").doc(currentUserId).get()
                 title: title,
                 description: description,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
-                author: currentUserId // Add author's ID, replace argument later with currentUser.uid
+                author: currentUser // Add author's ID, replace argument later with currentUser.uid
             };
             console.log(newIdea);
             // Add the idea to Firestore
@@ -390,7 +390,7 @@ db.collection("users").doc(currentUserId).get()
                     console.log("Idea added with ID: ", docRef.id);
 
                     // Update user document with the idea ID - replace argument later with currentUser.uid
-                    db.collection("users").doc(currentUserId).update({
+                    db.collection("users").doc(currentUser).update({
                         ideas: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                     })
                     .then(() => {
