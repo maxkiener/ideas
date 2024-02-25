@@ -136,7 +136,7 @@
         <div id="componentContainer">
             <h1>Workshopping Ideas</h1>
             <div id="firebaseui-auth-container"></div>
-            <div id="loader">Loading...</div>
+            <!--div id="loader">Loading...</div-->
             <button id="loginButton" style="display: none;">Login</button>
             <button id="logoutButton" style="display: none;">Logout</button>
 
@@ -200,7 +200,7 @@
             uiShown: function() {
             // The widget is rendered.
             // Hide the loader.
-            document.getElementById('loader').style.display = 'none';
+            //document.getElementById('loader').style.display = 'none';
             }
         },
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
@@ -245,8 +245,8 @@
     // Show authenticated UI (enable buttons, hide loader, etc.)
     function showAuthenticatedUI() {
         document.getElementById('firebaseui-auth-container').style.display = 'none';
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('signin-prompt').style.display = 'none';
+        //document.getElementById('loader').style.display = 'none';
+        //document.getElementById('signin-prompt').style.display = 'none';
         // Show other UI elements as needed
     }
 
@@ -308,7 +308,7 @@
         console.log("signInPrompt triggered");
         ui.start('#firebaseui-auth-container', uiConfig);
         //document.getElementById('firebaseui-auth-container').style.display = 'none';
-        document.getElementById('loader').style.display = 'none';
+        //document.getElementById('loader').style.display = 'none';
         //document.getElementById('signin-prompt').style.display = 'block';
     }
 
