@@ -411,6 +411,19 @@ db.collection("users").doc(currentUserId).get()
         }
     }
 
+    // Function to update the vote counts in real-time
+    function updateVoteCounts(ideaId, upvotes, downvotes) {
+        const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
+        if (component) {
+            const upvoteCount = component.querySelector('.vote-container .vote-count:first-child');
+            const downvoteCount = component.querySelector('.vote-container .vote-count:last-child');
+            if (upvoteCount && downvoteCount) {
+                upvoteCount.textContent = `👍 ${upvotes}`;
+                downvoteCount.textContent = `👎 ${downvotes}`;
+            }
+        }
+    }
+
     function handleVote(ideaId, isUpvote) {
         // Check if user is signed in
         const currentUser = firebase.auth().currentUser;
@@ -433,14 +446,25 @@ db.collection("users").doc(currentUserId).get()
                 })
                 .then(() => {
                     console.log('User votes updated successfully');
-                })
-                .catch((error) => {
-                    console.error('Error updating user votes:', error);
+                    // Fetch updated vote counts from Firestore and update UI
+                    ideaRef.get().then((doc) => {
+                        if (doc.exists) {
+                            const { upvotes, downvotes } = doc.data();
+                            updateVoteCounts(ideaId, upvotes, downvotes);
+                        } else {
+                            console.log('No such document!');
+                        }
+                    }).catch((error) => {
+                    console.log('Error getting document:', error);
                 });
             })
             .catch((error) => {
-                console.error('Error updating vote count:', error);
+                console.error('Error updating user votes:', error);
             });
+        })
+        .catch((error) => {
+            console.error('Error updating vote count:', error);
+        });
         } else {
             // User is not signed in, show sign-in prompt
             console.log("user is not signed in");
@@ -448,7 +472,7 @@ db.collection("users").doc(currentUserId).get()
         }
     }
 
-        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, comments){
+        function createIdeaDiv(title, description, date, ideaId, upvotes = 0, downvotes = 0, comments){
 
         
             // Create a new component element (a div)
@@ -464,6 +488,18 @@ db.collection("users").doc(currentUserId).get()
             // Create body text (p)
             const bodyText = document.createElement("p");
             bodyText.textContent = description;
+
+            // Create elements to display upvote and downvote counts
+            const voteContainer = document.createElement("div");
+            voteContainer.classList.add("vote-container");
+
+            const upvoteCount = document.createElement("span");
+            upvoteCount.textContent = `👍 ${upvotes}`;
+            upvoteCount.classList.add("vote-count");
+
+            const downvoteCount = document.createElement("span");
+            downvoteCount.textContent = `👎 ${downvotes}`;
+            downvoteCount.classList.add("vote-count");
 
             // Create "good" button
             const goodButton = document.createElement("button");
@@ -490,6 +526,9 @@ db.collection("users").doc(currentUserId).get()
             newComponent.appendChild(bodyText);
             newComponent.appendChild(goodButton);
             newComponent.appendChild(badButton);
+            newComponent.appendChild(voteContainer);
+            voteContainer.appendChild(upvoteCount);
+            voteContainer.appendChild(downvoteCount);
 
             // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
