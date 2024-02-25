@@ -319,7 +319,7 @@ db.collection("users").doc(currentUserId).get()
           description: ideaData.description,
           // Add other idea details as needed
         });
-        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id);
+        createIdeaDiv(ideaSnapshot.title, ideaSnapshot.description, ideaSnapshot.time, ideaSnapshot.id);
       }
     });
 
