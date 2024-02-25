@@ -254,7 +254,6 @@
         
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    //var startSignUp = ui.start('#firebaseui-auth-container', uiConfig);
 
     // Listen for authentication state changes
     firebase.auth().onAuthStateChanged((user) => {
@@ -281,6 +280,7 @@
 
     // Show sign-in prompt
     function showSignInPrompt() {
+        console.log("signInPrompt triggered");
         document.getElementById('firebaseui-auth-container').style.display = 'none';
         document.getElementById('loader').style.display = 'none';
         document.getElementById('signin-prompt').style.display = 'block';
@@ -296,8 +296,10 @@
     document.getElementById('signout-btn').addEventListener('click', function() {
         firebase.auth().signOut().then(() => {
                 // Sign-out successful, show sign in button.
+                console.log("signed out");
             }).catch((error) => {
                 // An error happened.
+                console.log("sign out failed");
             });
     });
 
@@ -308,6 +310,7 @@
                 if (!firebase.auth().currentUser) {
                     // User is not signed in, show sign-in prompt
                     showSignInPrompt();
+                    console.log("user needs to sign in");
                 } else {
                     // User is signed in, allow interaction with the button
                     // Implement your button logic here
@@ -438,6 +441,7 @@ db.collection("users").doc(currentUserId).get()
             });
         } else {
             // User is not signed in, show sign-in prompt
+            console.log("user is not signed in");
             showSignInPrompt();
         }
     }
