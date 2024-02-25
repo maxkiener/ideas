@@ -136,6 +136,7 @@
         <div id="componentContainer">
             <h1>Workshopping Ideas</h1>
             <div id="firebaseui-auth-container"></div>
+            <button id="signout-btn">Sign out</button>
             <div id="loader">Loading...</div>
             <div id="signin-prompt" style="display: none;">
                 <p>Please sign in to interact with the page.</p>
@@ -291,7 +292,16 @@
         });
     }
 
-        // Add event listeners to buttons (createComponent)
+    //Add event-listener to sign out button.
+    document.getElementById('signout-btn').addEventListener('click', function() {
+        firebase.auth().signOut().then(() => {
+                // Sign-out successful, show sign in button.
+            }).catch((error) => {
+                // An error happened.
+            });
+    });
+
+        // Add event listeners to buttons (createComponent) NEEDS TO BE SIMPLIFIED/DELETED LATER
         const buttons = document.querySelectorAll('#addComponent');
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
