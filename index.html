@@ -194,7 +194,7 @@
             // or whether we leave that to developer to handle.
             console.log("user logged in with id"+authResult);
             //check if this is properly addressed. 
-            document.getElementById('firebase-auth-container').style.display = "none";
+            document.getElementById('firebaseui-auth-container').style.display = "none";
             return true;
             },
             uiShown: function() {
@@ -241,14 +241,6 @@
         
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-    // Show authenticated UI (enable buttons, hide loader, etc.)
-    function showAuthenticatedUI() {
-        document.getElementById('firebaseui-auth-container').style.display = 'none';
-        //document.getElementById('loader').style.display = 'none';
-        //document.getElementById('signin-prompt').style.display = 'none';
-        // Show other UI elements as needed
-    }
 
     // Function to add logout button
     function addLogoutButton() {
