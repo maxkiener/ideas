@@ -229,6 +229,27 @@
         // Privacy policy url.
         privacyPolicyUrl: '<your-privacy-policy-url>'
     };
+
+    // Function to create a new user document in Firestore
+    function createUserDocument(user) {
+        const userData = {
+            email: user.email,
+            username: '', // You can prompt the user to set their username later
+            ideas: [],
+            upvotes: [],
+            downvotes: [],
+            suggestions: []
+        };
+
+        // Add the user data to Firestore
+        db.collection('users').doc(user.uid).set(userData)
+        .then(() => {
+            console.log('User document created successfully');
+        })
+        .catch((error) => {
+            console.error('Error creating user document:', error);
+        });
+    }
         
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -239,6 +260,10 @@
         if (user) {
             // User is signed in
             showAuthenticatedUI();
+            if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+                // This is a new user, create a new user document
+                createUserDocument(user);
+            }
         } else {
             // User is signed out
             showSignInPrompt();
