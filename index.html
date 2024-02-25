@@ -284,6 +284,7 @@
         const thumbsUpButtons = document.querySelectorAll('.good-button');
         thumbsUpButtons.forEach((button) => {
             button.addEventListener('click', (event) => {
+                console.log("button clicked");
                 // Check if user is signed in
                 const currentUser = firebase.auth().currentUser;
                 if (currentUser) {
@@ -315,6 +316,7 @@
                     });
                 } else {
                     // User is not signed in, show sign-in prompt
+                    console.log("not signed in and clicked")
                     showSignInPrompt();
                 }
             });
