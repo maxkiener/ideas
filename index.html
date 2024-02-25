@@ -312,14 +312,15 @@ db.collection("users").doc(currentUserId).get()
     ideaSnapshots.forEach((ideaSnapshot) => {
       if (ideaSnapshot.exists) {
         const ideaData = ideaSnapshot.data();
-        
+        console.log(ideaData);
         ideas.push({
           id: ideaSnapshot.id,
           title: ideaData.title,
           description: ideaData.description,
           // Add other idea details as needed
         });
-        createIdeaDiv(ideaSnapshot.title, ideaSnapshot.description, ideaSnapshot.time, ideaSnapshot.id);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id);
+        console.log(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id);
       }
     });
 
