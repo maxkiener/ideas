@@ -267,7 +267,7 @@
 
     // Check if user is signed in
     firebase.auth().onAuthStateChanged(function(user) {
-        console.log("onAuthStateChange fired");
+        console.log("onAuthStateChange fired for"+ user);
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
             console.log("user is signed in, showing logout button");
@@ -307,7 +307,7 @@
     function showSignInPrompt() {
         console.log("signInPrompt triggered");
         ui.start('#firebaseui-auth-container', uiConfig);
-        //document.getElementById('firebaseui-auth-container').style.display = 'none';
+        document.getElementById('firebaseui-auth-container').style.display = 'block';
         //document.getElementById('loader').style.display = 'none';
         //document.getElementById('signin-prompt').style.display = 'block';
     }
