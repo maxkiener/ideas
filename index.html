@@ -136,26 +136,15 @@
         <div id="componentContainer">
             <h1>Workshopping Ideas</h1>
             <div id="firebaseui-auth-container"></div>
-            <button id="signout-btn">Sign out</button>
             <div id="loader">Loading...</div>
-            <div id="signin-prompt" style="display: none;">
-                <p>Please sign in to interact with the page.</p>
-                <button id="signin-btn">Sign In</button>
-            </div>
+            <button id="loginButton" style="display: none;">Login</button>
+            <button id="logoutButton" style="display: none;">Logout</button>
 
             <p>
                 This page wants to become a Github for ideas. In the first stage I'll throw some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
                 I'll get notified when you submit an improvement and can then approve it or reject it.<br>
                 I also want to improve and develop this site itself. Please submit your suggestions about how to make the page better in idea #5.  
             </p>
-            <br>
-
-            <div class="component">
-                <h2>Limit Excessive Packaging</h2>
-                <p>The packaging of a product should not be allowed to be heavier than the product itself (eg. this is most bizarre with perfume)</p>
-                <button class="good-button">👍</button>
-                <button class="bad-button">👎</button>
-            </div>
 
             <!-- Newly created components will be added here -->
             
@@ -170,9 +159,7 @@
                   <textarea id="ideaDescription" placeholder="Enter idea description"></textarea>
                   <button id="submitBtn">Submit</button>
                 </div>
-            </div>
-              
-            
+            </div>     
     </div>
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -255,21 +242,6 @@
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-    // Listen for authentication state changes
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            // User is signed in
-            showAuthenticatedUI();
-            if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-                // This is a new user, create a new user document
-                createUserDocument(user);
-            }
-        } else {
-            // User is signed out
-            showSignInPrompt();
-        }
-    });
-
     // Show authenticated UI (enable buttons, hide loader, etc.)
     function showAuthenticatedUI() {
         document.getElementById('firebaseui-auth-container').style.display = 'none';
@@ -278,33 +250,70 @@
         // Show other UI elements as needed
     }
 
+    // Function to add logout button
+    function addLogoutButton() {
+        var logoutButton = document.createElement('button');
+        logoutButton.textContent = 'Logout';
+        logoutButton.addEventListener('click', function() {
+            firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+            }).catch(function(error) {
+                // An error happened.
+            });
+        });
+
+        document.getElementById('firebaseui-auth-container').appendChild(logoutButton);
+    }
+
+    // Check if user is signed in
+    firebase.auth().onAuthStateChanged(function(user) {
+        console.log("onAuthStateChange fired");
+        var authContainer = document.getElementById('firebaseui-auth-container');
+        if (user) {
+            console.log("user is signed in, showing logout button");
+            // User is signed in.
+            document.getElementById("loginButton").style.display = "none";
+            document.getElementById("logoutButton").style.display = "block";
+            // Hide the FirebaseUI authentication container
+            authContainer.style.display = 'none';
+            if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+                // This is a new user, create a new user document
+                console.log("This is a new user, create a new user document")
+                createUserDocument(user);
+            }
+        } else {
+            // No user is signed in.
+            document.getElementById("loginButton").style.display = "block";
+            document.getElementById("logoutButton").style.display = "none";
+        }
+    });
+
+    document.getElementById("loginButton").addEventListener("click", function() {
+        ui.start("#firebaseui-auth-container", uiConfig);
+    });
+
+    document.getElementById("logoutButton").addEventListener("click", function() {
+        firebase.auth().signOut().then(function() {
+            // Sign-out successful.
+            console.log("signout successful");
+        }).catch(function(error) {
+            // An error happened.
+            console.log("issue happened with "+error);
+        });
+    });
+
+
     // Show sign-in prompt
     function showSignInPrompt() {
         console.log("signInPrompt triggered");
-        document.getElementById('firebaseui-auth-container').style.display = 'none';
+        ui.start('#firebaseui-auth-container', uiConfig);
+        //document.getElementById('firebaseui-auth-container').style.display = 'none';
         document.getElementById('loader').style.display = 'none';
-        document.getElementById('signin-prompt').style.display = 'block';
-
-        // Add event listener to sign-in button
-        document.getElementById('signin-btn').addEventListener('click', () => {
-            // Show FirebaseUI authentication container
-            ui.start('#firebaseui-auth-container', uiConfig);
-        });
+        //document.getElementById('signin-prompt').style.display = 'block';
     }
 
-    //Add event-listener to sign out button.
-    document.getElementById('signout-btn').addEventListener('click', function() {
-        firebase.auth().signOut().then(() => {
-                // Sign-out successful, show sign in button.
-                console.log("signed out");
-            }).catch((error) => {
-                // An error happened.
-                console.log("sign out failed");
-            });
-    });
-
         // Add event listeners to buttons (createComponent) NEEDS TO BE SIMPLIFIED/DELETED LATER
-        const buttons = document.querySelectorAll('#addComponent');
+        /*const buttons = document.querySelectorAll('#addComponent');
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
                 if (!firebase.auth().currentUser) {
@@ -317,7 +326,7 @@
                     console.log("later this can be transformed into a logout button");
                 }
             });
-        });
+        });*/
 
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("users").doc(currentUserId).get()
@@ -357,8 +366,8 @@ db.collection("users").doc(currentUserId).get()
           description: ideaData.description,
           // Add other idea details as needed
         });
-        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id);
-        console.log(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id);
+        console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id);
       }
     });
 
