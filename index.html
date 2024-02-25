@@ -280,49 +280,6 @@
             });
         });
 
-        // Add event listener to thumbs-up button
-        const thumbsUpButtons = document.querySelectorAll('.good-button');
-        thumbsUpButtons.forEach((goodbutton) => {
-            console.log("good listener added");
-            goodbutton.addEventListener('click', (event) => {
-                console.log("button clicked");
-                // Check if user is signed in
-                const currentUser = firebase.auth().currentUser;
-                if (currentUser) {
-                    // Get idea ID
-                    const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
-                    console.log("ideaId is"+ ideaId);
-                    // Update idea's upvote counter in Firestore
-                    const ideaRef = db.collection('ideas').doc(ideaId);
-                    ideaRef.update({
-                        upvotes: firebase.firestore.FieldValue.increment(1)
-                    })
-                    .then(() => {
-                        console.log('Upvote count updated successfully');
-
-                        // Update user's upvotes in Firestore
-                        const userRef = db.collection('users').doc(currentUser.uid);
-                        userRef.update({
-                            upvotes: firebase.firestore.FieldValue.arrayUnion(ideaId)
-                        })
-                        .then(() => {
-                            console.log('User upvotes updated successfully');
-                        })
-                        .catch((error) => {
-                            console.error('Error updating user upvotes:', error);
-                        });
-                    })
-                    .catch((error) => {
-                        console.error('Error updating upvote count:', error);
-                    });
-                } else {
-                    // User is not signed in, show sign-in prompt
-                    console.log("not signed in and clicked")
-                    showSignInPrompt();
-                }
-            });
-        });
-
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("users").doc(currentUserId).get()
   .then((userDoc) => {
@@ -450,6 +407,49 @@ db.collection("users").doc(currentUserId).get()
             // Insert the new component before the button container
             componentContainer.insertBefore(newComponent, buttonContainer);
         }
+
+        // Add event listener to thumbs-up button
+        const thumbsUpButtons = document.querySelectorAll('.good-button');
+        thumbsUpButtons.forEach((goodbutton) => {
+            console.log("good listener added");
+            goodbutton.addEventListener('click', (event) => {
+                console.log("button clicked");
+                // Check if user is signed in
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    // Get idea ID
+                    const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
+                    console.log("ideaId is"+ ideaId);
+                    // Update idea's upvote counter in Firestore
+                    const ideaRef = db.collection('ideas').doc(ideaId);
+                    ideaRef.update({
+                        upvotes: firebase.firestore.FieldValue.increment(1)
+                    })
+                    .then(() => {
+                        console.log('Upvote count updated successfully');
+
+                        // Update user's upvotes in Firestore
+                        const userRef = db.collection('users').doc(currentUser.uid);
+                        userRef.update({
+                            upvotes: firebase.firestore.FieldValue.arrayUnion(ideaId)
+                        })
+                        .then(() => {
+                            console.log('User upvotes updated successfully');
+                        })
+                        .catch((error) => {
+                            console.error('Error updating user upvotes:', error);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Error updating upvote count:', error);
+                    });
+                } else {
+                    // User is not signed in, show sign-in prompt
+                    console.log("not signed in and clicked")
+                    showSignInPrompt();
+                }
+            });
+        });
 
         // Get the modal
         const modal = document.getElementById("myModal");
