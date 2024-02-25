@@ -358,7 +358,7 @@ db.collection("users").doc(currentUserId).get()
           description: ideaData.description,
           // Add other idea details as needed
         });
-        createIdeaDiv(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes);
         console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id);
       }
     });
@@ -396,7 +396,7 @@ db.collection("users").doc(currentUserId).get()
                     })
                     .then(() => {
                         console.log("User document updated with idea ID");
-                        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id);
+                        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id, 0, 0);
                     })
                     .catch((error) => {
                         console.error("Error updating user document: ", error);
@@ -472,7 +472,7 @@ db.collection("users").doc(currentUserId).get()
         }
     }
 
-        function createIdeaDiv(title, description, date, ideaId, upvotes = 0, downvotes = 0, comments){
+        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, comments){
 
         
             // Create a new component element (a div)
@@ -493,17 +493,9 @@ db.collection("users").doc(currentUserId).get()
             const voteContainer = document.createElement("div");
             voteContainer.classList.add("vote-container");
 
-            const upvoteCount = document.createElement("span");
-            upvoteCount.textContent = `👍 ${upvotes}`;
-            upvoteCount.classList.add("vote-count");
-
-            const downvoteCount = document.createElement("span");
-            downvoteCount.textContent = `👎 ${downvotes}`;
-            downvoteCount.classList.add("vote-count");
-
             // Create "good" button
             const goodButton = document.createElement("button");
-            goodButton.innerHTML = "👍";
+            goodButton.innerHTML = "👍 ${upvotes}";
             goodButton.classList.add("good-button");
             // Add event listener to thumbs-up button
             goodButton.addEventListener('click', (event) => {
@@ -513,7 +505,7 @@ db.collection("users").doc(currentUserId).get()
 
             // Create "bad" button
             const badButton = document.createElement("button");
-            badButton.innerHTML = "👎";
+            badButton.innerHTML = "👎 ${downvotes}";
             badButton.classList.add("bad-button");
             // Add event listener to thumbs-down button
             badButton.addEventListener('click', (event) => {
@@ -526,9 +518,6 @@ db.collection("users").doc(currentUserId).get()
             newComponent.appendChild(bodyText);
             newComponent.appendChild(goodButton);
             newComponent.appendChild(badButton);
-            newComponent.appendChild(voteContainer);
-            voteContainer.appendChild(upvoteCount);
-            voteContainer.appendChild(downvoteCount);
 
             // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
