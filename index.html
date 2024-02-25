@@ -282,8 +282,9 @@
 
         // Add event listener to thumbs-up button
         const thumbsUpButtons = document.querySelectorAll('.good-button');
-        thumbsUpButtons.forEach((button) => {
-            button.addEventListener('click', (event) => {
+        thumbsUpButtons.forEach((goodbutton) => {
+            console.log("good listener added");
+            goodbutton.addEventListener('click', (event) => {
                 console.log("button clicked");
                 // Check if user is signed in
                 const currentUser = firebase.auth().currentUser;
