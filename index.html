@@ -415,6 +415,7 @@ db.collection("users").doc(currentUserId).get()
                 });
         } else {
             console.error("No user logged in");
+            showSignInPrompt();
         }
     }
 
