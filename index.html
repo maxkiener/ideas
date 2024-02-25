@@ -180,93 +180,94 @@
     <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
     <script type="text/javascript">
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyCA-BOnEqEhsCJYmmCtgxQVJg2jP4PayY8",
-          authDomain: "ideas-9f911.firebaseapp.com",
-          projectId: "ideas-9f911",
-          storageBucket: "ideas-9f911.appspot.com",
-          messagingSenderId: "1088350860366",
-          appId: "1:1088350860366:web:dbd89a06181e32d7fbbf1f",
-          measurementId: "G-0NMLE044FL"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCA-BOnEqEhsCJYmmCtgxQVJg2jP4PayY8",
+        authDomain: "ideas-9f911.firebaseapp.com",
+        projectId: "ideas-9f911",
+        storageBucket: "ideas-9f911.appspot.com",
+        messagingSenderId: "1088350860366",
+        appId: "1:1088350860366:web:dbd89a06181e32d7fbbf1f",
+        measurementId: "G-0NMLE044FL"
+    };
       
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        //const analytics = firebase.analytics();
-        const db = firebase.firestore();
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    //const analytics = firebase.analytics();
+    const db = firebase.firestore();
 
-             // Assuming you have the user ID of the current user
-        const currentUserId = "qApOg41YEEMmm9DgF2D6";
+    // Assuming you have the user ID of the current user
+    const currentUserId = "qApOg41YEEMmm9DgF2D6";
 
-        var uiConfig = {
-            callbacks: {
-                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                // User successfully signed in.
-                // Return type determines whether we continue the redirect automatically
-                // or whether we leave that to developer to handle.
-                console.log("user logged in with id"+authResult);
-                //check if this is properly addressed. 
-                document.getElementById('firebase-auth-container').style.display = "none";
-                return true;
-                },
-                uiShown: function() {
-                // The widget is rendered.
-                // Hide the loader.
-                document.getElementById('loader').style.display = 'none';
-                }
+    var uiConfig = {
+        callbacks: {
+            signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            // User successfully signed in.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            console.log("user logged in with id"+authResult);
+            //check if this is properly addressed. 
+            document.getElementById('firebase-auth-container').style.display = "none";
+            return true;
             },
-            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-            signInFlow: 'popup',
-            signInSuccessUrl: '/',
-            signInOptions: [
-                {
-                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
-                requireDisplayName: true
-            }],
-            // Terms of service url.
-            tosUrl: '<your-tos-url>',
-            // Privacy policy url.
-            privacyPolicyUrl: '<your-privacy-policy-url>'
-        };
-        // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        //var startSignUp = ui.start('#firebaseui-auth-container', uiConfig);
-
-        // Listen for authentication state changes
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in
-                showAuthenticatedUI();
-            } else {
-                // User is signed out
-                showSignInPrompt();
+            uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById('loader').style.display = 'none';
             }
+        },
+        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+        signInFlow: 'popup',
+        signInSuccessUrl: '/',
+        signInOptions: [
+            {
+            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+            requireDisplayName: true
+        }],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>',
+        // Privacy policy url.
+        privacyPolicyUrl: '<your-privacy-policy-url>'
+    };
+        
+    // Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    //var startSignUp = ui.start('#firebaseui-auth-container', uiConfig);
+
+    // Listen for authentication state changes
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            showAuthenticatedUI();
+        } else {
+            // User is signed out
+            showSignInPrompt();
+        }
+    });
+
+    // Show authenticated UI (enable buttons, hide loader, etc.)
+    function showAuthenticatedUI() {
+        document.getElementById('firebaseui-auth-container').style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('signin-prompt').style.display = 'none';
+        // Show other UI elements as needed
+    }
+
+    // Show sign-in prompt
+    function showSignInPrompt() {
+        document.getElementById('firebaseui-auth-container').style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('signin-prompt').style.display = 'block';
+
+        // Add event listener to sign-in button
+        document.getElementById('signin-btn').addEventListener('click', () => {
+            // Show FirebaseUI authentication container
+            ui.start('#firebaseui-auth-container', uiConfig);
         });
+    }
 
-        // Show authenticated UI (enable buttons, hide loader, etc.)
-        function showAuthenticatedUI() {
-            document.getElementById('firebaseui-auth-container').style.display = 'none';
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('signin-prompt').style.display = 'none';
-            // Show other UI elements as needed
-        }
-
-        // Show sign-in prompt
-        function showSignInPrompt() {
-            document.getElementById('firebaseui-auth-container').style.display = 'none';
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('signin-prompt').style.display = 'block';
-
-            // Add event listener to sign-in button
-            document.getElementById('signin-btn').addEventListener('click', () => {
-                // Show FirebaseUI authentication container
-                ui.start('#firebaseui-auth-container', uiConfig);
-            });
-        }
-
-        // Add event listeners to buttons (thumbs-up, thumbs-down, createComponent)
-        const buttons = document.querySelectorAll('.bad-button, #addComponent');
+        // Add event listeners to buttons (createComponent)
+        const buttons = document.querySelectorAll('#addComponent');
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
                 if (!firebase.auth().currentUser) {
@@ -318,7 +319,7 @@ db.collection("users").doc(currentUserId).get()
           description: ideaData.description,
           // Add other idea details as needed
         });
-        createIdeaDiv(ideaData.title, ideaData.description);
+        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id);
       }
     });
 
@@ -355,7 +356,7 @@ db.collection("users").doc(currentUserId).get()
                     })
                     .then(() => {
                         console.log("User document updated with idea ID");
-                        createIdeaDiv(newIdea.title, newIdea.description);
+                        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id);
                     })
                     .catch((error) => {
                         console.error("Error updating user document: ", error);
@@ -369,12 +370,50 @@ db.collection("users").doc(currentUserId).get()
         }
     }
 
-        function createIdeaDiv(title, description, date, upvotes, downvotes, comments){
+    function handleVote(ideaId, isUpvote) {
+        // Check if user is signed in
+        const currentUser = firebase.auth().currentUser;
+        if (currentUser) {
+            // Determine the field to update based on the vote type
+            const voteField = isUpvote ? 'upvotes' : 'downvotes';
+
+            // Update the vote count in Firestore
+            const ideaRef = db.collection('ideas').doc(ideaId);
+            ideaRef.update({
+                [voteField]: firebase.firestore.FieldValue.increment(1)
+            })
+            .then(() => {
+                console.log('Vote count updated successfully');
+
+                // Update user's votes in Firestore
+                const userRef = db.collection('users').doc(currentUser.uid);
+                userRef.update({
+                    [voteField]: firebase.firestore.FieldValue.arrayUnion(ideaId)
+                })
+                .then(() => {
+                    console.log('User votes updated successfully');
+                })
+                .catch((error) => {
+                    console.error('Error updating user votes:', error);
+                });
+            })
+            .catch((error) => {
+                console.error('Error updating vote count:', error);
+            });
+        } else {
+            // User is not signed in, show sign-in prompt
+            showSignInPrompt();
+        }
+    }
+
+        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, comments){
 
         
             // Create a new component element (a div)
             const newComponent = document.createElement("div");
             newComponent.classList.add("component");
+            //Set data attribute for idea
+            newComponent.setAttribute('data-idea-id', ideaId);
 
             // Create a headline (h2)
             const headline = document.createElement("h2");
@@ -388,11 +427,21 @@ db.collection("users").doc(currentUserId).get()
             const goodButton = document.createElement("button");
             goodButton.innerHTML = "👍";
             goodButton.classList.add("good-button");
+            // Add event listener to thumbs-up button
+            goodButton.addEventListener('click', (event) => {
+                const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
+                handleVote(ideaId, true);
+            });
 
             // Create "bad" button
             const badButton = document.createElement("button");
             badButton.innerHTML = "👎";
             badButton.classList.add("bad-button");
+            // Add event listener to thumbs-down button
+            badButton.addEventListener('click', (event) => {
+                const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
+                handleVote(ideaId, false);
+            });
 
             // Append elements to the new component
             newComponent.appendChild(headline);
@@ -408,48 +457,6 @@ db.collection("users").doc(currentUserId).get()
             componentContainer.insertBefore(newComponent, buttonContainer);
         }
 
-        // Add event listener to thumbs-up button
-        const thumbsUpButtons = document.querySelectorAll('.good-button');
-        thumbsUpButtons.forEach((goodbutton) => {
-            console.log("good listener added");
-            goodbutton.addEventListener('click', (event) => {
-                console.log("button clicked");
-                // Check if user is signed in
-                const currentUser = firebase.auth().currentUser;
-                if (currentUser) {
-                    // Get idea ID
-                    const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
-                    console.log("ideaId is"+ ideaId);
-                    // Update idea's upvote counter in Firestore
-                    const ideaRef = db.collection('ideas').doc(ideaId);
-                    ideaRef.update({
-                        upvotes: firebase.firestore.FieldValue.increment(1)
-                    })
-                    .then(() => {
-                        console.log('Upvote count updated successfully');
-
-                        // Update user's upvotes in Firestore
-                        const userRef = db.collection('users').doc(currentUser.uid);
-                        userRef.update({
-                            upvotes: firebase.firestore.FieldValue.arrayUnion(ideaId)
-                        })
-                        .then(() => {
-                            console.log('User upvotes updated successfully');
-                        })
-                        .catch((error) => {
-                            console.error('Error updating user upvotes:', error);
-                        });
-                    })
-                    .catch((error) => {
-                        console.error('Error updating upvote count:', error);
-                    });
-                } else {
-                    // User is not signed in, show sign-in prompt
-                    console.log("not signed in and clicked")
-                    showSignInPrompt();
-                }
-            });
-        });
 
         // Get the modal
         const modal = document.getElementById("myModal");
