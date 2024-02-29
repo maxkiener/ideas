@@ -586,31 +586,33 @@ db.collection("users").doc(currentUserId).get()
             }
 
             // Function to handle improvement submission
-            function submitImprovement() {
-                const improvement = document.getElementById("improvementInput").value;
-                if (improvement.trim() !== "") {
-                    // Add improvement to Firestore
-                    db.collection("improvements").add({
-                        ideaId: ideaId,
-                        improvement: improvement,
+            function submitImprovement(ideaId, improvementText) {
+                const currentUser = firebase.auth().currentUser;
+
+                if (currentUser) {
+                    const improvementData = {
+                        id: "", // Assign a unique ID, you can use Firestore auto IDs or any other method
+                        authorId: currentUser.uid,
+                        improvementText: improvementText,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    // Update the idea document with the new improvement
+                    const ideaRef = db.collection('ideas').doc(ideaId);
+                    ideaRef.update({
+                        improvements: firebase.firestore.FieldValue.arrayUnion(improvementData)
                     })
                     .then(() => {
-                        console.log("Improvement submitted successfully");
-                        modal.style.display = "none";
+                        console.log('Improvement submitted successfully');
                     })
                     .catch((error) => {
-                        console.error("Error submitting improvement:", error);
+                        console.error('Error submitting improvement:', error);
                     });
                 } else {
-                    // Improvement input is empty, handle accordingly
-                    console.log("Improvement input is empty");
+                    console.error('No user logged in');
+                    // Handle the case where no user is logged in
                 }
             }
-
-            // Attach event listener to submit button
-            document.getElementById("improvementSubmitBtn").addEventListener("click", submitImprovement);
-        }
 
 
         // Get the modal
