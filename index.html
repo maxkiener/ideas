@@ -413,13 +413,14 @@ db.collection("users").doc(currentUserId).get()
 
     // Function to update the vote counts in real-time
     function updateVoteCounts(ideaId, upvotes, downvotes) {
+        console.log("updating vote count for "+upvotes, downvotes);
         const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
         if (component) {
             const upvoteCount = component.querySelector('.vote-container .vote-count:first-child');
             const downvoteCount = component.querySelector('.vote-container .vote-count:last-child');
             if (upvoteCount && downvoteCount) {
-                upvoteCount.textContent = `👍 ${upvotes}`;
-                downvoteCount.textContent = `👎 ${downvotes}`;
+                upvoteCount.textContent = new String("👍 "+upvotes);
+                downvoteCount.textContent = new String("👍 "+downvotes);
             }
         }
     }
@@ -495,7 +496,7 @@ db.collection("users").doc(currentUserId).get()
 
             // Create "good" button
             const goodButton = document.createElement("button");
-            goodButton.innerHTML = "👍 ${upvotes}";
+            goodButton.innerHTML = "👍 "+upvotes;
             goodButton.classList.add("good-button");
             // Add event listener to thumbs-up button
             goodButton.addEventListener('click', (event) => {
@@ -505,7 +506,7 @@ db.collection("users").doc(currentUserId).get()
 
             // Create "bad" button
             const badButton = document.createElement("button");
-            badButton.innerHTML = "👎 ${downvotes}";
+            badButton.innerHTML = "👎 "+downvotes;
             badButton.classList.add("bad-button");
             // Add event listener to thumbs-down button
             badButton.addEventListener('click', (event) => {
