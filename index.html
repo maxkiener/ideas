@@ -600,15 +600,15 @@ db.collection("users").doc(currentUserId).get()
 
                     // Update the idea document with the new improvement
                     const ideaRef = db.collection('ideas').doc(ideaId);
-                    ideaRef.update({
-                        improvements: firebase.firestore.FieldValue.arrayUnion(improvementData)
-                    })
-                    .then(() => {
-                        console.log('Improvement submitted successfully');
-                    })
-                    .catch((error) => {
-                        console.error('Error submitting improvement:', error);
-                    });
+                ideaRef.set({
+                    improvements: firebase.firestore.FieldValue.arrayUnion(improvementData)
+                }, { merge: true })
+                .then(() => {
+                    console.log("Improvements added to the idea document successfully");
+                })
+                .catch((error) => {
+                    console.error("Error adding improvements to the idea document:", error);
+                });
                 } else {
                     console.error('No user logged in');
                     // Handle the case where no user is logged in
