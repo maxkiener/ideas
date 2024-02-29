@@ -112,7 +112,7 @@
         }
 
         .upCount, .downCount{
-            font-size: 15;
+            font-size: 15px;
             color: #b4b2b2;
         }
 
@@ -395,6 +395,8 @@ db.collection("users").doc(currentUserId).get()
                 description: description,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
                 author: currentUser // Add author's ID, replace argument later with currentUser.uid
+                upvotes: 0,
+                downvotes: 0
             };
             console.log(newIdea);
             // Add the idea to Firestore
