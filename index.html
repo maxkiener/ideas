@@ -111,6 +111,11 @@
             cursor: pointer;
         }
 
+        .upCount, .downCount{
+            font-size: 15;
+            color: #b4b2b2;
+        }
+
     </style>
 </head>
 <body>
@@ -361,7 +366,11 @@ db.collection("users").doc(currentUserId).get()
           time: ideaData.time
           // Add other idea details as needed
         });
-        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, ideaData.upvotes, ideaData.downvotes);
+
+        var upvotes = (typeof ideaData.upvotes === "undefined") ? 0 : ideaData.upvotes;
+        var downvotes = (typeof ideaData.downvotes === "undefined") ? 0 : ideaData.downvotes;
+
+        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes);
         console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes);
       }
     });
@@ -419,11 +428,11 @@ db.collection("users").doc(currentUserId).get()
         console.log("updating vote count for "+upvotes, downvotes);
         const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
         if (component) {
-            const upvoteCount = component.querySelector('.vote-container .vote-count:first-child');
-            const downvoteCount = component.querySelector('.vote-container .vote-count:last-child');
+            const upvoteCount = component.querySelector('.upCount');
+            const downvoteCount = component.querySelector('.downCount');
             if (upvoteCount && downvoteCount) {
-                upvoteCount.textContent = new String("👍 "+upvotes);
-                downvoteCount.textContent = new String("👍 "+downvotes);
+                upvoteCount.textContent = new String(upvotes);
+                downvoteCount.textContent = new String(downvotes);
             }
         }
     }
@@ -499,7 +508,7 @@ db.collection("users").doc(currentUserId).get()
 
             // Create "good" button
             const goodButton = document.createElement("button");
-            goodButton.innerHTML = "👍 "+upvotes;
+            goodButton.innerHTML = "👍 "+ "<span class='upCount'>"+upvotes+"</span>";
             goodButton.classList.add("good-button");
             // Add event listener to thumbs-up button
             goodButton.addEventListener('click', (event) => {
@@ -509,7 +518,7 @@ db.collection("users").doc(currentUserId).get()
 
             // Create "bad" button
             const badButton = document.createElement("button");
-            badButton.innerHTML = "👎 "+downvotes;
+            badButton.innerHTML = "👎 "+"<span class='downCount'>"+downvotes+"</span>";
             badButton.classList.add("bad-button");
             // Add event listener to thumbs-down button
             badButton.addEventListener('click', (event) => {
