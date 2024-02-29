@@ -594,6 +594,7 @@ db.collection("users").doc(currentUserId).get()
                         id: "", // Assign a unique ID, you can use Firestore auto IDs or any other method
                         authorId: currentUser.uid,
                         improvementText: improvementText,
+                        approvalStatus: "not reviewed", // Default to "not reviewed"
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     };
 
