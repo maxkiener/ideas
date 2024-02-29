@@ -356,9 +356,12 @@ db.collection("users").doc(currentUserId).get()
           id: ideaSnapshot.id,
           title: ideaData.title,
           description: ideaData.description,
+          upvotes: ideaData.upvotes,
+          downvotes: ideaData.downvotes,
+          time: ideaData.time
           // Add other idea details as needed
         });
-        createIdeaDiv(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, ideaData.upvotes, ideaData.downvotes);
         console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes);
       }
     });
