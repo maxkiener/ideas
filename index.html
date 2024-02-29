@@ -614,6 +614,8 @@ db.collection("users").doc(currentUserId).get()
                     // Handle the case where no user is logged in
                 }
             }
+            // Attach event listener to submit button
+            document.getElementById("improvementSubmitBtn").addEventListener("click", submitImprovement);
 
         }
 
