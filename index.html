@@ -154,7 +154,7 @@
             <!-- Newly created components will be added here -->
             
             <div class="button-container">
-                <button id="addComponent">+</button>
+                <button id="addComponent">+ New Idea</button>
             </div>
 
             <div id="myModal" class="modal">
@@ -528,11 +528,20 @@ db.collection("users").doc(currentUserId).get()
                 handleVote(ideaId, false);
             });
 
+            // Create "Improve Idea" button
+            const improveButton = document.createElement("button");
+            improveButton.innerHTML = "Improve Idea";
+            improveButton.classList.add("improve-button");
+            improveButton.addEventListener("click", () => {
+                showImprovementDialog(ideaId);
+            });
+
             // Append elements to the new component
             newComponent.appendChild(headline);
             newComponent.appendChild(bodyText);
             newComponent.appendChild(goodButton);
             newComponent.appendChild(badButton);
+            newComponent.appendChild(improveButton);
 
             // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
@@ -540,6 +549,56 @@ db.collection("users").doc(currentUserId).get()
 
             // Insert the new component before the button container
             componentContainer.insertBefore(newComponent, buttonContainer);
+        }
+
+        // Function to show improvement dialog
+        function showImprovementDialog(ideaId) {
+            // Get the modal
+            const modal = document.getElementById("improvementModal");
+
+            // Get the <span> element that closes the modal
+            const span = document.getElementById("improvementModalClose");
+
+            // When the user clicks the button, open the modal 
+            modal.style.display = "block";
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // Function to handle improvement submission
+            function submitImprovement() {
+                const improvement = document.getElementById("improvementInput").value;
+                if (improvement.trim() !== "") {
+                    // Add improvement to Firestore
+                    db.collection("improvements").add({
+                        ideaId: ideaId,
+                        improvement: improvement,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                    .then(() => {
+                        console.log("Improvement submitted successfully");
+                        modal.style.display = "none";
+                    })
+                    .catch((error) => {
+                        console.error("Error submitting improvement:", error);
+                    });
+                } else {
+                    // Improvement input is empty, handle accordingly
+                    console.log("Improvement input is empty");
+                }
+            }
+
+            // Attach event listener to submit button
+            document.getElementById("improvementSubmitBtn").addEventListener("click", submitImprovement);
         }
 
 
