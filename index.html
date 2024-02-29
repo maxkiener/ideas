@@ -359,7 +359,7 @@ db.collection("users").doc(currentUserId).get()
           // Add other idea details as needed
         });
         createIdeaDiv(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes);
-        console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id);
+        console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes);
       }
     });
 
