@@ -623,10 +623,11 @@ db.collection("users").doc(currentUserId).get()
                 }
             
             }
+            // Attach event listener to submit button
+            document.getElementById("improvementSubmitBtn").addEventListener("click", storeImprovement);
         };
 
-        // Attach event listener to submit button
-        document.getElementById("improvementSubmitBtn").addEventListener("click", storeImprovement);
+        
 
 
         // Get the modal
@@ -664,7 +665,7 @@ db.collection("users").doc(currentUserId).get()
         }
 
         // Attach event listener to submit button
-        document.getElementById("submitBtn").addEventListener("click", submitForm);
+        document.getElementById("addComponent").addEventListener("click", submitForm);
 
     </script>
 
