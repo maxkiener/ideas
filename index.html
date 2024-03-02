@@ -116,6 +116,34 @@
             color: #b4b2b2;
         }
 
+        .notification-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it appears above other content */
+            display: none; /* Initially hidden */
+        }
+
+        .notification-toast.show {
+            display: block; /* Show when triggered */
+            animation: fadeOut 3s ease; /* Optional: Add fade-out animation */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -176,6 +204,7 @@
                     <button id="improvementSubmitBtn">Submit</button>
                 </div>
             </div>
+            <div id="message" class="notification-toast"></div>
     </div>
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
