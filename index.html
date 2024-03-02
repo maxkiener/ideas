@@ -657,6 +657,7 @@ db.collection("users").doc(currentUserId).get()
                 originalIdeaDiv.insertAdjacentElement("afterend", peekingImprovementDiv);
                 // Add event listener to peeking improvement div to handle click event
                 peekingImprovementDiv.addEventListener("click", () => {
+                    console.log("show improvement details");
                     // Show the full improvement div
                     // Implement your logic here
                 });
