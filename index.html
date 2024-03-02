@@ -112,11 +112,11 @@
             cursor: pointer;
         }
 
-        .upCount, .downCount, .improve-button{
+        .upCount, .downCount, .improve-button, .improveCount-button{
             font-size: 15px;
             color: #b4b2b2;
-            height: 30px; /* Adjust the height as needed */
-            line-height: 30px; /* Ensure the text is vertically centered */
+            /*height: 30px; Adjust the height as needed */
+            line-height: 22px; /* Ensure the text is vertically centered */
         }
 
         .notification-toast {
@@ -586,6 +586,8 @@ db.collection("users").doc(currentUserId).get()
             newComponent.appendChild(badButton);
             newComponent.appendChild(improveButton);
 
+            fetchImprovementCount(ideaId);
+
             // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
             const buttonContainer = document.querySelector(".button-container");
@@ -688,8 +690,8 @@ db.collection("users").doc(currentUserId).get()
             if (ideaContainer) {
                 // Create a button for viewing improvements
                 const viewImprovementsButton = document.createElement("button");
-                viewImprovementsButton.classList.add("improvement-button");
-                viewImprovementsButton.innerHTML = `📋 ${improvementCount}`;
+                viewImprovementsButton.classList.add("improveCount-button");
+                viewImprovementsButton.innerHTML = `${improvementCount} 📋`;
                 viewImprovementsButton.addEventListener("click", () => {
                     // Show modal containing improvements
                     // Implement modal display logic here
