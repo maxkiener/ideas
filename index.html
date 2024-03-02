@@ -612,6 +612,14 @@ db.collection("users").doc(currentUserId).get()
                     })
                     .then(() => {
                         console.log("Improvement ID added to the idea document successfully");
+                        // Close the modal
+                        closeModal();
+
+                        // Display success message
+                        showMessage("Improvement submitted successfully!");
+
+                        // Update HTML to show peeking improvement div
+                        updateHTMLForPeekingImprovement(ideaId);
                     })
                     .catch((error) => {
                         console.error("Error updating idea document with improvement ID:", error);
@@ -625,6 +633,34 @@ db.collection("users").doc(currentUserId).get()
             }
             // Attach event listener to submit button
             document.getElementById("improvementSubmitBtn").addEventListener("click", storeImprovement);
+
+            // Function to close the modal
+            function closeModal() {
+                const modal = document.getElementById("improvementModal");
+                modal.style.display = "none";
+            }
+
+            // Function to display a brief message
+            function showMessage(message) {
+                // Display the message wherever you want in the HTML
+                // For example, you can show it in a <div> with id "message"
+                const messageDiv = document.getElementById("message");
+                messageDiv.textContent = message;
+            }
+
+            // Function to update HTML to show peeking improvement div
+            function updateHTMLForPeekingImprovement(ideaId) {
+                const originalIdeaDiv = document.querySelector(`div[data-idea-id="${ideaId}"]`);
+                const peekingImprovementDiv = document.createElement("div");
+                peekingImprovementDiv.textContent = "Peeking improvement";
+                peekingImprovementDiv.classList.add("peeking-improvement");
+                originalIdeaDiv.insertAdjacentElement("afterend", peekingImprovementDiv);
+                // Add event listener to peeking improvement div to handle click event
+                peekingImprovementDiv.addEventListener("click", () => {
+                    // Show the full improvement div
+                    // Implement your logic here
+                });
+            }
         };
 
         
