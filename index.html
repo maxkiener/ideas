@@ -26,7 +26,7 @@
             width: 700px;
             margin: 0 auto;
             padding: 40px;
-            background-color: #fff;
+            /*background-color: #fff;*/
             border-radius: 10px;
             /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
             overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -47,6 +47,7 @@
             border-radius: 10px; /* Rounded corners */
             padding: 20px;
             margin: 20px 0;
+            box-shadow: 0px 5px 5px rgba(152, 152, 152, 0.516);
         }
         h1 {
             font-size: 36px;
@@ -114,6 +115,8 @@
         .upCount, .downCount, .improve-button{
             font-size: 15px;
             color: #b4b2b2;
+            height: 30px; /* Adjust the height as needed */
+            line-height: 30px; /* Ensure the text is vertically centered */
         }
 
         .notification-toast {
@@ -176,7 +179,7 @@
             <p>
                 This page wants to become a Github for ideas. In the first stage I'll throw some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
                 I'll get notified when you submit an improvement and can then approve it or reject it.<br>
-                I also want to improve and develop this site itself. Please submit your suggestions about how to make the page better in idea #5.  
+                I also want to improve and develop this site itself. Please submit your suggestions about how to make the page better in "This Website".  
             </p>
 
             <!-- Newly created components will be added here -->
@@ -570,7 +573,7 @@ db.collection("users").doc(currentUserId).get()
 
             // Create "Improve Idea" button
             const improveButton = document.createElement("button");
-            improveButton.innerHTML = "Improve Idea";
+            improveButton.innerHTML = "Improve Idea 📋";
             improveButton.classList.add("improve-button");
             improveButton.addEventListener("click", () => {
                 showImprovementDialog(ideaId);
@@ -648,7 +651,7 @@ db.collection("users").doc(currentUserId).get()
                         showMessage("Improvement submitted successfully!");
 
                         // Update HTML to show peeking improvement div
-                        updateHTMLForPeekingImprovement(ideaId);
+                        fetchImprovementCount(ideaId);
                     })
                     .catch((error) => {
                         console.error("Error updating idea document with improvement ID:", error);
@@ -677,21 +680,43 @@ db.collection("users").doc(currentUserId).get()
                 messageDiv.textContent = message;
             }
 
-            // Function to update HTML to show peeking improvement div
-            function updateHTMLForPeekingImprovement(ideaId) {
-                const originalIdeaDiv = document.querySelector(`div[data-idea-id="${ideaId}"]`);
-                const peekingImprovementDiv = document.createElement("div");
-                peekingImprovementDiv.textContent = "Peeking improvement";
-                peekingImprovementDiv.classList.add("peeking-improvement");
-                originalIdeaDiv.insertAdjacentElement("afterend", peekingImprovementDiv);
-                // Add event listener to peeking improvement div to handle click event
-                peekingImprovementDiv.addEventListener("click", () => {
-                    console.log("show improvement details");
-                    // Show the full improvement div
-                    // Implement your logic here
-                });
-            }
         };
+
+        // Function to update HTML to show peeking improvement div
+        function updateHTMLForPeekingImprovement(ideaId, improvementCount) {
+            const ideaContainer = document.querySelector(`[data-idea-id="${ideaId}"]`);
+            if (ideaContainer) {
+                // Create a button for viewing improvements
+                const viewImprovementsButton = document.createElement("button");
+                viewImprovementsButton.classList.add("improvement-button");
+                viewImprovementsButton.innerHTML = `📋 ${improvementCount}`;
+                viewImprovementsButton.addEventListener("click", () => {
+                    // Show modal containing improvements
+                    // Implement modal display logic here
+                    console.log("View improvements clicked for idea:", ideaId);
+                });
+
+                // Append the button to the idea container
+                ideaContainer.appendChild(viewImprovementsButton);
+            }
+        }
+
+        function fetchImprovementCount(ideaId) {
+            const ideaRef = db.collection("ideas").doc(ideaId);
+
+            ideaRef.get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const improvements = data.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
+                    const improvementCount = improvements.length; // Count the number of improvements
+                    updateHTMLForPeekingImprovement(ideaId, improvementCount);
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+        }
 
         
 
