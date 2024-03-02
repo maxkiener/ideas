@@ -585,39 +585,45 @@ db.collection("users").doc(currentUserId).get()
                 }
             }
 
-            // Function to handle improvement submission
-            function submitImprovement(ideaId, improvementText) {
+            // Storing a new improvement
+            function storeImprovement(ideaId, improvementText) {
                 const currentUser = firebase.auth().currentUser;
 
                 if (currentUser) {
                     const improvementData = {
-                        id: "", // Assign a unique ID, you can use Firestore auto IDs or any other method
                         authorId: currentUser.uid,
                         improvementText: improvementText,
                         approvalStatus: "not reviewed", // Default to "not reviewed"
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    };
+                    }
 
-                    // Update the idea document with the new improvement
-                    const ideaRef = db.collection('ideas').doc(ideaId);
-                ideaRef.set({
-                    improvements: firebase.firestore.FieldValue.arrayUnion(improvementData)
-                }, { merge: true })
-                .then(() => {
-                    console.log("Improvements added to the idea document successfully");
+                // Add the improvement to the "improvements" collection
+                db.collection("improvements").add(improvementData)
+                .then((improvementDocRef) => {
+                    console.log("Improvement added with ID: ", improvementDocRef.id);
+
+                    // Update the corresponding idea document with the improvement ID
+                    const ideaRef = db.collection("ideas").doc(ideaId);
+                    ideaRef.update({
+                        improvements: firebase.firestore.FieldValue.arrayUnion(improvementDocRef.id)
+                    })
+                    .then(() => {
+                        console.log("Improvement ID added to the idea document successfully");
+                    })
+                    .catch((error) => {
+                        console.error("Error updating idea document with improvement ID:", error);
+                    });
                 })
                 .catch((error) => {
-                    console.error("Error adding improvements to the idea document:", error);
+                    console.error("Error adding improvement:", error);
                 });
-                } else {
-                    console.error('No user logged in');
-                    // Handle the case where no user is logged in
                 }
+            
             }
-            // Attach event listener to submit button
-            document.getElementById("improvementSubmitBtn").addEventListener("click", submitImprovement);
+        };
 
-        }
+        // Attach event listener to submit button
+        document.getElementById("improvementSubmitBtn").addEventListener("click", submitImprovement);
 
 
         // Get the modal
