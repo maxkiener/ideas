@@ -111,7 +111,7 @@
             cursor: pointer;
         }
 
-        .upCount, .downCount{
+        .upCount, .downCount, .improve-button{
             font-size: 15px;
             color: #b4b2b2;
         }
@@ -586,13 +586,16 @@ db.collection("users").doc(currentUserId).get()
             }
 
             // Storing a new improvement
-            function storeImprovement(ideaId, improvementText) {
+            function storeImprovement() {
+                console.log("storeImprovement triggered");
+                const improvement = document.getElementById("improvementInput").value;
                 const currentUser = firebase.auth().currentUser;
 
                 if (currentUser) {
                     const improvementData = {
+                        ideaId: ideaId,
                         authorId: currentUser.uid,
-                        improvementText: improvementText,
+                        improvement: improvement,
                         approvalStatus: "not reviewed", // Default to "not reviewed"
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     }
