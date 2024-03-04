@@ -406,15 +406,17 @@ db.collection("users").doc(currentUserId).get()
           description: ideaData.description,
           upvotes: ideaData.upvotes,
           downvotes: ideaData.downvotes,
-          time: ideaData.time
+          time: ideaData.time,
+          improvements : ideaData.improvements
           // Add other idea details as needed
         });
 
         var upvotes = (typeof ideaData.upvotes === "undefined") ? 0 : ideaData.upvotes;
         var downvotes = (typeof ideaData.downvotes === "undefined") ? 0 : ideaData.downvotes;
+        var improvements = ideaData.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
 
-        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes);
-        console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes, improvements);
+        console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes, ideaData.improvements);
       }
     });
 
@@ -530,7 +532,7 @@ db.collection("users").doc(currentUserId).get()
         }
     }
 
-        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, comments){
+        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, improvements){
 
         
             // Create a new component element (a div)
@@ -581,6 +583,7 @@ db.collection("users").doc(currentUserId).get()
 
 
             // Create a button for viewing improvements
+            const improvementCount = improvements.length; // Count the number of improvements
             const viewImprovementsButton = document.createElement("button");
             viewImprovementsButton.classList.add("improveCount-button");
             viewImprovementsButton.innerHTML = `${improvementCount} 📋`;
@@ -598,8 +601,6 @@ db.collection("users").doc(currentUserId).get()
             newComponent.appendChild(badButton);
             newComponent.appendChild(improveButton);
             newComponent.appendChild(viewImprovementsButton);
-
-            fetchImprovementCount(ideaId);
 
             // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
