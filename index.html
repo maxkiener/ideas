@@ -208,6 +208,15 @@
                 </div>
             </div>
             <div id="message" class="notification-toast"></div>
+
+            <!-- Improvements OVerview Modal -->
+            <div id="improvementsModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Improvements</h2>
+                    <div id="improvementsList"></div>
+                </div>
+            </div>
     </div>
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -589,7 +598,7 @@ db.collection("users").doc(currentUserId).get()
             viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
             viewImprovementsButton.addEventListener("click", () => {
                 // Show modal containing improvements
-                // Implement modal display logic here
+                openImprovementsModal(ideaId);
                 console.log("View improvements clicked for idea:", ideaId);
             });
             
@@ -652,7 +661,6 @@ db.collection("users").doc(currentUserId).get()
                 db.collection("improvements").add(improvementData)
                 .then((improvementDocRef) => {
                     console.log("Improvement added with ID: ", improvementDocRef.id);
-
                     // Update the corresponding idea document with the improvement ID
                     const ideaRef = db.collection("ideas").doc(ideaId);
                     ideaRef.update({
@@ -764,6 +772,69 @@ db.collection("users").doc(currentUserId).get()
 
         // Attach event listener to submit button
         document.getElementById("addComponent").addEventListener("click", submitForm);
+
+        // Function to open the improvements modal and display improvements
+        function openImprovementsModal(ideaId) {
+            // Clear any existing improvements in the modal
+            const improvementsList = document.getElementById("improvementsList");
+            improvementsList.innerHTML = "";
+
+            // Fetch improvements for the idea from Firestore
+            db.collection("ideas").doc(ideaId).collection("improvements").get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const improvementData = doc.data();
+                        // Create HTML elements for each improvement
+                        const improvementDiv = document.createElement("div");
+                        improvementDiv.classList.add("improvement");
+                        improvementDiv.innerHTML = `
+                            <p>${improvementData.text}</p>
+                            <div>
+                                <button class="improvement-upvote-button">👍</button>
+                                <span class="improvement-upvote-count">${improvementData.upvotes}</span>
+                                <button class="improvement-downvote-button">👎</button>
+                                <span class="improvement-downvote-count">${improvementData.downvotes}</span>
+                            </div>
+                        `;
+
+                        // Attach event listeners to upvote and downvote buttons
+                        const upvoteButton = improvementDiv.querySelector(".improvement-upvote-button");
+                        upvoteButton.addEventListener("click", () => handleVote(doc.id, true));
+
+                        const downvoteButton = improvementDiv.querySelector(".improvement-downvote-button");
+                        downvoteButton.addEventListener("click", () => handleVote(doc.id, false));
+
+                        // Append the improvement to the modal
+                        improvementsList.appendChild(improvementDiv);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching improvements:", error);
+                });
+
+            // Show the improvements modal
+            const improvementsModal = document.getElementById("improvementsModal");
+            improvementsModal.style.display = "block";
+        }
+
+        // Function to close the improvements modal
+        function closeImprovementsModal() {
+            const improvementsModal = document.getElementById("improvementsModal");
+            improvementsModal.style.display = "none";
+        }
+
+        // Get the close button for the improvements modal and attach event listener
+        const improvementsCloseButton = document.querySelector("#improvementsModal .close");
+        improvementsCloseButton.addEventListener("click", closeImprovementsModal);
+
+        // Close the improvements modal if the user clicks outside of it
+        window.addEventListener("click", (event) => {
+            const improvementsModal = document.getElementById("improvementsModal");
+            if (event.target === improvementsModal) {
+                closeImprovementsModal();
+            }
+        });
+
 
     </script>
 
