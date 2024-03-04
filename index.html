@@ -112,7 +112,7 @@
             cursor: pointer;
         }
 
-        .upCount, .downCount, .improve-button, .improveCount-button{
+        .upCount, .downCount, .improve-button, .improveCount{
             font-size: 15px;
             color: #b4b2b2;
             /*height: 30px; Adjust the height as needed */
@@ -586,7 +586,7 @@ db.collection("users").doc(currentUserId).get()
             const improvementCount = improvements.length; // Count the number of improvements
             const viewImprovementsButton = document.createElement("button");
             viewImprovementsButton.classList.add("improveCount-button");
-            viewImprovementsButton.innerHTML = `${improvementCount} 📋`;
+            viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
             viewImprovementsButton.addEventListener("click", () => {
                 // Show modal containing improvements
                 // Implement modal display logic here
@@ -701,10 +701,11 @@ db.collection("users").doc(currentUserId).get()
         // Function to update HTML to show peeking improvement div
         function updateHTMLForPeekingImprovement(ideaId, improvementCount) {
             // Find the existing button for peeking improvements
-            const peekImprovementButton = document.querySelector(`.peek-improvement-button[data-idea-id="${ideaId}"]`);
-            
-            // Update the button text to include the improvement count
-            peekImprovementButton.textContent = `View Improvements (${improvementCount})`;
+            const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
+            if (component) {
+                const improveCount = component.querySelector(`.improveCount`);
+                improveCount.textContent = new String(improvementCount);
+            }
         }
 
         function fetchImprovementCount(ideaId) {
