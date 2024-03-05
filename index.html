@@ -395,7 +395,8 @@ db.collection("ideas").get()
           upvotes: ideaData.upvotes,
           downvotes: ideaData.downvotes,
           time: ideaData.time,
-          improvements : ideaData.improvements
+          improvements : ideaData.improvements,
+          authorId : ideaData.author
           // Add other idea details as needed
         });
 
@@ -403,7 +404,7 @@ db.collection("ideas").get()
         var downvotes = (typeof ideaData.downvotes === "undefined") ? 0 : ideaData.downvotes;
         var improvements = ideaData.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
 
-        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes, improvements);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes, improvements, authorId);
         console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes, ideaData.improvements);
       }
     });
@@ -523,7 +524,7 @@ db.collection("ideas").get()
         }
     }
 
-        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, improvements){
+        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, improvements, authorId){
 
         
             // Create a new component element (a div)
