@@ -441,7 +441,8 @@ db.collection("users").doc(currentUserId).get()
     function createComponent(title, description) {
         // Get reference to the currently logged-in user
         const currentUser = firebase.auth().currentUser;
-        console.log("currentUser");
+        console.log(currentUser);
+        console.log(currentUser.uid);
 
         if (currentUser) {
             // Construct a new idea object
@@ -461,7 +462,7 @@ db.collection("users").doc(currentUserId).get()
                     console.log("Idea added with ID: ", docRef.id);
 
                     // Update user document with the idea ID - replace argument later with currentUser.uid
-                    db.collection("users").doc(currentUser).update({
+                    db.collection("users").doc(currentUser.uid).update({
                         ideas: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                     })
                     .then(() => {
