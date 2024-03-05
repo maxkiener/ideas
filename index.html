@@ -441,14 +441,16 @@ db.collection("users").doc(currentUserId).get()
     function createComponent(title, description) {
         // Get reference to the currently logged-in user
         const currentUser = firebase.auth().currentUser;
+        console.log("currentUser");
 
         if (currentUser) {
             // Construct a new idea object
+    
             const newIdea = {
                 title: title,
                 description: description,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
-                author: currentUser.uid, // Add author's ID, replace argument later with currentUser.uid
+                author: "check for debugging",//currentUser.uid, // Add author's ID, replace argument later with currentUser.uid
                 upvotes: 0,
                 downvotes: 0
             };
