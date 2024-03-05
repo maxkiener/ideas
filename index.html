@@ -467,7 +467,7 @@ db.collection("users").doc(currentUserId).get()
                     })
                     .then(() => {
                         console.log("User document updated with idea ID");
-                        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id, 0, 0);
+                        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id, 0, 0, []);
                     })
                     .catch((error) => {
                         console.error("Error updating user document: ", error);
@@ -595,7 +595,7 @@ db.collection("users").doc(currentUserId).get()
 
 
             // Create a button for viewing improvements
-            const improvementCount = improvements.length; // Count the number of improvements
+            const improvementCount = (improvements.length === 'undefined') ? 0 : improvements.length; // Count the number of improvements
             const viewImprovementsButton = document.createElement("button");
             viewImprovementsButton.classList.add("improveCount-button");
             viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
