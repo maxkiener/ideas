@@ -378,28 +378,7 @@
         });*/
 
 // Query the "users" collection to retrieve the idea IDs of the current user
-db.collection("users").doc(currentUserId).get()
-  .then((userDoc) => {
-    if (userDoc.exists) {
-      // Retrieve the idea IDs from the user document
-      const ideaIds = userDoc.data().ideas;
-
-      // Array to store promises for fetching idea details
-      const ideaPromises = [];
-
-      // For each idea ID, query the "ideas" collection to fetch idea details
-      ideaIds.forEach((ideaId) => {
-        const ideaPromise = db.collection("ideas").doc(ideaId).get();
-        ideaPromises.push(ideaPromise);
-      });
-
-      // Wait for all idea queries to complete
-      return Promise.all(ideaPromises);
-    } else {
-      console.log("User document not found");
-      return [];
-    }
-  })
+db.collection("ideas").get()
   .then((ideaSnapshots) => {
     // Array to store idea details
     const ideas = [];
@@ -593,7 +572,6 @@ db.collection("users").doc(currentUserId).get()
                 showImprovementDialog(ideaId);
             });
 
-
             // Create a button for viewing improvements
             const improvementCount = (improvements.length === 'undefined') ? 0 : improvements.length; // Count the number of improvements
             const viewImprovementsButton = document.createElement("button");
@@ -604,7 +582,6 @@ db.collection("users").doc(currentUserId).get()
                 openImprovementsModal(ideaId);
                 console.log("View improvements clicked for idea:", ideaId);
             });
-            
 
             // Append elements to the new component
             newComponent.appendChild(headline);
