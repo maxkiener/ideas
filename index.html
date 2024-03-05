@@ -404,7 +404,7 @@ db.collection("ideas").get()
         var downvotes = (typeof ideaData.downvotes === "undefined") ? 0 : ideaData.downvotes;
         var improvements = ideaData.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
 
-        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes, improvements, authorId);
+        createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes, improvements, ideaData.author);
         console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes, ideaData.improvements);
       }
     });
