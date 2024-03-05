@@ -112,7 +112,7 @@
             cursor: pointer;
         }
 
-        .upCount, .downCount, .improve-button, .improveCount{
+        .upCount, .downCount, .improve-button, .improveCount, .delete-button{
             font-size: 15px;
             color: #b4b2b2;
             /*height: 30px; Adjust the height as needed */
@@ -590,6 +590,24 @@ db.collection("ideas").get()
             newComponent.appendChild(badButton);
             newComponent.appendChild(improveButton);
             newComponent.appendChild(viewImprovementsButton);
+
+
+            // Check if the current user is the author of the idea
+            const currentUser = firebase.auth().currentUser;
+            if (currentUser && currentUser.uid === authorId) {
+                // Create delete button
+                const deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Delete";
+                deleteButton.classList.add("delete-button");
+                // Add event listener to delete button
+                deleteButton.addEventListener('click', () => {
+                    // Call a function to delete the idea from Firestore
+                    deleteIdea(ideaId);
+                });
+
+                // Append delete button to the new component
+                newComponent.appendChild(deleteButton);
+            }
 
             // Get the container and the button container
             const componentContainer = document.getElementById("componentContainer");
