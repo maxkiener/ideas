@@ -431,7 +431,7 @@ db.collection("ideas").get()
                 title: title,
                 description: description,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
-                author: "check for debugging",//currentUser.uid, // Add author's ID, replace argument later with currentUser.uid
+                author: currentUser.uid, // Add author's ID, replace argument later with currentUser.uid
                 upvotes: 0,
                 downvotes: 0
             };
