@@ -695,10 +695,13 @@ db.collection("ideas").get()
         // Function to update HTML to show peeking improvement div
         function updateHTMLForPeekingImprovement(ideaId, improvementCount) {
             // Find the existing button for peeking improvements
-            const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
-            if (component) {
-                const improveCount = component.querySelector(`.improveCount`);
-                improveCount.textContent = new String(improvementCount);
+            if (improvementCount > 0) {
+                // Create the button
+                    const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
+                    if (component) {
+                        const improveCount = component.querySelector(`.improveCount`);
+                        improveCount.textContent = new String(improvementCount);
+                    }
             }
         }
 
