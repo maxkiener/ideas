@@ -811,7 +811,7 @@ db.collection("ideas").get()
                     querySnapshot.forEach((doc) => {
                         const improvementData = doc.data();
                         console.log(improvementData.timestamp,improvementData.approvalStatus);
-                        consolge.log(improvementData);
+                        console.log(improvementData);
                         // Create elements to display improvement content
                         const improvementDiv = document.createElement("div");
                         improvementDiv.classList.add("improvement");
@@ -822,13 +822,11 @@ db.collection("ideas").get()
                         const improvementAuthor = document.createElement("p");
                         improvementAuthor.textContent = "Author: " + improvementData.authorId;
 
-                        const improvementTime = document.createElement("p");
-                        improvementTime.textContent =  "Time: "+improvementData.timestamp;
-
                         const improvementStatus = document.createElement("p");
-                        improvementStatus.textContent =  "Status: "+improvementData.approvalStatus;
+                        improvementStatus.textContent =  "Status: " + improvementData.approvalStatus;
 
-                        const improvementBreak = document.createElement("hr");
+                        const improvementTime = document.createElement("p");
+                        improvementTime.textContent =  "Time: " + improvementData.timestamp.toDate();
 
                         // Append improvement content to improvementDiv
                         improvementDiv.appendChild(improvementText);
