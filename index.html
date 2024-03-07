@@ -792,46 +792,42 @@ db.collection("ideas").get()
 
         // Function to open the improvements modal and display improvements
         function openImprovementsModal(ideaId) {
-            // Clear any existing improvements in the modal
-            const improvementsList = document.getElementById("improvementsList");
-            improvementsList.innerHTML = "";
+            const modal = document.getElementById("improvementsModal");
+            const modalContent = document.getElementById("improvementsModalContent");
+            
+            // Clear previous content
+            modalContent.innerHTML = "";
 
-            // Fetch improvements for the idea from Firestore
-            db.collection("ideas").doc(ideaId).collection("improvements").get()
+            // Query the "improvements" collection for all improvements related to the idea
+            db.collection("improvements").where("ideaId", "==", ideaId).get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         const improvementData = doc.data();
-                        // Create HTML elements for each improvement
+
+                        // Create elements to display improvement content
                         const improvementDiv = document.createElement("div");
                         improvementDiv.classList.add("improvement");
-                        improvementDiv.innerHTML = `
-                            <p>${improvementData.text}</p>
-                            <div>
-                                <button class="improvement-upvote-button">👍</button>
-                                <span class="improvement-upvote-count">${improvementData.upvotes}</span>
-                                <button class="improvement-downvote-button">👎</button>
-                                <span class="improvement-downvote-count">${improvementData.downvotes}</span>
-                            </div>
-                        `;
 
-                        // Attach event listeners to upvote and downvote buttons
-                        const upvoteButton = improvementDiv.querySelector(".improvement-upvote-button");
-                        upvoteButton.addEventListener("click", () => handleVote(doc.id, true));
+                        const improvementText = document.createElement("p");
+                        improvementText.textContent = improvementData.text;
 
-                        const downvoteButton = improvementDiv.querySelector(".improvement-downvote-button");
-                        downvoteButton.addEventListener("click", () => handleVote(doc.id, false));
+                        const improvementAuthor = document.createElement("p");
+                        improvementAuthor.textContent = "Author: " + improvementData.author;
 
-                        // Append the improvement to the modal
-                        improvementsList.appendChild(improvementDiv);
+                        // Append improvement content to improvementDiv
+                        improvementDiv.appendChild(improvementText);
+                        improvementDiv.appendChild(improvementAuthor);
+
+                        // Add improvementDiv to modalContent
+                        modalContent.appendChild(improvementDiv);
                     });
+                    
+                    // Display the modal
+                    modal.style.display = "block";
                 })
                 .catch((error) => {
                     console.error("Error fetching improvements:", error);
                 });
-
-            // Show the improvements modal
-            const improvementsModal = document.getElementById("improvementsModal");
-            improvementsModal.style.display = "block";
         }
 
         // Function to close the improvements modal
