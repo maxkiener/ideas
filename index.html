@@ -165,14 +165,12 @@
             
             introduce comments
             show details for an idea 
-            suggest an improvement
             show rejected improvements with reason why they were rejected 
             add fillgraderstiege - gemüsegrill as another example idea.  
             
             what to do next in Stage 1: 
             everybody should be able to create and get feedback?
             or just me?
-            delete ideas if they are yours
             how much of the account system is necessary? phone number? integrate with Austria Ident
         -->
         <!-- Container for new components -->
@@ -364,25 +362,7 @@
         console.log("signInPrompt triggered");
         ui.start('#firebaseui-auth-container', uiConfig);
         document.getElementById('firebaseui-auth-container').style.display = 'block';
-        //document.getElementById('loader').style.display = 'none';
-        //document.getElementById('signin-prompt').style.display = 'block';
     }
-
-        // Add event listeners to buttons (createComponent) NEEDS TO BE SIMPLIFIED/DELETED LATER
-        /*const buttons = document.querySelectorAll('#addComponent');
-        buttons.forEach((button) => {
-            button.addEventListener('click', () => {
-                if (!firebase.auth().currentUser) {
-                    // User is not signed in, show sign-in prompt
-                    showSignInPrompt();
-                    console.log("user needs to sign in");
-                } else {
-                    // User is signed in, allow interaction with the button
-                    // Implement your button logic here
-                    console.log("later this can be transformed into a logout button");
-                }
-            });
-        });*/
 
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("ideas").get()
@@ -820,13 +800,13 @@ db.collection("ideas").get()
                         improvementText.textContent = improvementData.improvement;
 
                         const improvementAuthor = document.createElement("p");
-                        improvementAuthor.textContent = "Author: " + improvementData.authorId;
+                        improvementAuthor.innerHTML = "Author: " + improvementData.authorId + ", "+ improvementData.approvalStatus;
 
-                        const improvementStatus = document.createElement("p");
-                        improvementStatus.textContent =  "Status: " + improvementData.approvalStatus;
+                        //const improvementStatus = document.createElement("p");
+                        //improvementStatus.textContent =  "Status: " + ;
 
                         const improvementTime = document.createElement("p");
-                        improvementTime.textContent =  "Time: " + improvementData.timestamp.toDate();
+                        improvementTime.innerHTML =  "Time: " + improvementData.timestamp.toDate();
 
                         // Append improvement content to improvementDiv
                         improvementDiv.appendChild(improvementText);
