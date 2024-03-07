@@ -147,6 +147,12 @@
             }
         }
 
+        .improvement{
+            background-color: #f0f0f0; /* Light-grey background */
+            border-radius: 10px;
+            padding: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -815,10 +821,10 @@ db.collection("ideas").get()
                         improvementAuthor.textContent = "Author: " + improvementData.authorId;
 
                         const improvementTime = document.createElement("p");
-                        improvementTime.textContent =  improvementData.timestamp;
+                        improvementTime.textContent =  "Time: "+improvementData.timestamp;
 
                         const improvementStatus = document.createElement("p");
-                        improvementStatus.textContent =  improvementData.approvalStatus;
+                        improvementStatus.textContent =  "Status: "+improvementData.approvalStatus;
 
                         const improvementBreak = document.createElement("hr");
 
