@@ -809,10 +809,18 @@ db.collection("ideas").get()
                         improvementDiv.classList.add("improvement");
 
                         const improvementText = document.createElement("p");
-                        improvementText.textContent = improvementData.text;
+                        improvementText.textContent = improvementData.improvement;
 
                         const improvementAuthor = document.createElement("p");
-                        improvementAuthor.textContent = "Author: " + improvementData.author;
+                        improvementAuthor.textContent = "Author: " + improvementData.authorId;
+
+                        const improvementTime = document.createElement("p");
+                        improvementTime.textContent =  improvementData.timestamp;
+
+                        const improvementStatus = document.createElement("p");
+                        improvementStatus.textContent =  improvementData.approvalStatus;
+
+                        const improvementBreak = document.createElement("hr");
 
                         // Append improvement content to improvementDiv
                         improvementDiv.appendChild(improvementText);
