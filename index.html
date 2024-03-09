@@ -637,7 +637,7 @@ db.collection("ideas").get()
             const improvementTextbox = document.getElementById("improvementInput");
 
             // Set the placeholder text with the original idea's text
-            improvementTextbox.placeholder = ideaText;
+            improvementTextbox.value = ideaText;
 
             // When the user clicks the button, open the modal 
             modal.style.display = "block";
