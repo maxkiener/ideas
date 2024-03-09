@@ -557,7 +557,7 @@ db.collection("ideas").get()
             improveButton.innerHTML = "Improve Idea 📋";
             improveButton.classList.add("improve-button");
             improveButton.addEventListener("click", () => {
-                showImprovementDialog(ideaId);
+                showImprovementDialog(ideaId, description);
             });
 
             // Create a button for viewing improvements
@@ -606,12 +606,18 @@ db.collection("ideas").get()
         }
 
         // Function to show improvement dialog
-        function showImprovementDialog(ideaId) {
+        function showImprovementDialog(ideaId, ideaText) {
             // Get the modal
             const modal = document.getElementById("improvementModal");
 
             // Get the <span> element that closes the modal
             const span = document.getElementById("improvementModalClose");
+
+            // Get the textbox element for the improvement
+            const improvementTextbox = document.getElementById("improvementTextbox");
+
+            // Set the placeholder text with the original idea's text
+            improvementTextbox.placeholder = ideaText;
 
             // When the user clicks the button, open the modal 
             modal.style.display = "block";
