@@ -587,7 +587,7 @@ db.collection("ideas").get()
             viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
             viewImprovementsButton.addEventListener("click", () => {
                 // Show modal containing improvements
-                openImprovementsModal(ideaId, description);
+                openImprovementsModal(ideaId, description, authorId);
                 console.log("View improvements clicked for idea:", ideaId);
             });
 
@@ -808,7 +808,7 @@ db.collection("ideas").get()
         document.getElementById("submitBtn").addEventListener("click", submitForm);
 
         // Function to open the improvements modal and display improvements
-        function openImprovementsModal(ideaId, description) {
+        function openImprovementsModal(ideaId, description, author) {
             const modal = document.getElementById("improvementsModal");
             const modalContent = document.getElementById("improvementsList");
             
@@ -842,6 +842,26 @@ db.collection("ideas").get()
                         improvementDiv.appendChild(improvementText);
                         improvementDiv.appendChild(improvementAuthor);
 
+                        // Add buttons only if the current user is the author of the original idea
+                        if (currentUser.uid === author) {
+                            // Create "incorporate" button
+                            const incorporateButton = document.createElement('button');
+                            incorporateButton.textContent = 'Incorporate';
+                            incorporateButton.addEventListener('click', () => {
+                                incorporateImprovement(improvement.id);
+                            });
+
+                            // Create "reject" button
+                            const rejectButton = document.createElement('button');
+                            rejectButton.textContent = 'Reject';
+                            rejectButton.addEventListener('click', () => {
+                                rejectImprovement(improvement.id);
+                            });
+
+                            // Append buttons to the list item
+                            improvementDiv.appendChild(incorporateButton);
+                            improvementDiv.appendChild(rejectButton);
+                        }
                         // Add improvementDiv to modalContent
                         modalContent.appendChild(improvementDiv);
                     });
