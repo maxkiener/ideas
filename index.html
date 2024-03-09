@@ -208,7 +208,7 @@
                     <span id="improvementModalClose" class="close">&times;</span>
                     <h2>Submit Improvement</h2>
                     <label for="improvementInput">Your Improvement:</label>
-                    <textarea id="improvementInput" placeholder="Enter your improvement here..." rows="4"></textarea>
+                    <textarea id="improvementInput" placeholder="" rows="4" style="color: darkblue;"></textarea>
                     <button id="improvementSubmitBtn">Submit</button>
                 </div>
             </div>
@@ -614,7 +614,7 @@ db.collection("ideas").get()
             const span = document.getElementById("improvementModalClose");
 
             // Get the textbox element for the improvement
-            const improvementTextbox = document.getElementById("improvementTextbox");
+            const improvementTextbox = document.getElementById("improvementInput");
 
             // Set the placeholder text with the original idea's text
             improvementTextbox.placeholder = ideaText;
