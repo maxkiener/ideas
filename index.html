@@ -824,11 +824,12 @@ db.collection("ideas").get()
                         //improvementStatus.textContent =  "Status: " + ;
                         console.log(improvementData.timestamp.toDate());
                         const improvementTime = document.createElement("p");
-                        improvementTime.innerHTML =  "Time: " + improvementData.timestamp.toDate();
+                        improvementTime.innerHTML =  "Time: " + improvementData.timestamp.toDate().toString();
 
                         // Append improvement content to improvementDiv
                         improvementDiv.appendChild(improvementText);
                         improvementDiv.appendChild(improvementAuthor);
+                        improvementDiv.appendChild(improvementTime);
 
                         
                         const currentUser = firebase.auth().currentUser;
