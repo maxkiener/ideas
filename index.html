@@ -817,12 +817,9 @@ db.collection("ideas").get()
             // Clear previous content
             modalContent.innerHTML = "";
             document.getElementById("improveIdeaBtn").addEventListener("click", function() {
-                // Get the idea ID and description of the original idea
-                const ideaId = ideaId;/* Get the idea ID */
-                const ideaDescription = description/* Get the description of the idea */
-
+                
                 // Show the improvement dialog with the idea ID and description
-                showImprovementDialog(ideaId, ideaDescription);
+                showImprovementDialog(ideaId, description);
             });
 
             // Query the "improvements" collection for all improvements related to the idea
