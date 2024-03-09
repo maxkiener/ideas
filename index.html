@@ -154,24 +154,13 @@
             margin: 20px;
         }
 
-        .modal-footer {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        /* CSS for the "Improve Idea" button */
-        .modal-footer button {
-            font-size: 16px;
-            padding: 8px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .modal-footer button:hover {
-            background-color: #0056b3;
+        #improvementInput{
+            color: darkblue;
+            width: -webkit-fill-available;
+            border: 0px;
+            background-color: lightgrey;
+            padding: 20px;
+            margin: 10px;
         }
 
     </style>
@@ -184,7 +173,6 @@
             Title images for ideas from dall.e
             
             introduce comments
-            show details for an idea 
             show rejected improvements with reason why they were rejected 
             add fillgraderstiege - gemüsegrill as another example idea.  
             
@@ -226,9 +214,9 @@
             <div id="improvementModal" class="modal">
                 <div class="modal-content">
                     <span id="improvementModalClose" class="close">&times;</span>
-                    <h2>Submit Improvement</h2>
-                    <label for="improvementInput">Your Improvement:</label><br>
-                    <textarea id="improvementInput" placeholder="" rows="4" style="color: darkblue; width: 100%"></textarea><br>
+                    <h2>Propose Improvement</h2>
+                    <label for="improvementInput">Your Improvement (you can modify the existing text or delete it and start from scratch):</label><br>
+                    <textarea id="improvementInput" placeholder="" rows="4"></textarea><br>
                     <button id="improvementSubmitBtn">Submit</button>
                 </div>
             </div>
