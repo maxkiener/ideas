@@ -154,6 +154,26 @@
             margin: 20px;
         }
 
+        .modal-footer {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* CSS for the "Improve Idea" button */
+        .modal-footer button {
+            font-size: 16px;
+            padding: 8px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-footer button:hover {
+            background-color: #0056b3;
+        }
+
     </style>
 </head>
 <body>
@@ -220,6 +240,9 @@
                     <span class="close">&times;</span>
                     <h2>Improvements</h2>
                     <div id="improvementsList"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="improveIdeaBtn">Improve Idea</button>
                 </div>
             </div>
     </div>
@@ -567,7 +590,7 @@ db.collection("ideas").get()
             viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
             viewImprovementsButton.addEventListener("click", () => {
                 // Show modal containing improvements
-                openImprovementsModal(ideaId);
+                openImprovementsModal(ideaId, description);
                 console.log("View improvements clicked for idea:", ideaId);
             });
 
@@ -787,12 +810,20 @@ db.collection("ideas").get()
         document.getElementById("submitBtn").addEventListener("click", submitForm);
 
         // Function to open the improvements modal and display improvements
-        function openImprovementsModal(ideaId) {
+        function openImprovementsModal(ideaId, description) {
             const modal = document.getElementById("improvementsModal");
             const modalContent = document.getElementById("improvementsList");
             
             // Clear previous content
             modalContent.innerHTML = "";
+            document.getElementById("improveIdeaBtn").addEventListener("click", function() {
+                // Get the idea ID and description of the original idea
+                const ideaId = ideaId;/* Get the idea ID */
+                const ideaDescription = description/* Get the description of the idea */
+
+                // Show the improvement dialog with the idea ID and description
+                showImprovementDialog(ideaId, ideaDescription);
+            });
 
             // Query the "improvements" collection for all improvements related to the idea
             db.collection("improvements").where("ideaId", "==", ideaId).get()
