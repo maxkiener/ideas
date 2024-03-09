@@ -241,9 +241,6 @@
                     <h2>Improvements</h2>
                     <div id="improvementsList"></div>
                 </div>
-                <div class="modal-footer">
-                    <button id="improveIdeaBtn">Improve Idea</button>
-                </div>
             </div>
     </div>
     
@@ -816,11 +813,6 @@ db.collection("ideas").get()
             
             // Clear previous content
             modalContent.innerHTML = "";
-            document.getElementById("improveIdeaBtn").addEventListener("click", function() {
-                
-                // Show the improvement dialog with the idea ID and description
-                showImprovementDialog(ideaId, description);
-            });
 
             // Query the "improvements" collection for all improvements related to the idea
             db.collection("improvements").where("ideaId", "==", ideaId).get()
@@ -841,7 +833,7 @@ db.collection("ideas").get()
 
                         //const improvementStatus = document.createElement("p");
                         //improvementStatus.textContent =  "Status: " + ;
-
+                        console.log(improvementData.timestamp.toDate());
                         const improvementTime = document.createElement("p");
                         improvementTime.innerHTML =  "Time: " + improvementData.timestamp.toDate();
 
@@ -852,7 +844,16 @@ db.collection("ideas").get()
                         // Add improvementDiv to modalContent
                         modalContent.appendChild(improvementDiv);
                     });
-                    
+
+                    // Create "Improve Idea" button
+                    const improveButton = document.createElement("button");
+                    improveButton.innerHTML = "Improve Idea 📋";
+                    improveButton.classList.add("improve-button");
+                    improveButton.addEventListener("click", () => {
+                        showImprovementDialog(ideaId, description);
+                    });
+                    modalContent.appendChild(improveButton);
+
                     // Display the modal
                     modal.style.display = "block";
                 })
