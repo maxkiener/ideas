@@ -36,7 +36,7 @@
             font-size: 36px;
             color: #333;
         }
-        p {
+        p, #improvementInput {
             font-size: 18px;
             color: #666;
             font-family: serif;
@@ -112,7 +112,7 @@
             cursor: pointer;
         }
 
-        .upCount, .downCount, .improve-button, .improveCount, .delete-button{
+        .upCount, .downCount, .improve-button, .improveCount, .delete-button, .improvementSubmitBtn{
             font-size: 15px;
             color: #b4b2b2;
             /*height: 30px; Adjust the height as needed */
@@ -228,7 +228,7 @@
                     <span id="improvementModalClose" class="close">&times;</span>
                     <h2>Submit Improvement</h2>
                     <label for="improvementInput">Your Improvement:</label><br>
-                    <textarea id="improvementInput" placeholder="" rows="4" style="color: darkblue;"></textarea><br>
+                    <textarea id="improvementInput" placeholder="" rows="4" style="color: darkblue; width: 100%"></textarea><br>
                     <button id="improvementSubmitBtn">Submit</button>
                 </div>
             </div>
