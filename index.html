@@ -627,6 +627,7 @@ db.collection("ideas").get()
 
         // Function to show improvement dialog
         function showImprovementDialog(ideaId, ideaText) {
+            closeImprovementsModal();
             // Get the modal
             const modal = document.getElementById("improvementModal");
 
