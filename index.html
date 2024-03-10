@@ -163,6 +163,12 @@
             margin: 10px;
         }
 
+        .improvement-status{
+            font-family: sans-serif;
+            font-variant: all-petite-caps;
+            font-weight: 700;
+        }
+
     </style>
 </head>
 <body>
@@ -319,7 +325,7 @@
     firebase.auth().onAuthStateChanged(function(user) {
         console.log("onAuthStateChange fired for"+ user);
         console.log(user);
-        console.log(user.uid);
+        //console.log(user.uid);
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
             console.log("user is signed in, showing logout button");
@@ -812,7 +818,7 @@ db.collection("ideas").get()
                         improvementText.textContent = improvementData.improvement;
 
                         const improvementAuthor = document.createElement("p");
-                        improvementAuthor.innerHTML = "Author: " + improvementData.authorId + ", "+ improvementData.approvalStatus;
+                        improvementAuthor.innerHTML = improvementData.authorId + ", "+ improvementData.timestamp.toDate().toString().slice(4, 15);
 
                         const improvementStatus = document.createElement("p");
                         improvementStatus.innerHTML = improvementData.approvalStatus;
@@ -820,14 +826,14 @@ db.collection("ideas").get()
 
                         //const improvementStatus = document.createElement("p");
                         //improvementStatus.textContent =  "Status: " + ;
-                        console.log(improvementData.timestamp.toDate());
-                        const improvementTime = document.createElement("p");
-                        improvementTime.innerHTML =  "Time: " + improvementData.timestamp.toDate().toString().slice(4, 15);
+                        //console.log(improvementData.timestamp.toDate());
+                        //const improvementTime = document.createElement("p");
+                        //improvementTime.innerHTML =  "Time: " + improvementData.timestamp.toDate().toString().slice(4, 15);
 
                         // Append improvement content to improvementDiv
                         improvementDiv.appendChild(improvementText);
                         improvementDiv.appendChild(improvementAuthor);
-                        improvementDiv.appendChild(improvementTime);
+                        //improvementDiv.appendChild(improvementTime);
                         improvementDiv.appendChild(improvementStatus);
 
                         
