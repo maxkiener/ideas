@@ -194,16 +194,16 @@
         -->
         <!-- Container for new components -->
         <div id="componentContainer">
-            <h1>Workshopping Ideas</h1>
+            <h1>A Townhall For Your Ideas</h1>
             <div id="firebaseui-auth-container"></div>
             <!--div id="loader">Loading...</div-->
             <button id="loginButton" style="display: none;">Login</button>
             <button id="logoutButton" style="display: none;">Logout</button>
 
             <p>
-                This page wants to become a Github for ideas. In the first stage I'll throw some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
+                I'm throwing some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
                 I'll get notified when you submit an improvement and can then approve it or reject it.<br>
-                I also want to improve and develop this site itself. Please submit your suggestions about how to make the page better in "This Website".  
+                In the next stage, I want everyone to be able to post their ideas and threfore need your feedback on this site itself. Please submit your suggestions in "This Website" (below).  
             </p>
 
             <!-- Newly created components will be added here -->
@@ -427,7 +427,7 @@ db.collection("ideas").get()
                 title: title,
                 description: description,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
-                author: currentUser.uid, // Add author's ID, replace argument later with currentUser.uid
+                author: currentUser.uid, // Add author's ID
                 upvotes: 0,
                 downvotes: 0
             };
