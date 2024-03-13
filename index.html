@@ -826,6 +826,8 @@ db.collection("ideas").get()
                         // Create elements to display improvement content
                         const improvementDiv = document.createElement("div");
                         improvementDiv.classList.add("improvement");
+                        // Set improvement ID as a data attribute
+                        improvementDiv.setAttribute("data-improvement-id", doc.id);
 
                         const improvementText = document.createElement("p");
                         improvementText.textContent = improvementData.improvement;
@@ -914,7 +916,7 @@ db.collection("ideas").get()
                 console.log('Improvement rejected successfully');
 
                 // Update the UI to reflect the rejected status
-                const improvementDiv = document.getElementById(improvementId);
+                const improvementDiv = document.querySelector(`[data-improvement-id="${improvementId}"]`);
                 if (improvementDiv) {
                     // Change background color to dark-grey
                     improvementDiv.classList.add('rejected-improvement');
