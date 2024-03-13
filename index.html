@@ -812,7 +812,7 @@ db.collection("ideas").get()
         function openImprovementsModal(ideaId, description, author) {
             const modal = document.getElementById("improvementsModal");
             const modalContent = document.getElementById("improvementsList");
-            
+
             // Clear previous content
             modalContent.innerHTML = "";
 
@@ -823,7 +823,8 @@ db.collection("ideas").get()
                         const improvementData = doc.data();
                         console.log(improvementData.timestamp,improvementData.approvalStatus);
                         console.log(improvementData);
-                        console.log(doc);
+                        console.log(doc.id);
+                        console.log(querySnapshot.id);
                         // Create elements to display improvement content
                         const improvementDiv = document.createElement("div");
                         improvementDiv.classList.add("improvement");
