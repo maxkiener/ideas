@@ -822,9 +822,7 @@ db.collection("ideas").get()
                     querySnapshot.forEach((doc) => {
                         const improvementData = doc.data();
                         console.log(improvementData.timestamp,improvementData.approvalStatus);
-                        console.log(improvementData);
                         console.log(doc.id);
-                        console.log(querySnapshot.id);
                         // Create elements to display improvement content
                         const improvementDiv = document.createElement("div");
                         improvementDiv.classList.add("improvement");
@@ -853,14 +851,14 @@ db.collection("ideas").get()
                             const incorporateButton = document.createElement('button');
                             incorporateButton.textContent = 'Incorporate';
                             incorporateButton.addEventListener('click', () => {
-                                incorporateImprovement(ideaId);
+                                incorporateImprovement(doc.id);
                             });
 
                             // Create "reject" button
                             const rejectButton = document.createElement('button');
                             rejectButton.textContent = 'Reject';
                             rejectButton.addEventListener('click', () => {
-                                rejectImprovement(ideaId);
+                                rejectImprovement(doc.id);
                             });
 
                             // Append buttons to the list item
