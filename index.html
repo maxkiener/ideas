@@ -845,7 +845,9 @@ db.collection("ideas").get()
                         //improvementDiv.appendChild(improvementTime);
                         improvementDiv.appendChild(improvementStatus);
 
-                        
+                        // Update the styling based on the improvement status
+                        updateImprovementStatusStyle(improvementDiv, improvementData.approvalStatus);
+
                         const currentUser = firebase.auth().currentUser;
                         // Add buttons only if the current user is the author of the original idea
                         if (currentUser.uid === author) {
@@ -906,6 +908,15 @@ db.collection("ideas").get()
             }
         });
 
+        // Function to update the styling of the improvement div based on its status
+        function updateImprovementStatusStyle(improvementDiv, status) {
+            if (status === "rejected") {
+                improvementDiv.classList.add("rejected-improvement");
+            } else {
+                improvementDiv.classList.remove("rejected-improvement");
+            }
+        }
+
         function rejectImprovement(improvementId) {
             // Update the approval status of the improvement in Firestore
             const improvementRef = db.collection('improvements').doc(improvementId);
@@ -918,9 +929,8 @@ db.collection("ideas").get()
                 // Update the UI to reflect the rejected status
                 const improvementDiv = document.querySelector(`[data-improvement-id="${improvementId}"]`);
                 if (improvementDiv) {
-                    // Change background color to dark-grey
-                    improvementDiv.classList.add('rejected-improvement');
-                    // Update any relevant text or indicators
+                    // Update the styling of the improvement div
+                    updateImprovementStatusStyle(improvementDiv, "rejected");
                     // For example, you can change the approval status text to "Rejected"
                     const approvalStatusText = improvementDiv.querySelector('.improvement-status');
                     if (approvalStatusText) {
