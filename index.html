@@ -248,6 +248,24 @@
                     <div id="improvementsList"></div>
                 </div>
             </div>
+
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="editModalLabel">Edit Idea</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <textarea class="form-control" rows="5" placeholder="Edit combined text..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary">Update</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
     </div>
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -943,6 +961,48 @@ btn.onclick = function() {
         });
     }
 
+// Function to open a modal for editing the combined text
+function openEditModal(combinedText, ideaId) {
+    // Get the modal element
+    const modal = document.getElementById("editModal");
+
+    // Get the textarea element inside the modal
+    const textarea = modal.querySelector(".modal-body textarea");
+
+    // Set the combined text as the initial value of the textarea
+    textarea.value = combinedText;
+
+    // Add event listener to the update button inside the modal
+    const updateButton = modal.querySelector(".modal-footer button");
+    updateButton.addEventListener("click", () => {
+        // Retrieve the updated text from the textarea
+        const updatedText = textarea.value;
+
+        // Update the original idea text in Firestore
+        db.collection("ideas").doc(ideaId).update({
+            text: updatedText
+        })
+        .then(() => {
+            console.log("Idea updated successfully");
+            // Show a success message or perform any other actions
+            alert("Idea updated successfully");
+
+            // Close the modal
+            const modalInstance = bootstrap.Modal.getInstance(modal);
+            modalInstance.hide();
+        })
+        .catch((error) => {
+            console.error("Error updating idea:", error);
+            // Show an error message or perform any other actions
+            alert("Error updating idea");
+        });
+    });
+
+    // Show the modal
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
+}
+
 // Function to incorporate an improvement into the original idea
 function incorporateImprovement(improvementId) {
     // Retrieve the improvement from Firestore
@@ -957,24 +1017,8 @@ function incorporateImprovement(improvementId) {
                     const ideaData = ideaDoc.data();
                     // Combine the original idea text and improvement text
                     const combinedText = ideaData.text + "\n" + improvementData.text;
-                    // Prompt the user to edit the combined text
-                    const updatedText = prompt("Edit the combined text:", combinedText);
-                    if (updatedText !== null) {
-                        // Update the original idea text in Firestore
-                        db.collection("ideas").doc(improvementData.ideaId).update({
-                            text: updatedText
-                        })
-                        .then(() => {
-                            console.log("Idea updated successfully");
-                            // Show a success message or perform any other actions
-                            alert("Idea updated successfully");
-                        })
-                        .catch((error) => {
-                            console.error("Error updating idea:", error);
-                            // Show an error message or perform any other actions
-                            alert("Error updating idea");
-                        });
-                    }
+                    // Open a modal for editing the combined text
+                    openEditModal(combinedText, improvementData.ideaId);
                 } else {
                     console.error("Original idea does not exist");
                     alert("Original idea does not exist");
@@ -994,6 +1038,7 @@ function incorporateImprovement(improvementId) {
         alert("Error getting improvement");
     });
 }
+
 
 
     </script>
