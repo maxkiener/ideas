@@ -418,531 +418,582 @@ db.collection("ideas").get()
   })
   .catch((error) => {
     console.error("Error getting user's ideas:", error);
-  });
+});
 
-        // Function to create a new component and add idea to Firestore
-    function createComponent(title, description) {
-        // Get reference to the currently logged-in user
-        const currentUser = firebase.auth().currentUser;
-        console.log(currentUser);
-        console.log(currentUser.uid);
+// Function to create a new component and add idea to Firestore
+function createComponent(title, description) {
+    // Get reference to the currently logged-in user
+    const currentUser = firebase.auth().currentUser;
+    console.log(currentUser);
+    console.log(currentUser.uid);
 
-        if (currentUser) {
-            // Construct a new idea object
-    
-            const newIdea = {
-                title: title,
-                description: description,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
-                author: currentUser.uid, // Add author's ID
-                upvotes: 0,
-                downvotes: 0
-            };
-            console.log(newIdea);
-            // Add the idea to Firestore
-            db.collection("ideas").add(newIdea)
-                .then((docRef) => {
-                    console.log("Idea added with ID: ", docRef.id);
+    if (currentUser) {
+        // Construct a new idea object
 
-                    // Update user document with the idea ID - replace argument later with currentUser.uid
-                    db.collection("users").doc(currentUser.uid).update({
-                        ideas: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-                    })
-                    .then(() => {
-                        console.log("User document updated with idea ID");
-                        createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id, 0, 0, [], currentUser.uid);
-                    })
-                    .catch((error) => {
-                        console.error("Error updating user document: ", error);
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error adding idea: ", error);
-                });
-        } else {
-            console.error("No user logged in");
-            showSignInPrompt();
-        }
-    }
+        const newIdea = {
+            title: title,
+            description: description,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add timestamp
+            author: currentUser.uid, // Add author's ID
+            upvotes: 0,
+            downvotes: 0
+        };
+        console.log(newIdea);
+        // Add the idea to Firestore
+        db.collection("ideas").add(newIdea)
+            .then((docRef) => {
+                console.log("Idea added with ID: ", docRef.id);
 
-    // Function to update the vote counts in real-time
-    function updateVoteCounts(ideaId, upvotes, downvotes) {
-        console.log("updating vote count for "+upvotes, downvotes);
-        const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
-        if (component) {
-            const upvoteCount = component.querySelector('.upCount');
-            const downvoteCount = component.querySelector('.downCount');
-            if (upvoteCount && downvoteCount) {
-                upvoteCount.textContent = new String(upvotes);
-                downvoteCount.textContent = new String(downvotes);
-            }
-        }
-    }
-
-    function handleVote(ideaId, isUpvote) {
-        // Check if user is signed in
-        const currentUser = firebase.auth().currentUser;
-        if (currentUser) {
-            // Determine the field to update based on the vote type
-            const voteField = isUpvote ? 'upvotes' : 'downvotes';
-
-            // Update the vote count in Firestore
-            const ideaRef = db.collection('ideas').doc(ideaId);
-            ideaRef.update({
-                [voteField]: firebase.firestore.FieldValue.increment(1)
-            })
-            .then(() => {
-                console.log('Vote count updated successfully');
-
-                // Update user's votes in Firestore
-                const userRef = db.collection('users').doc(currentUser.uid);
-                userRef.update({
-                    [voteField]: firebase.firestore.FieldValue.arrayUnion(ideaId)
+                // Update user document with the idea ID - replace argument later with currentUser.uid
+                db.collection("users").doc(currentUser.uid).update({
+                    ideas: firebase.firestore.FieldValue.arrayUnion(docRef.id)
                 })
                 .then(() => {
-                    console.log('User votes updated successfully');
-                    // Fetch updated vote counts from Firestore and update UI
-                    ideaRef.get().then((doc) => {
-                        if (doc.exists) {
-                            const { upvotes, downvotes } = doc.data();
-                            updateVoteCounts(ideaId, upvotes, downvotes);
-                        } else {
-                            console.log('No such document!');
-                        }
-                    }).catch((error) => {
-                    console.log('Error getting document:', error);
+                    console.log("User document updated with idea ID");
+                    createIdeaDiv(newIdea.title, newIdea.description, newIdea.time, newIdea.id, 0, 0, [], currentUser.uid);
+                })
+                .catch((error) => {
+                    console.error("Error updating user document: ", error);
                 });
             })
             .catch((error) => {
-                console.error('Error updating user votes:', error);
+                console.error("Error adding idea: ", error);
+            });
+    } else {
+        console.error("No user logged in");
+        showSignInPrompt();
+    }
+}
+
+// Function to update the vote counts in real-time
+function updateVoteCounts(ideaId, upvotes, downvotes) {
+    console.log("updating vote count for "+upvotes, downvotes);
+    const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
+    if (component) {
+        const upvoteCount = component.querySelector('.upCount');
+        const downvoteCount = component.querySelector('.downCount');
+        if (upvoteCount && downvoteCount) {
+            upvoteCount.textContent = new String(upvotes);
+            downvoteCount.textContent = new String(downvotes);
+        }
+    }
+}
+
+function handleVote(ideaId, isUpvote) {
+    // Check if user is signed in
+    const currentUser = firebase.auth().currentUser;
+    if (currentUser) {
+        // Determine the field to update based on the vote type
+        const voteField = isUpvote ? 'upvotes' : 'downvotes';
+
+        // Update the vote count in Firestore
+        const ideaRef = db.collection('ideas').doc(ideaId);
+        ideaRef.update({
+            [voteField]: firebase.firestore.FieldValue.increment(1)
+        })
+        .then(() => {
+            console.log('Vote count updated successfully');
+
+            // Update user's votes in Firestore
+            const userRef = db.collection('users').doc(currentUser.uid);
+            userRef.update({
+                [voteField]: firebase.firestore.FieldValue.arrayUnion(ideaId)
+            })
+            .then(() => {
+                console.log('User votes updated successfully');
+                // Fetch updated vote counts from Firestore and update UI
+                ideaRef.get().then((doc) => {
+                    if (doc.exists) {
+                        const { upvotes, downvotes } = doc.data();
+                        updateVoteCounts(ideaId, upvotes, downvotes);
+                    } else {
+                        console.log('No such document!');
+                    }
+                }).catch((error) => {
+                console.log('Error getting document:', error);
             });
         })
         .catch((error) => {
-            console.error('Error updating vote count:', error);
+            console.error('Error updating user votes:', error);
         });
-        } else {
-            // User is not signed in, show sign-in prompt
-            console.log("user is not signed in");
-            showSignInPrompt();
+    })
+    .catch((error) => {
+        console.error('Error updating vote count:', error);
+    });
+    } else {
+        // User is not signed in, show sign-in prompt
+        console.log("user is not signed in");
+        showSignInPrompt();
+    }
+}
+
+function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, improvements, authorId){
+
+
+    // Create a new component element (a div)
+    const newComponent = document.createElement("div");
+    newComponent.classList.add("component");
+    //Set data attribute for idea
+    newComponent.setAttribute('data-idea-id', ideaId);
+
+    // Create a headline (h2)
+    const headline = document.createElement("h2");
+    headline.textContent = title;
+
+    // Create body text (p)
+    const bodyText = document.createElement("p");
+    bodyText.textContent = description;
+
+    const authorText = document.createElement("p");
+    authorText.textContent = authorId;
+    authorText.classList.add("authorStyling");
+
+    // Create elements to display upvote and downvote counts
+    const voteContainer = document.createElement("div");
+    voteContainer.classList.add("vote-container");
+
+    // Create "good" button
+    const goodButton = document.createElement("button");
+    goodButton.innerHTML = "👍 "+ "<span class='upCount'>"+upvotes+"</span>";
+    goodButton.classList.add("good-button");
+    // Add event listener to thumbs-up button
+    goodButton.addEventListener('click', (event) => {
+        const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
+        handleVote(ideaId, true);
+    });
+
+    // Create "bad" button
+    const badButton = document.createElement("button");
+    badButton.innerHTML = "👎 "+"<span class='downCount'>"+downvotes+"</span>";
+    badButton.classList.add("bad-button");
+    // Add event listener to thumbs-down button
+    badButton.addEventListener('click', (event) => {
+        const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
+        handleVote(ideaId, false);
+    });
+
+    // Create "Improve Idea" button
+    const improveButton = document.createElement("button");
+    improveButton.innerHTML = "Improve Idea 📋";
+    improveButton.classList.add("improve-button");
+    improveButton.addEventListener("click", () => {
+        showImprovementDialog(ideaId, description);
+    });
+
+    // Create a button for viewing improvements
+    const improvementCount = (improvements.length === 'undefined') ? 0 : improvements.length; // Count the number of improvements
+    const viewImprovementsButton = document.createElement("button");
+    viewImprovementsButton.classList.add("improveCount-button");
+    viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
+    viewImprovementsButton.addEventListener("click", () => {
+        // Show modal containing improvements
+        openImprovementsModal(ideaId, description, authorId);
+        console.log("View improvements clicked for idea:", ideaId);
+    });
+
+    // Append elements to the new component
+    newComponent.appendChild(authorText);
+    newComponent.appendChild(headline);
+    newComponent.appendChild(bodyText);
+    newComponent.appendChild(goodButton);
+    newComponent.appendChild(badButton);
+    newComponent.appendChild(improveButton);
+    newComponent.appendChild(viewImprovementsButton);
+
+
+    // Check if the current user is the author of the idea
+    const currentUser = firebase.auth().currentUser;
+    if (currentUser && currentUser.uid === authorId) {
+        // Create delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.classList.add("delete-button");
+        // Add event listener to delete button
+        deleteButton.addEventListener('click', () => {
+            // Call a function to delete the idea from Firestore
+            deleteIdea(ideaId);
+        });
+
+        // Append delete button to the new component
+        newComponent.appendChild(deleteButton);
+    }
+
+    // Get the container and the button container
+    const componentContainer = document.getElementById("componentContainer");
+    const buttonContainer = document.querySelector(".button-container");
+
+    // Insert the new component before the button container
+    componentContainer.insertBefore(newComponent, buttonContainer);
+}
+
+// Function to show improvement dialog
+function showImprovementDialog(ideaId, ideaText) {
+    closeImprovementsModal();
+    // Get the modal
+    const modal = document.getElementById("improvementModal");
+
+    // Get the <span> element that closes the modal
+    const span = document.getElementById("improvementModalClose");
+
+    // Get the textbox element for the improvement
+    const improvementTextbox = document.getElementById("improvementInput");
+
+    // Set the placeholder text with the original idea's text
+    improvementTextbox.value = ideaText;
+
+    // When the user clicks the button, open the modal 
+    modal.style.display = "block";
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
     }
 
-        function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, improvements, authorId){
+    // Storing a new improvement
+    function storeImprovement() {
+        console.log("storeImprovement triggered");
+        const improvement = document.getElementById("improvementInput").value;
+        const currentUser = firebase.auth().currentUser;
 
-        
-            // Create a new component element (a div)
-            const newComponent = document.createElement("div");
-            newComponent.classList.add("component");
-            //Set data attribute for idea
-            newComponent.setAttribute('data-idea-id', ideaId);
-
-            // Create a headline (h2)
-            const headline = document.createElement("h2");
-            headline.textContent = title;
-
-            // Create body text (p)
-            const bodyText = document.createElement("p");
-            bodyText.textContent = description;
-
-            const authorText = document.createElement("p");
-            authorText.textContent = authorId;
-            authorText.classList.add("authorStyling");
-
-            // Create elements to display upvote and downvote counts
-            const voteContainer = document.createElement("div");
-            voteContainer.classList.add("vote-container");
-
-            // Create "good" button
-            const goodButton = document.createElement("button");
-            goodButton.innerHTML = "👍 "+ "<span class='upCount'>"+upvotes+"</span>";
-            goodButton.classList.add("good-button");
-            // Add event listener to thumbs-up button
-            goodButton.addEventListener('click', (event) => {
-                const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
-                handleVote(ideaId, true);
-            });
-
-            // Create "bad" button
-            const badButton = document.createElement("button");
-            badButton.innerHTML = "👎 "+"<span class='downCount'>"+downvotes+"</span>";
-            badButton.classList.add("bad-button");
-            // Add event listener to thumbs-down button
-            badButton.addEventListener('click', (event) => {
-                const ideaId = event.target.closest('.component').getAttribute('data-idea-id');
-                handleVote(ideaId, false);
-            });
-
-            // Create "Improve Idea" button
-            const improveButton = document.createElement("button");
-            improveButton.innerHTML = "Improve Idea 📋";
-            improveButton.classList.add("improve-button");
-            improveButton.addEventListener("click", () => {
-                showImprovementDialog(ideaId, description);
-            });
-
-            // Create a button for viewing improvements
-            const improvementCount = (improvements.length === 'undefined') ? 0 : improvements.length; // Count the number of improvements
-            const viewImprovementsButton = document.createElement("button");
-            viewImprovementsButton.classList.add("improveCount-button");
-            viewImprovementsButton.innerHTML = "<span class='improveCount'>"+improvementCount+"</span>"+ "📋";
-            viewImprovementsButton.addEventListener("click", () => {
-                // Show modal containing improvements
-                openImprovementsModal(ideaId, description, authorId);
-                console.log("View improvements clicked for idea:", ideaId);
-            });
-
-            // Append elements to the new component
-            newComponent.appendChild(authorText);
-            newComponent.appendChild(headline);
-            newComponent.appendChild(bodyText);
-            newComponent.appendChild(goodButton);
-            newComponent.appendChild(badButton);
-            newComponent.appendChild(improveButton);
-            newComponent.appendChild(viewImprovementsButton);
-
-
-            // Check if the current user is the author of the idea
-            const currentUser = firebase.auth().currentUser;
-            if (currentUser && currentUser.uid === authorId) {
-                // Create delete button
-                const deleteButton = document.createElement("button");
-                deleteButton.innerHTML = "Delete";
-                deleteButton.classList.add("delete-button");
-                // Add event listener to delete button
-                deleteButton.addEventListener('click', () => {
-                    // Call a function to delete the idea from Firestore
-                    deleteIdea(ideaId);
-                });
-
-                // Append delete button to the new component
-                newComponent.appendChild(deleteButton);
+        if (currentUser) {
+            const improvementData = {
+                ideaId: ideaId,
+                authorId: currentUser.uid,
+                improvement: improvement,
+                approvalStatus: "not reviewed", // Default to "not reviewed"
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }
 
-            // Get the container and the button container
-            const componentContainer = document.getElementById("componentContainer");
-            const buttonContainer = document.querySelector(".button-container");
-
-            // Insert the new component before the button container
-            componentContainer.insertBefore(newComponent, buttonContainer);
-        }
-
-        // Function to show improvement dialog
-        function showImprovementDialog(ideaId, ideaText) {
-            closeImprovementsModal();
-            // Get the modal
-            const modal = document.getElementById("improvementModal");
-
-            // Get the <span> element that closes the modal
-            const span = document.getElementById("improvementModalClose");
-
-            // Get the textbox element for the improvement
-            const improvementTextbox = document.getElementById("improvementInput");
-
-            // Set the placeholder text with the original idea's text
-            improvementTextbox.value = ideaText;
-
-            // When the user clicks the button, open the modal 
-            modal.style.display = "block";
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            // Storing a new improvement
-            function storeImprovement() {
-                console.log("storeImprovement triggered");
-                const improvement = document.getElementById("improvementInput").value;
-                const currentUser = firebase.auth().currentUser;
-
-                if (currentUser) {
-                    const improvementData = {
-                        ideaId: ideaId,
-                        authorId: currentUser.uid,
-                        improvement: improvement,
-                        approvalStatus: "not reviewed", // Default to "not reviewed"
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    }
-
-                // Add the improvement to the "improvements" collection
-                db.collection("improvements").add(improvementData)
-                .then((improvementDocRef) => {
-                    console.log("Improvement added with ID: ", improvementDocRef.id);
-                    // Update the corresponding idea document with the improvement ID
-                    const ideaRef = db.collection("ideas").doc(ideaId);
-                    ideaRef.update({
-                        improvements: firebase.firestore.FieldValue.arrayUnion(improvementDocRef.id)
-                    })
-                    .then(() => {
-                        console.log("Improvement ID added to the idea document successfully");
-                        // Close the modal
-                        closeModal();
-
-                        // Display success message
-                        showMessage("Improvement submitted successfully!");
-
-                        // Update HTML to show peeking improvement div
-                        fetchImprovementCount(ideaId);
-                    })
-                    .catch((error) => {
-                        console.error("Error updating idea document with improvement ID:", error);
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error adding improvement:", error);
-                });
-                }
-            
-            }
-            // Attach event listener to submit button
-            document.getElementById("improvementSubmitBtn").addEventListener("click", storeImprovement);
-
-            // Function to close the modal
-            function closeModal() {
-                const modal = document.getElementById("improvementModal");
-                modal.style.display = "none";
-            }
-
-            // Function to display a brief message
-            function showMessage(message) {
-                // Display the message wherever you want in the HTML
-                // For example, you can show it in a <div> with id "message"
-                const messageDiv = document.getElementById("message");
-                messageDiv.textContent = message;
-            }
-
-        };
-
-        // Function to update HTML to show peeking improvement div
-        function updateHTMLForPeekingImprovement(ideaId, improvementCount) {
-            // Find the existing button for peeking improvements
-            if (improvementCount > 0) {
-                // Create the button
-                    const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
-                    if (component) {
-                        const improveCount = component.querySelector(`.improveCount`);
-                        improveCount.textContent = new String(improvementCount);
-                    }
-            }
-        }
-
-        function fetchImprovementCount(ideaId) {
+        // Add the improvement to the "improvements" collection
+        db.collection("improvements").add(improvementData)
+        .then((improvementDocRef) => {
+            console.log("Improvement added with ID: ", improvementDocRef.id);
+            // Update the corresponding idea document with the improvement ID
             const ideaRef = db.collection("ideas").doc(ideaId);
-
-            ideaRef.get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    const improvements = data.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
-                    const improvementCount = improvements.length; // Count the number of improvements
-                    updateHTMLForPeekingImprovement(ideaId, improvementCount);
-                } else {
-                    console.log("No such document!");
-                }
-            }).catch((error) => {
-                console.log("Error getting document:", error);
-            });
-        }
-
-        function deleteIdea(ideaId) {
-            // Confirm with the user before deleting the idea
-            const confirmation = confirm("Are you sure you want to delete this idea?");
-            if (confirmation) {
-                // Access the Firestore collection and delete the idea document
-                db.collection("ideas").doc(ideaId).delete()
-                    .then(() => {
-                        console.log("Idea deleted successfully");
-                        // Remove the idea div from the UI
-                        const ideaDiv = document.querySelector(`.component[data-idea-id="${ideaId}"]`);
-                        if (ideaDiv) {
-                            ideaDiv.remove();
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error deleting idea:", error);
-                    });
-            }
-        }
-
-
-        // Get the modal
-        const modal = document.getElementById("myModal");
-
-        // Get the button that opens the modal
-        const btn = document.getElementById("addComponent");
-
-        // Get the <span> element that closes the modal
-        const span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks the button, open the modal 
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Function to handle form submission
-        function submitForm() {
-            const title = document.getElementById("ideaTitle").value;
-            const description = document.getElementById("ideaDescription").value;
-            createComponent(title, description);
-            modal.style.display = "none";
-        }
-
-        // Attach event listener to submit button
-        document.getElementById("submitBtn").addEventListener("click", submitForm);
-
-        // Function to open the improvements modal and display improvements
-        function openImprovementsModal(ideaId, description, author) {
-            const modal = document.getElementById("improvementsModal");
-            const modalContent = document.getElementById("improvementsList");
-
-            // Clear previous content
-            modalContent.innerHTML = "";
-
-            // Query the "improvements" collection for all improvements related to the idea
-            db.collection("improvements").where("ideaId", "==", ideaId).get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        const improvementData = doc.data();
-                        console.log(improvementData.timestamp,improvementData.approvalStatus);
-                        console.log(doc.id);
-                        // Create elements to display improvement content
-                        const improvementDiv = document.createElement("div");
-                        improvementDiv.classList.add("improvement");
-                        // Set improvement ID as a data attribute
-                        improvementDiv.setAttribute("data-improvement-id", doc.id);
-
-                        const improvementText = document.createElement("p");
-                        improvementText.textContent = improvementData.improvement;
-
-                        const improvementAuthor = document.createElement("p");
-                        improvementAuthor.innerHTML = improvementData.authorId + ", "+ improvementData.timestamp.toDate().toString().slice(4, 15);
-
-                        const improvementStatus = document.createElement("p");
-                        improvementStatus.innerHTML = improvementData.approvalStatus;
-                        improvementStatus.classList.add("improvement-status");
-
-                        // Append improvement content to improvementDiv
-                        improvementDiv.appendChild(improvementText);
-                        improvementDiv.appendChild(improvementAuthor);
-                        //improvementDiv.appendChild(improvementTime);
-                        improvementDiv.appendChild(improvementStatus);
-
-                        // Update the styling based on the improvement status
-                        updateImprovementStatusStyle(improvementDiv, improvementData.approvalStatus);
-
-                        const currentUser = firebase.auth().currentUser;
-                        // Add buttons only if the current user is the author of the original idea
-                        if (currentUser.uid === author) {
-                            // Create "incorporate" button
-                            const incorporateButton = document.createElement('button');
-                            incorporateButton.textContent = 'Incorporate';
-                            incorporateButton.addEventListener('click', () => {
-                                incorporateImprovement(doc.id);
-                            });
-
-                            // Create "reject" button
-                            const rejectButton = document.createElement('button');
-                            rejectButton.textContent = 'Reject';
-                            rejectButton.addEventListener('click', () => {
-                                rejectImprovement(doc.id);
-                            });
-
-                            // Append buttons to the list item
-                            improvementDiv.appendChild(incorporateButton);
-                            improvementDiv.appendChild(rejectButton);
-                        }
-                        // Add improvementDiv to modalContent
-                        modalContent.appendChild(improvementDiv);
-                    });
-
-                    // Create "Improve Idea" button - duplicate code, needs to be simplified
-                    const improveButton = document.createElement("button");
-                    improveButton.innerHTML = "Improve Idea 📋";
-                    improveButton.classList.add("improve-button");
-                    improveButton.addEventListener("click", () => {
-                        showImprovementDialog(ideaId, description);
-                    });
-                    modalContent.appendChild(improveButton);
-
-                    // Display the modal
-                    modal.style.display = "block";
-                })
-                .catch((error) => {
-                    console.error("Error fetching improvements:", error);
-                });
-        }
-
-        // Function to close the improvements modal
-        function closeImprovementsModal() {
-            const improvementsModal = document.getElementById("improvementsModal");
-            improvementsModal.style.display = "none";
-        }
-
-        // Get the close button for the improvements modal and attach event listener
-        const improvementsCloseButton = document.querySelector("#improvementsModal .close");
-        improvementsCloseButton.addEventListener("click", closeImprovementsModal);
-
-        // Close the improvements modal if the user clicks outside of it
-        window.addEventListener("click", (event) => {
-            const improvementsModal = document.getElementById("improvementsModal");
-            if (event.target === improvementsModal) {
-                closeImprovementsModal();
-            }
-        });
-
-        // Function to update the styling of the improvement div based on its status
-        function updateImprovementStatusStyle(improvementDiv, status) {
-            if (status === "rejected") {
-                improvementDiv.classList.add("rejected-improvement");
-            } else {
-                improvementDiv.classList.remove("rejected-improvement");
-            }
-        }
-
-        function rejectImprovement(improvementId) {
-            // Update the approval status of the improvement in Firestore
-            const improvementRef = db.collection('improvements').doc(improvementId);
-            improvementRef.update({
-                approvalStatus: 'rejected'
+            ideaRef.update({
+                improvements: firebase.firestore.FieldValue.arrayUnion(improvementDocRef.id)
             })
             .then(() => {
-                console.log('Improvement rejected successfully');
+                console.log("Improvement ID added to the idea document successfully");
+                // Close the modal
+                closeModal();
 
-                // Update the UI to reflect the rejected status
-                const improvementDiv = document.querySelector(`[data-improvement-id="${improvementId}"]`);
-                if (improvementDiv) {
-                    // Update the styling of the improvement div
-                    updateImprovementStatusStyle(improvementDiv, "rejected");
-                    // For example, you can change the approval status text to "Rejected"
-                    const approvalStatusText = improvementDiv.querySelector('.improvement-status');
-                    if (approvalStatusText) {
-                        approvalStatusText.textContent = 'Rejected';
-                    }
+                // Display success message
+                showMessage("Improvement submitted successfully!");
+
+                // Update HTML to show peeking improvement div
+                fetchImprovementCount(ideaId);
+            })
+            .catch((error) => {
+                console.error("Error updating idea document with improvement ID:", error);
+            });
+        })
+        .catch((error) => {
+            console.error("Error adding improvement:", error);
+        });
+        }
+    
+    }
+    // Attach event listener to submit button
+    document.getElementById("improvementSubmitBtn").addEventListener("click", storeImprovement);
+
+    // Function to close the modal
+    function closeModal() {
+        const modal = document.getElementById("improvementModal");
+        modal.style.display = "none";
+    }
+
+    // Function to display a brief message
+    function showMessage(message) {
+        // Display the message wherever you want in the HTML
+        // For example, you can show it in a <div> with id "message"
+        const messageDiv = document.getElementById("message");
+        messageDiv.textContent = message;
+    }
+
+};
+
+// Function to update HTML to show peeking improvement div
+function updateHTMLForPeekingImprovement(ideaId, improvementCount) {
+    // Find the existing button for peeking improvements
+    if (improvementCount > 0) {
+        // Create the button
+            const component = document.querySelector(`[data-idea-id="${ideaId}"]`);
+            if (component) {
+                const improveCount = component.querySelector(`.improveCount`);
+                improveCount.textContent = new String(improvementCount);
+            }
+    }
+}
+
+function fetchImprovementCount(ideaId) {
+    const ideaRef = db.collection("ideas").doc(ideaId);
+
+    ideaRef.get().then((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            const improvements = data.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
+            const improvementCount = improvements.length; // Count the number of improvements
+            updateHTMLForPeekingImprovement(ideaId, improvementCount);
+        } else {
+            console.log("No such document!");
+        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+}
+
+function deleteIdea(ideaId) {
+    // Confirm with the user before deleting the idea
+    const confirmation = confirm("Are you sure you want to delete this idea?");
+    if (confirmation) {
+        // Access the Firestore collection and delete the idea document
+        db.collection("ideas").doc(ideaId).delete()
+            .then(() => {
+                console.log("Idea deleted successfully");
+                // Remove the idea div from the UI
+                const ideaDiv = document.querySelector(`.component[data-idea-id="${ideaId}"]`);
+                if (ideaDiv) {
+                    ideaDiv.remove();
                 }
             })
             .catch((error) => {
-                console.error('Error rejecting improvement:', error);
+                console.error("Error deleting idea:", error);
             });
-        }
+    }
+}
 
+
+// Get the modal
+const modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+const btn = document.getElementById("addComponent");
+
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Function to handle form submission
+    function submitForm() {
+        const title = document.getElementById("ideaTitle").value;
+        const description = document.getElementById("ideaDescription").value;
+        createComponent(title, description);
+        modal.style.display = "none";
+    }
+
+    // Attach event listener to submit button
+    document.getElementById("submitBtn").addEventListener("click", submitForm);
+
+    // Function to open the improvements modal and display improvements
+    function openImprovementsModal(ideaId, description, author) {
+        const modal = document.getElementById("improvementsModal");
+        const modalContent = document.getElementById("improvementsList");
+
+        // Clear previous content
+        modalContent.innerHTML = "";
+
+        // Query the "improvements" collection for all improvements related to the idea
+        db.collection("improvements").where("ideaId", "==", ideaId).get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const improvementData = doc.data();
+                    console.log(improvementData.timestamp,improvementData.approvalStatus);
+                    console.log(doc.id);
+                    // Create elements to display improvement content
+                    const improvementDiv = document.createElement("div");
+                    improvementDiv.classList.add("improvement");
+                    // Set improvement ID as a data attribute
+                    improvementDiv.setAttribute("data-improvement-id", doc.id);
+
+                    const improvementText = document.createElement("p");
+                    improvementText.textContent = improvementData.improvement;
+
+                    const improvementAuthor = document.createElement("p");
+                    improvementAuthor.innerHTML = improvementData.authorId + ", "+ improvementData.timestamp.toDate().toString().slice(4, 15);
+
+                    const improvementStatus = document.createElement("p");
+                    improvementStatus.innerHTML = improvementData.approvalStatus;
+                    improvementStatus.classList.add("improvement-status");
+
+                    // Append improvement content to improvementDiv
+                    improvementDiv.appendChild(improvementText);
+                    improvementDiv.appendChild(improvementAuthor);
+                    //improvementDiv.appendChild(improvementTime);
+                    improvementDiv.appendChild(improvementStatus);
+
+                    // Update the styling based on the improvement status
+                    updateImprovementStatusStyle(improvementDiv, improvementData.approvalStatus);
+
+                    const currentUser = firebase.auth().currentUser;
+                    // Add buttons only if the current user is the author of the original idea
+                    if (currentUser.uid === author) {
+                        // Create "incorporate" button
+                        const incorporateButton = document.createElement('button');
+                        incorporateButton.textContent = 'Incorporate';
+                        incorporateButton.addEventListener('click', () => {
+                            incorporateImprovement(doc.id);
+                        });
+
+                        // Create "reject" button
+                        const rejectButton = document.createElement('button');
+                        rejectButton.textContent = 'Reject';
+                        rejectButton.addEventListener('click', () => {
+                            rejectImprovement(doc.id);
+                        });
+
+                        // Append buttons to the list item
+                        improvementDiv.appendChild(incorporateButton);
+                        improvementDiv.appendChild(rejectButton);
+                    }
+                    // Add improvementDiv to modalContent
+                    modalContent.appendChild(improvementDiv);
+                });
+
+                // Create "Improve Idea" button - duplicate code, needs to be simplified
+                const improveButton = document.createElement("button");
+                improveButton.innerHTML = "Improve Idea 📋";
+                improveButton.classList.add("improve-button");
+                improveButton.addEventListener("click", () => {
+                    showImprovementDialog(ideaId, description);
+                });
+                modalContent.appendChild(improveButton);
+
+                // Display the modal
+                modal.style.display = "block";
+            })
+            .catch((error) => {
+                console.error("Error fetching improvements:", error);
+            });
+    }
+
+    // Function to close the improvements modal
+    function closeImprovementsModal() {
+        const improvementsModal = document.getElementById("improvementsModal");
+        improvementsModal.style.display = "none";
+    }
+
+    // Get the close button for the improvements modal and attach event listener
+    const improvementsCloseButton = document.querySelector("#improvementsModal .close");
+    improvementsCloseButton.addEventListener("click", closeImprovementsModal);
+
+    // Close the improvements modal if the user clicks outside of it
+    window.addEventListener("click", (event) => {
+        const improvementsModal = document.getElementById("improvementsModal");
+        if (event.target === improvementsModal) {
+            closeImprovementsModal();
+        }
+    });
+
+    // Function to update the styling of the improvement div based on its status
+    function updateImprovementStatusStyle(improvementDiv, status) {
+        if (status === "rejected") {
+            improvementDiv.classList.add("rejected-improvement");
+        } else {
+            improvementDiv.classList.remove("rejected-improvement");
+        }
+    }
+
+    function rejectImprovement(improvementId) {
+        // Update the approval status of the improvement in Firestore
+        const improvementRef = db.collection('improvements').doc(improvementId);
+        improvementRef.update({
+            approvalStatus: 'rejected'
+        })
+        .then(() => {
+            console.log('Improvement rejected successfully');
+
+            // Update the UI to reflect the rejected status
+            const improvementDiv = document.querySelector(`[data-improvement-id="${improvementId}"]`);
+            if (improvementDiv) {
+                // Update the styling of the improvement div
+                updateImprovementStatusStyle(improvementDiv, "rejected");
+                // For example, you can change the approval status text to "Rejected"
+                const approvalStatusText = improvementDiv.querySelector('.improvement-status');
+                if (approvalStatusText) {
+                    approvalStatusText.textContent = 'Rejected';
+                }
+            }
+        })
+        .catch((error) => {
+            console.error('Error rejecting improvement:', error);
+        });
+    }
+
+// Function to incorporate an improvement into the original idea
+function incorporateImprovement(improvementId) {
+    // Retrieve the improvement from Firestore
+    db.collection("improvements").doc(improvementId).get()
+    .then((doc) => {
+        if (doc.exists) {
+            const improvementData = doc.data();
+            // Retrieve the original idea from Firestore
+            db.collection("ideas").doc(improvementData.ideaId).get()
+            .then((ideaDoc) => {
+                if (ideaDoc.exists) {
+                    const ideaData = ideaDoc.data();
+                    // Combine the original idea text and improvement text
+                    const combinedText = ideaData.text + "\n" + improvementData.text;
+                    // Prompt the user to edit the combined text
+                    const updatedText = prompt("Edit the combined text:", combinedText);
+                    if (updatedText !== null) {
+                        // Update the original idea text in Firestore
+                        db.collection("ideas").doc(improvementData.ideaId).update({
+                            text: updatedText
+                        })
+                        .then(() => {
+                            console.log("Idea updated successfully");
+                            // Show a success message or perform any other actions
+                            alert("Idea updated successfully");
+                        })
+                        .catch((error) => {
+                            console.error("Error updating idea:", error);
+                            // Show an error message or perform any other actions
+                            alert("Error updating idea");
+                        });
+                    }
+                } else {
+                    console.error("Original idea does not exist");
+                    alert("Original idea does not exist");
+                }
+            })
+            .catch((error) => {
+                console.error("Error getting original idea:", error);
+                alert("Error getting original idea");
+            });
+        } else {
+            console.error("Improvement does not exist");
+            alert("Improvement does not exist");
+        }
+    })
+    .catch((error) => {
+        console.error("Error getting improvement:", error);
+        alert("Error getting improvement");
+    });
+}
 
 
     </script>
