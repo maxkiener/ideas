@@ -968,8 +968,7 @@ function openEditModal(ideaId, originalText) {
     textarea.value = originalText;
 
     // Show the modal
-    const modal = new bootstrap.Modal(editModal);
-    modal.show();
+    editModal.style.display = 'block';
 
     // Handle update button click
     const updateButton = editModal.querySelector('.btn-primary');
@@ -978,18 +977,17 @@ function openEditModal(ideaId, originalText) {
 
         // Update the original idea on Firebase
         const ideaRef = db.collection('ideas').doc(ideaId);
-        const oldTime = ideaRef.timestamp;
         ideaRef.update({
             text: newText,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             history: firebase.firestore.FieldValue.arrayUnion({
                 text: originalText,
-                timestamp: oldTime
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
         })
         .then(() => {
             console.log('Original idea updated successfully with history');
-            modal.hide();
+            editModal.style.display = 'none';
             // Show success message or perform any other actions
         })
         .catch((error) => {
