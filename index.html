@@ -968,7 +968,7 @@ function openEditModal(ideaId, originalText) {
     editModal.style.display = 'block';
 
     // Handle update button click
-    const updateButton = editModal.getElementById('updateIdeaBtn');
+    const updateButton = document.getElementById('updateIdeaBtn');
     updateButton.addEventListener('click', function() {
         const newText = textarea.value;
 
