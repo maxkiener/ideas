@@ -1004,17 +1004,17 @@ function incorporateImprovement(improvementId) {
         if (doc.exists) {
             const improvementData = doc.data();
             console.log(improvementData);
-            console.log(doc.ideaId);
-            console.log(doc.text);
             // Retrieve the original idea from Firestore
-            db.collection("ideas").doc(doc.ideaId).get()
+            db.collection("ideas").doc(improvementData.ideaId).get()
             .then((ideaDoc) => {
                 if (ideaDoc.exists) {
                     const ideaData = ideaDoc.data();
+                    console.log(ideaData);
                     // Combine the original idea text and improvement text
-                    const combinedText = ideaDoc.text + "\n" + doc.text;
+                    const combinedText = ideaData.text + "\n" + improvementData.text;
+                    console.log(ideaData.text, improvementData.text);
                     // Open a modal for editing the combined text
-                    openEditModal(doc.ideaId, combinedText);
+                    openEditModal(improvementData.ideaId, combinedText);
                 } else {
                     console.error("Original idea does not exist");
                     alert("Original idea does not exist");
