@@ -970,11 +970,12 @@ function openEditModal(ideaId, originalText) {
     // Handle update button click
     const updateButton = document.getElementById('updateIdeaBtn');
     updateButton.addEventListener('click', function() {
-        const newText = textarea.value;
+        const newText = textarea.value.toString();
 
         // Update the original idea on Firebase
         const ideaRef = db.collection('ideas').doc(ideaId);
-        const oldTime = ideaId.timestamp;
+        const oldTime = ideaRef.timestamp;
+        console.log(oldTime);
         ideaRef.update({
             text: newText,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
