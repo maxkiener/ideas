@@ -1011,7 +1011,7 @@ function incorporateImprovement(improvementId) {
                     const ideaData = ideaDoc.data();
                     console.log(ideaData);
                     // Combine the original idea text and improvement text
-                    const combinedText = ideaData.text + "\n" + improvementData.text;
+                    const combinedText = ideaData.description + "\n" + improvementData.improvement;
                     console.log(ideaData.text, improvementData.text);
                     // Open a modal for editing the combined text
                     openEditModal(improvementData.ideaId, combinedText);
