@@ -962,46 +962,43 @@ btn.onclick = function() {
     }
 
 // Function to open a modal for editing the combined text
-function openEditModal(combinedText, ideaId) {
-    // Get the modal element
-    const modal = document.getElementById("editModal");
-
-    // Get the textarea element inside the modal
-    const textarea = modal.querySelector(".modal-body textarea");
-
-    // Set the combined text as the initial value of the textarea
-    textarea.value = combinedText;
-
-    // Add event listener to the update button inside the modal
-    const updateButton = modal.querySelector(".modal-footer button");
-    updateButton.addEventListener("click", () => {
-        // Retrieve the updated text from the textarea
-        const updatedText = textarea.value;
-
-        // Update the original idea text in Firestore
-        db.collection("ideas").doc(ideaId).update({
-            text: updatedText
-        })
-        .then(() => {
-            console.log("Idea updated successfully");
-            // Show a success message or perform any other actions
-            alert("Idea updated successfully");
-
-            // Close the modal
-            const modalInstance = bootstrap.Modal.getInstance(modal);
-            modalInstance.hide();
-        })
-        .catch((error) => {
-            console.error("Error updating idea:", error);
-            // Show an error message or perform any other actions
-            alert("Error updating idea");
-        });
-    });
+function openEditModal(ideaId, originalText) {
+    const editModal = document.getElementById('editModal');
+    const textarea = editModal.querySelector('textarea');
+    textarea.value = originalText;
 
     // Show the modal
-    const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show();
+    const modal = new bootstrap.Modal(editModal);
+    modal.show();
+
+    // Handle update button click
+    const updateButton = editModal.querySelector('.btn-primary');
+    updateButton.addEventListener('click', function() {
+        const newText = textarea.value;
+
+        // Update the original idea on Firebase
+        const ideaRef = db.collection('ideas').doc(ideaId);
+        const oldTime = ideaRef.timestamp;
+        ideaRef.update({
+            text: newText,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            history: firebase.firestore.FieldValue.arrayUnion({
+                text: originalText,
+                timestamp: oldTime
+            })
+        })
+        .then(() => {
+            console.log('Original idea updated successfully with history');
+            modal.hide();
+            // Show success message or perform any other actions
+        })
+        .catch((error) => {
+            console.error('Error updating original idea:', error);
+            // Show error message or perform any error handling
+        });
+    });
 }
+
 
 // Function to incorporate an improvement into the original idea
 function incorporateImprovement(improvementId) {
