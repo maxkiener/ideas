@@ -971,11 +971,18 @@ function openEditModal(ideaId, originalText) {
     const updateButton = document.getElementById('updateIdeaBtn');
     updateButton.addEventListener('click', function() {
         const newText = textarea.value.toString();
+        db.collection("ideas").doc(ideaId).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const oldTime = doc.timestamp;
+                    console.log(oldTime);
+                }
+            });
 
         // Update the original idea on Firebase
         const ideaRef = db.collection('ideas').doc(ideaId);
-        const oldTime = ideaRef.timestamp;
-        console.log(oldTime);
+        //const oldTime = ideaRef.timestamp;
+        console.log(ideaRef);
         ideaRef.update({
             text: newText,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -1013,7 +1020,7 @@ function incorporateImprovement(improvementId) {
                     console.log(ideaData);
                     // Combine the original idea text and improvement text
                     const combinedText = ideaData.description + "\n" + improvementData.improvement;
-                    console.log(ideaData.text, improvementData.text);
+                    console.log(ideaData.description, improvementData.improvement);
                     // Open a modal for editing the combined text
                     openEditModal(improvementData.ideaId, combinedText);
                 } else {
