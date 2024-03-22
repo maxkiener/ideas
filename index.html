@@ -976,30 +976,30 @@ function openEditModal(ideaId, originalText) {
                 if (doc.exists) {
                     const oldTime = doc.timestamp;
                     console.log(oldTime);
+
+                    // Update the original idea on Firebase
+        
+                    doc.update({
+                        text: newText,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        history: firebase.firestore.FieldValue.arrayUnion({
+                            text: originalText,
+                            timestamp: oldTime
+                        })
+                    })
+                    .then(() => {
+                        console.log('Original idea updated successfully with history');
+                        editModal.style.display = 'none';
+                        // Show success message or perform any other actions
+                    })
+                    .catch((error) => {
+                        console.error('Error updating original idea:', error);
+                        // Show error message or perform any error handling
+                    });
+
                 }
             });
 
-        // Update the original idea on Firebase
-        const ideaRef = db.collection('ideas').doc(ideaId);
-        //const oldTime = ideaRef.timestamp;
-        console.log(ideaRef);
-        ideaRef.update({
-            text: newText,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            history: firebase.firestore.FieldValue.arrayUnion({
-                text: originalText,
-                timestamp: oldTime
-            })
-        })
-        .then(() => {
-            console.log('Original idea updated successfully with history');
-            editModal.style.display = 'none';
-            // Show success message or perform any other actions
-        })
-        .catch((error) => {
-            console.error('Error updating original idea:', error);
-            // Show error message or perform any error handling
-        });
     });
 }
 
