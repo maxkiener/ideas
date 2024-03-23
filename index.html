@@ -959,7 +959,7 @@ btn.onclick = function() {
     }
 
 // Function to open a modal for editing the combined text
-function openEditModal(ideaId, originalText) {
+function openEditModal(ideaId, originalText, originalTime) {
     const editModal = document.getElementById('editModal');
     const textarea = editModal.querySelector('textarea');
     textarea.value = originalText;
@@ -971,35 +971,26 @@ function openEditModal(ideaId, originalText) {
     const updateButton = document.getElementById('updateIdeaBtn');
     updateButton.addEventListener('click', function() {
         const newText = textarea.value.toString();
-        db.collection("ideas").doc(ideaId).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const oldTime = doc.timestamp;
-                    console.log(oldTime);
+        db.collection("ideas").doc(ideaId).update({
+            text: newText,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            history: firebase.firestore.FieldValue.arrayUnion({
+                text: originalText,
+                timestamp: originalTime
+            })
+        })
+        .then(() => {
+            console.log('Original idea updated successfully with history');
+            editModal.style.display = 'none';
+            // Show success message or perform any other actions
+        })
+        .catch((error) => {
+            console.error('Error updating original idea:', error);
+            // Show error message or perform any error handling
+        });
 
-                    // Update the original idea on Firebase
-                    doc.update({
-                        text: newText,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                        history: firebase.firestore.FieldValue.arrayUnion({
-                            text: originalText,
-                            timestamp: oldTime
-                        })
-                    })
-                    .then(() => {
-                        console.log('Original idea updated successfully with history');
-                        editModal.style.display = 'none';
-                        // Show success message or perform any other actions
-                    })
-                    .catch((error) => {
-                        console.error('Error updating original idea:', error);
-                        // Show error message or perform any error handling
-                    });
-
-                }
+    
             });
-
-    });
 }
 
 // Function to incorporate an improvement into the original idea
@@ -1020,7 +1011,7 @@ function incorporateImprovement(improvementId) {
                     const combinedText = ideaData.description + "\n" + improvementData.improvement;
                     console.log(ideaData.description, improvementData.improvement);
                     // Open a modal for editing the combined text
-                    openEditModal(improvementData.ideaId, combinedText);
+                    openEditModal(improvementData.ideaId, combinedText, ideaData.timestamp);
                 } else {
                     console.error("Original idea does not exist");
                     alert("Original idea does not exist");
