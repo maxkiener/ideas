@@ -978,7 +978,6 @@ function openEditModal(ideaId, originalText) {
                     console.log(oldTime);
 
                     // Update the original idea on Firebase
-        
                     doc.update({
                         text: newText,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
