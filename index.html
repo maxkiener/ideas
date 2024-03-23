@@ -982,7 +982,6 @@ function openEditModal(ideaId, originalText, originalTime) {
         .then(() => {
             console.log('Original idea updated successfully with history');
             editModal.style.display = 'none';
-            closeModal("editModal");
             // Change the approvalStatus of the improvement on Firebase to "Accepted"
             db.collection("improvements").doc(improvementId).update({
                 approvalStatus: "Accepted"
