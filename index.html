@@ -959,7 +959,7 @@ btn.onclick = function() {
     }
 
 // Function to open a modal for editing the combined text
-function openEditModal(ideaId, originalText, originalTime) {
+function openEditModal(ideaId, originalText, originalTime, improvementId) {
     const editModal = document.getElementById('editModal');
     const textarea = editModal.querySelector('textarea');
     textarea.value = originalText;
@@ -1026,7 +1026,7 @@ function incorporateImprovement(improvementId) {
                     const combinedText = ideaData.description + "\n" + improvementData.improvement;
                     console.log(ideaData.description, improvementData.improvement);
                     // Open a modal for editing the combined text
-                    openEditModal(improvementData.ideaId, combinedText, ideaData.timestamp);
+                    openEditModal(improvementData.ideaId, combinedText, ideaData.timestamp, improvementId);
                 } else {
                     console.error("Original idea does not exist");
                     alert("Original idea does not exist");
