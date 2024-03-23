@@ -972,7 +972,7 @@ function openEditModal(ideaId, originalText, originalTime) {
     updateButton.addEventListener('click', function() {
         const newText = textarea.value.toString();
         db.collection("ideas").doc(ideaId).update({
-            text: newText,
+            description: newText,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             history: firebase.firestore.FieldValue.arrayUnion({
                 text: originalText,
@@ -982,15 +982,31 @@ function openEditModal(ideaId, originalText, originalTime) {
         .then(() => {
             console.log('Original idea updated successfully with history');
             editModal.style.display = 'none';
+            closeModal("editModal");
+            // Change the approvalStatus of the improvement on Firebase to "Accepted"
+            db.collection("improvements").doc(improvementId).update({
+                approvalStatus: "Accepted"
+            })
             // Show success message or perform any other actions
-        })
+        }).then(() => {
+            // Improvement status updated successfully
+            console.log("Improvement status updated successfully");
+            // Update the HTML of the idea on the page to display the new updated idea description
+            const ideaDiv = document.getElementById(ideaId);
+                if (ideaDiv) {
+                    const ideaDescription = ideaDiv.querySelector(".idea-description");
+                    if (ideaDescription) {
+                        ideaDescription.textContent = newIdeaText;
+                    }
+                }
+            // Show success message
+            showSuccessMessage("Idea updated successfully!");
+            })
         .catch((error) => {
             console.error('Error updating original idea:', error);
             // Show error message or perform any error handling
-        });
-
-    
-            });
+        });    
+    });
 }
 
 // Function to incorporate an improvement into the original idea
