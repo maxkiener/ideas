@@ -416,19 +416,24 @@
         //console.log(user.uid);
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
-            console.log(user.username);
-            // User is signed in.
-            username = user.username;
-            document.getElementById('logoutButton').innerText = `Logout (${username})`;
-            document.getElementById("loginButton").style.display = "none";
-            document.getElementById("logoutButton").style.display = "block";
-            // Hide the FirebaseUI authentication container
-            authContainer.style.display = 'none';
-            if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-                // This is a new user, create a new user document
-                console.log("This is a new user, create a new user document")
-                createUserDocument(user);
-            }
+            const userDocRef = db.collection('users').doc(user.uid);
+
+            userDocRef.get().then((doc) => {
+                if (doc.exists) {
+                console.log(doc.data().username);
+                // User is signed in.
+                username = doc.data().username;
+                document.getElementById('logoutButton').innerText = `Logout (${username})`;
+                document.getElementById("loginButton").style.display = "none";
+                document.getElementById("logoutButton").style.display = "block";
+                // Hide the FirebaseUI authentication container
+                authContainer.style.display = 'none';
+                if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+                    // This is a new user, create a new user document
+                    console.log("This is a new user, create a new user document")
+                    createUserDocument(user);
+                }
+            }});
         } else {
             // No user is signed in.
             document.getElementById("loginButton").style.display = "block";
