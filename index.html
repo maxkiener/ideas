@@ -70,6 +70,8 @@
             border: 2px solid lightgrey;
             border-radius: 32px;
             background-color: white;
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         .button-container {
@@ -96,6 +98,8 @@
             padding: 20px;
             border: 1px solid #888;
             width: 80%; 
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 5px 5px rgba(152, 152, 152, 0.516);
         }
 
         .close {
@@ -239,7 +243,7 @@
                 <div class="modal-content">
                   <span class="close">&times;</span>
                   <h2>Propose New Idea</h2>
-                  <p class="descrText">Describe your idea in a few sentences and give it a brief title:</p><br>
+                  <p class="descrText">Describe your idea in a few sentences and give it a brief title:</p>
                   <input type="text" id="ideaTitle" placeholder="A title for your idea"><br>
                   <textarea id="ideaDescription" placeholder="Describe your idea here."></textarea><br>
                   <button id="submitBtn">Submit</button>
@@ -251,7 +255,7 @@
                 <div class="modal-content">
                     <span id="improvementModalClose" class="close">&times;</span>
                     <h2>Propose Improvement</h2>
-                    <p class="descrText">Your Improvement (you can modify the existing text or delete it and start from scratch):</p><br>
+                    <p class="descrText">Your Improvement (you can modify the existing text or delete it and start from scratch):</p>
                     <textarea id="improvementInput" placeholder="" rows="4"></textarea><br>
                     <button id="improvementSubmitBtn">Submit</button>
                 </div>
