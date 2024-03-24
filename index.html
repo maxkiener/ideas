@@ -154,7 +154,7 @@
             margin: 20px;
         }
 
-        #improvementInput{
+        #improvementInput, #ideaDescription{
             color: darkblue;
             width: -webkit-fill-available;
             border: 0px;
@@ -188,7 +188,7 @@
 
         <!-- Further ideas/todos: 
             # Improve visuals for Modals
-            # Change User-names
+           
             # Real-time update interface elements
             # Remove Accept/Reject buttons on improvements with status Approved/Rejected
             # styling of signup
@@ -198,13 +198,14 @@
             # Title images for ideas from dall.e
             # add fillgraderstiege - gemüsegrill as another example idea. 
             # Child-rearing-contract
+            # Austria Ident
             # demokratiehauptstadt@post.wien.gv.at
             # https://www.whatisnext.at/post/neue-beiratsfunktion-f%C3%BCr-elisabeth-mayerhofer
             
             done:
             # show rejected improvements with reason why they were rejected 
             # everybody should be able to create and get feedback? or just me?
-            how much of the account system is necessary? phone number? integrate with Austria Ident
+            # Change User-names
         -->
         <!-- Container for new components -->
         <div id="componentContainer">
@@ -230,8 +231,10 @@
             <div id="myModal" class="modal">
                 <div class="modal-content">
                   <span class="close">&times;</span>
-                  <input type="text" id="ideaTitle" placeholder="Enter idea title">
-                  <textarea id="ideaDescription" placeholder="Enter idea description"></textarea>
+                  <h2>Propose New Idea</h2>
+                  <p>Describe your idea in a few sentences and give it a brief title:</p><br>
+                  <input type="text" id="ideaTitle" placeholder="A title for your idea"><br>
+                  <textarea id="ideaDescription" placeholder="Describe your idea here."></textarea><br>
                   <button id="submitBtn">Submit</button>
                 </div>
             </div>   
