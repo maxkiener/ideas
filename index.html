@@ -313,14 +313,67 @@
 
     // Function to create a new user document in Firestore
     function createUserDocument(user) {
-        const userData = {
-            email: user.email,
-            username: '', // You can prompt the user to set their username later
-            ideas: [],
-            upvotes: [],
-            downvotes: [],
-            suggestions: []
-        };
+        const userRef = db.collection('users').doc(user.uid);
+
+        const names = [
+            "Hans", "Karl", "Wilhelm", "Heinrich", "Friedrich",
+            "Gerhard", "Walter", "Ernst", "Paul", "Hermann",
+            "Otto", "Kurt", "Johann", "Heinz", "Georg",
+            "Josef", "Rudolf", "Franz", "Richard", "Erich",
+            "Maria", "Anna", "Gertrud", "Elisabeth", "Margarete",
+            "Ursula", "Helene", "Käthe", "Lieselotte", "Marianne",
+            "Hildegard", "Ilse", "Ingeborg", "Gisela", "Elfriede",
+            "Erna", "Ruth", "Herta", "Frieda", "Anneliese",
+            "Ludwig", "Albert", "Rolf", "Werner", "Robert",
+            "Martin", "Alfred", "Peter", "Horst", "Willi"
+            ];
+
+        // Function to generate a random username
+        function generateRandomUsername() {
+            const firstName1 = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const firstName2 = firstNames[Math.floor(Math.random() * firstNames.length)];
+            return `${firstName1}-${firstName2}`; // Combine two random first names
+        }
+
+        // Check if the generated username already exists
+        function usernameExists(username) {
+            return db.collection("users").where("username", "==", username).get()
+                .then((querySnapshot) => {
+                    return !querySnapshot.empty; // Return true if username already exists, false otherwise
+                })
+                .catch((error) => {
+                    console.error("Error checking username existence:", error);
+                    return true; // Assume username exists in case of error
+                });
+        }
+
+            // Function to create user document with a unique random username
+        async function createUserWithUniqueUsername() {
+            let username = generateRandomUsername();
+            while (await usernameExists(username)) {
+                // Generate a new username if the current one already exists
+                username = generateRandomUsername();
+            }
+            // Create the user document with the unique username
+            return userRef.set({
+                username: username,
+                email: user.email,
+                ideas: [],
+                upvotes: [],
+                downvotes: [],
+                suggestions: []
+                // Other user data...
+            });
+        }
+
+        // Create user document with unique username
+        createUserWithUniqueUsername()
+            .then(() => {
+                console.log("User document created successfully with unique username.");
+            })
+            .catch((error) => {
+                console.error("Error creating user document:", error);
+            });
 
         // Add the user data to Firestore
         db.collection('users').doc(user.uid).set(userData)
@@ -338,7 +391,7 @@
     // Function to add logout button
     function addLogoutButton() {
         var logoutButton = document.createElement('button');
-        logoutButton.textContent = 'Logout';
+        logoutButton.textContent = 'LogoutTest';
         logoutButton.addEventListener('click', function() {
             firebase.auth().signOut().then(function() {
                 // Sign-out successful.
@@ -363,8 +416,10 @@
         //console.log(user.uid);
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
-            console.log("user is signed in, showing logout button");
+            console.log(user.username);
             // User is signed in.
+            username = user.username;
+            document.getElementById('logoutButton').innerText = `Logout (${username})`;
             document.getElementById("loginButton").style.display = "none";
             document.getElementById("logoutButton").style.display = "block";
             // Hide the FirebaseUI authentication container
