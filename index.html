@@ -187,16 +187,23 @@
     <div class="container">
 
         <!-- Further ideas/todos: 
-            draw architecture chart of flow how to suggest an improvement and see other proposals: 
-            Title images for ideas from dall.e
+            # Improve visuals for Modals
+            # Change User-names
+            # Real-time update interface elements
+            # Remove Accept/Reject buttons on improvements with status Approved/Rejected
+            # styling of signup
+            # Terms of service/Data Privacy
+
+            other ideas: 
+            # Title images for ideas from dall.e
+            # add fillgraderstiege - gemüsegrill as another example idea. 
+            # Child-rearing-contract
+            # demokratiehauptstadt@post.wien.gv.at
+            # https://www.whatisnext.at/post/neue-beiratsfunktion-f%C3%BCr-elisabeth-mayerhofer
             
-            introduce comments
-            show rejected improvements with reason why they were rejected 
-            add fillgraderstiege - gemüsegrill as another example idea.  
-            
-            what to do next in Stage 1: 
-            everybody should be able to create and get feedback?
-            or just me?
+            done:
+            # show rejected improvements with reason why they were rejected 
+            # everybody should be able to create and get feedback? or just me?
             how much of the account system is necessary? phone number? integrate with Austria Ident
         -->
         <!-- Container for new components -->
@@ -210,7 +217,8 @@
             <p>
                 I'm throwing some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
                 I'll get notified when you submit an improvement and can then approve it or reject it.<br>
-                In the next stage, I want everyone to be able to post their ideas and threfore need your feedback on this site itself. Please submit your suggestions in "This Website" (below).  
+                In the next stage, I want everyone to be able to post their ideas and threfore need your feedback on this site itself. Please submit your suggestions in "This Website" (below).<br>
+                You can also suggest your own ideas at the bottom.  
             </p>
 
             <!-- Newly created components will be added here -->
@@ -560,8 +568,12 @@ function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, imp
     bodyText.textContent = description;
 
     const authorText = document.createElement("p");
-    authorText.textContent = authorId;
-    authorText.classList.add("authorStyling");
+    db.collection("users").add(authorId)
+            .then((docRef) => {
+                authorText.textContent = docRef.username;
+                authorText.classList.add("authorStyling");
+                newComponent.appendChild(authorText);
+            })
 
     // Create elements to display upvote and downvote counts
     const voteContainer = document.createElement("div");
@@ -961,6 +973,7 @@ btn.onclick = function() {
 // Function to open a modal for editing the combined text
 function openEditModal(ideaId, originalText, originalTime, improvementId) {
     const editModal = document.getElementById('editModal');
+    const improvementsModal = document.getElementById('improvementsModal');
     const textarea = editModal.querySelector('textarea');
     textarea.value = originalText;
 
@@ -1046,8 +1059,6 @@ function incorporateImprovement(improvementId) {
         alert("Error getting improvement");
     });
 }
-
-
 
     </script>
 
