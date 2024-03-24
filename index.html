@@ -116,7 +116,7 @@
             cursor: pointer;
         }
 
-        .upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton{
+        .upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton, #submitBtn, #addComponent{
             font-size: 15px;
             color: #b4b2b2;
             /*height: 30px; Adjust the height as needed */
@@ -191,15 +191,12 @@
             font-size: initial;
         }
 
-
     </style>
 </head>
 <body>
     <div class="container">
 
         <!-- Further ideas/todos: 
-            # Improve visuals for Modals
-           
             # Real-time update interface elements
             # Remove Accept/Reject buttons on improvements with status Approved/Rejected
             # styling of signup
@@ -217,6 +214,7 @@
             # show rejected improvements with reason why they were rejected 
             # everybody should be able to create and get feedback? or just me?
             # Change User-names
+            # Improve visuals for Modals
         -->
         <!-- Container for new components -->
         <div id="componentContainer">
@@ -227,10 +225,9 @@
             <button id="logoutButton" style="display: none;">Logout</button>
 
             <p>
-                I'm throwing some ideas out there and want your feedback on how to improve them. You can vote on them, or - even better - suggest specific improvements.<br>
-                I'll get notified when you submit an improvement and can then approve it or reject it.<br>
-                In the next stage, I want everyone to be able to post their ideas and threfore need your feedback on this site itself. Please submit your suggestions in "This Website" (below).<br>
-                You can also suggest your own ideas at the bottom.  
+                Submit feedback on ideas or submit your own ideas.<br>
+                You can incorporate improvement-suggestions and thereby strengthen and develop your ideas.<br>
+                Please submit your suggestions about this website in "This Website" (below).
             </p>
 
             <!-- Newly created components will be added here -->
