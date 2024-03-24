@@ -570,6 +570,8 @@ function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, imp
     const authorText = document.createElement("p");
     db.collection("users").get(authorId)
             .then((docRef) => {
+                console.log(docRef);
+                console.log(docRef.username);
                 authorText.textContent = docRef.username;
                 authorText.classList.add("authorStyling");
                 //newComponent.appendChild(authorText);
