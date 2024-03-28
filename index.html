@@ -152,6 +152,48 @@ button {
     font-size: initial;
 }
 
+@media (max-width: 600px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        padding: 20px;
+        width: auto; /* Allows the container to adjust to the screen size */
+    }
+
+    h1 {
+        font-size: 28px; /* Smaller font size for headers */
+    }
+
+    p, #improvementInput, #ideaDescription, #ideaTitle {
+        font-size: 16px; /* Smaller font size for better readability */
+        padding: 15px; /* Reduced padding */
+        margin: 8px; /* Reduced margin */
+    }
+
+    button {
+        font-size: 16px; /* Adjust button font size */
+        padding: 8px 16px; /* Adjust button padding */
+        margin: 8px 5px; /* Adjust button margin */
+    }
+
+    .component, .improvement {
+        padding: 15px; /* Reduce padding inside components */
+        margin: 10px 0; /* Reduce vertical margin */
+    }
+
+    .modal-content, .rejected-improvement {
+        width: 90%; /* Increase width to take up more of the screen */
+        padding: 15px; /* Reduce padding */
+    }
+
+    .authorStyling, .upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton, #submitBtn, #addComponent {
+        font-size: 14px; /* Slightly reduce font size */
+    }
+}
+
+
     </style>
 </head>
 <body>
