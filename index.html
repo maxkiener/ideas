@@ -44,6 +44,12 @@ p, #improvementInput, #ideaDescription, #ideaTitle {
     margin: 10px;*/
 }
 
+#improvementInput {
+    background-color: lightgrey;
+    padding: 20px;
+    height: auto;
+}
+
 .close {
             color: #aaaaaa;
             float: right;
@@ -514,6 +520,7 @@ db.collection("ideas").get()
           time: ideaData.time,
           improvements : ideaData.improvements,
           authorId : ideaData.author
+          //authorAlias : ideaData.authorAlias
           // Add other idea details as needed
         });
 
@@ -794,6 +801,7 @@ function showImprovementDialog(ideaId, ideaText) {
             const improvementData = {
                 ideaId: ideaId,
                 authorId: currentUser.uid,
+                //authorAlias: currentUser.username,
                 improvement: improvement,
                 approvalStatus: "not reviewed", // Default to "not reviewed"
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -961,7 +969,21 @@ btn.onclick = function() {
                     improvementText.textContent = improvementData.improvement;
 
                     const improvementAuthor = document.createElement("p");
-                    improvementAuthor.innerHTML = improvementData.authorId + ", "+ improvementData.timestamp.toDate().toString().slice(4, 15);
+                    
+
+                    const userRef = db.collection("users").doc(improvementData.authorId);
+                    userRef.get().then((doc) => {
+                        if (doc.exists){
+                            const data = doc.data();
+                            console.log(data.username);
+                            improvementAuthor.innerHTML = improvementData.authorId + ", "+ improvementData.timestamp.toDate().toString().slice(4, 15);
+                            improvementAuthor.classList.add("authorStyling");
+                            //newComponent.appendChild(authorText);
+                            improvementDiv.insertBefore(improvementAuthor, improvementDiv.firstChild);
+                        } else{
+                            console.log("No such document");
+                        }
+                    });
 
                     const improvementStatus = document.createElement("p");
                     improvementStatus.innerHTML = improvementData.approvalStatus;
@@ -969,7 +991,7 @@ btn.onclick = function() {
 
                     // Append improvement content to improvementDiv
                     improvementDiv.appendChild(improvementText);
-                    improvementDiv.appendChild(improvementAuthor);
+                    //improvementDiv.appendChild(improvementAuthor);
                     //improvementDiv.appendChild(improvementTime);
                     improvementDiv.appendChild(improvementStatus);
 
