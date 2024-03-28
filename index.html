@@ -8,188 +8,149 @@
     
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
     <style>
-        /* Add CSS styles here */
-
         body {
-            font-family: Arial, sans-serif;
-            /*background-color: #f0f0f0;*/
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            text-align: left;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            max-width: 100%;
-            width: 700px;
-            margin: 0 auto;
-            padding: 40px;
-            /*background-color: #fff;*/
-            border-radius: 10px;
-            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-        }
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-        h1 {
-            font-size: 36px;
-            color: #333;
-        }
-        p, #improvementInput {
-            font-size: 18px;
-            color: #666;
-            font-family: serif;
-            line-height: 140%;
-        }
-        .component {
-            background-color: #f0f0f0; /* Light-grey background */
-            border-radius: 10px; /* Rounded corners */
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0px 5px 5px rgba(152, 152, 152, 0.516);
-        }
-        h1 {
-            font-size: 36px;
-            color: #333;
-        }
-        p {
-            font-size: 18px;
-            color: #666;
-        }
-        /* Additional CSS styles for the button */
-        button {
-            /*background-color: #007bff;
-            color: #fff;*/
-            font-size: 18px;
-            /*border: none;
-            border-radius: 5px;  Rounded corners for buttons */
-            padding: 10px 20px;
-            cursor: pointer;
-            margin-right: 10px;
-            border: 2px solid lightgrey;
-            border-radius: 32px;
-            background-color: white;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
+.container {
+    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width: 100%;
+    width: 700px;
+    margin: 0 auto;
+    padding: 40px;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
 
-        .button-container {
-            display: flex;
-            justify-content: center; /* Center the button horizontally */
-            margin-top: 20px; /* Add margin to separate from components */
-        }
+h1 {
+    font-size: 36px;
+    color: #333;
+}
 
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.4); 
-        }
+p, #improvementInput, #ideaDescription, #ideaTitle {
+    font-size: 18px;
+    color: #666; /* #ideaDescription and #ideaTitle will inherit darkblue due to specificity */
+    font-family: serif;
+    line-height: 140%;
+    width: -webkit-fill-available;
+    border: 0;
+    background-color: lightgrey;
+    padding: 20px;
+    margin: 10px;
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; 
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0px 5px 5px rgba(152, 152, 152, 0.516);
-        }
+.component, .improvement {
+    background-color: #f0f0f0; /* Light-grey background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0px 5px 5px rgba(152, 152, 152, 0.516);
+}
 
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+button {
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 2px solid lightgrey;
+    border-radius: 32px;
+    background-color: white;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
 
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.button-container {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    margin-top: 20px; /* Add margin to separate from components */
+}
 
-        .upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton, #submitBtn, #addComponent{
-            font-size: 15px;
-            color: #b4b2b2;
-            /*height: 30px; Adjust the height as needed */
-            line-height: 22px; /* Ensure the text is vertically centered */
-        }
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
 
-        .notification-toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000; /* Ensure it appears above other content */
-            display: none; /* Initially hidden */
-        }
+.modal-content, .rejected-improvement {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 5px 5px rgba(152, 152, 152, 0.516);
+    /* .rejected-improvement overrides */
+    background-color: #333; /* Dark grey for rejected-improvement */
+    color: #fff; /* White text for rejected-improvement */
+}
 
-        .notification-toast.show {
-            display: block; /* Show when triggered */
-            animation: fadeOut 3s ease; /* Optional: Add fade-out animation */
-        }
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
+.upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton, #submitBtn, #addComponent{
+    font-size: 15px;
+    color: #b4b2b2;
+    line-height: 22px; /* Ensure the text is vertically centered */
+}
 
-        .improvement{
-            background-color: #f0f0f0; /* Light-grey background */
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px;
-        }
+.notification-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure it appears above other content */
+    display: none; /* Initially hidden */
+}
 
-        #improvementInput, #ideaDescription, #ideaTitle{
-            color: darkblue;
-            width: -webkit-fill-available;
-            border: 0px;
-            background-color: lightgrey;
-            padding: 20px;
-            margin: 10px;
-            font-family: serif;
-            font-size: inherit;
-        }
+.notification-toast.show {
+    display: block; /* Show when triggered */
+    animation: fadeOut 3s ease; /* Optional: Add fade-out animation */
+}
 
-        .improvement-status{
-            font-family: sans-serif;
-            font-variant: all-petite-caps;
-            font-weight: 700;
-        }
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 
-        .authorStyling{
-            font-size: 14px;
-            font-style: italic;
-        }
+.improvement-status {
+    font-family: sans-serif;
+    font-variant: all-petite-caps;
+    font-weight: 700;
+}
 
-        .rejected-improvement {
-            background-color: #333; /* Dark grey background */
-            color: #fff; /* White text color */
-            /* Add any additional styling as needed */
-        }
+.authorStyling {
+    font-size: 14px;
+    font-style: italic;
+}
 
-        .descrText{
-            font-family: sans-serif;
-            font-size: initial;
-        }
+.descrText {
+    font-family: sans-serif;
+    font-size: initial;
+}
 
     </style>
 </head>
@@ -198,9 +159,12 @@
 
         <!-- Further ideas/todos: 
             # Real-time update interface elements
-            # Remove Accept/Reject buttons on improvements with status Approved/Rejected
+            # Remove Accept/Reject buttons on improvements with status Approved/Rejected, also remove the 
             # styling of signup
             # Terms of service/Data Privacy
+            # username in improvements
+            # make mobile work
+            # optimize mobile visuals
 
             other ideas: 
             # Title images for ideas from dall.e
