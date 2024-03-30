@@ -1071,7 +1071,9 @@ btn.onclick = function() {
 
     // Function to update the styling of the improvement div based on its status
     function updateImprovementStatusStyle(improvementDiv, status) {
-        const approvalDiv = improvementDiv.querySelector(".approvalStatus");
+
+        const approvalDiv = improvementDiv.querySelector(".improvement-status");
+        console.log(approvalDiv);
         if (status === "rejected") {
             approvalDiv.classList.add("rejected");
         } else if (status === "Accepted"){
@@ -1079,8 +1081,8 @@ btn.onclick = function() {
         }
         else {
             console.log("not yet reviewed");
-            //approvalDiv.classList.remove("rejected");
-            //approvalDiv.classList.remove("accepted");
+            approvalDiv.classList.remove("rejected");
+            approvalDiv.classList.remove("accepted");
         }
     }
 
