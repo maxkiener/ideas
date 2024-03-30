@@ -202,9 +202,17 @@ button {
         border-radius: 5px;
     }
 
-    .modal-content, .rejected-improvement {
+    .modal-content{
         width: 90%; /* Increase width to take up more of the screen */
         padding: 15px; /* Reduce padding */
+    }
+
+    .accepted{
+        color: #09bb09;
+    }
+
+    .rejected{
+        color: #d30000;
     }
 
     .authorStyling, .upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton, #submitBtn, #addComponent {
@@ -224,10 +232,14 @@ button {
             # styling of signup
             # Terms of service/Data Privacy
             # make mobile work
+            # email notifications for updates
+            # security rules for accessing email addresses.
+            # upvote/downvote every idea only once.
             
 
             other ideas: 
             # Title images for ideas from dall.e
+            # sort by newest, most upvotes, most improvements
             # add fillgraderstiege - gemüsegrill as another example idea. 
             # Child-rearing-contract
             # Austria Ident
@@ -1000,7 +1012,7 @@ btn.onclick = function() {
 
                     const currentUser = firebase.auth().currentUser;
                     // Add buttons only if the current user is the author of the original idea
-                    if (currentUser.uid === author) {
+                    if (currentUser.uid === author && improvementData.approvalStatus === "not reviewed") {
                         // Create "incorporate" button
                         const incorporateButton = document.createElement('button');
                         incorporateButton.textContent = 'Incorporate';
@@ -1060,10 +1072,15 @@ btn.onclick = function() {
 
     // Function to update the styling of the improvement div based on its status
     function updateImprovementStatusStyle(improvementDiv, status) {
+        const approvalDiv = improvementDiv.querySelector(".approvalStatus");
         if (status === "rejected") {
-            improvementDiv.classList.add("rejected-improvement");
-        } else {
-            improvementDiv.classList.remove("rejected-improvement");
+            approvalDiv.classList.add("rejected");
+        } else if (status === "Accepted"){
+            approvalDiv.classList.add("accepted");
+        }
+        else {
+            approvalDiv.classList.remove("rejected");
+            approvalDiv.classList.remove("accepted");
         }
     }
 
