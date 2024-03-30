@@ -1003,8 +1003,6 @@ btn.onclick = function() {
 
                     // Append improvement content to improvementDiv
                     improvementDiv.appendChild(improvementText);
-                    //improvementDiv.appendChild(improvementAuthor);
-                    //improvementDiv.appendChild(improvementTime);
                     improvementDiv.appendChild(improvementStatus);
 
                     // Update the styling based on the improvement status
@@ -1079,8 +1077,9 @@ btn.onclick = function() {
             approvalDiv.classList.add("accepted");
         }
         else {
-            approvalDiv.classList.remove("rejected");
-            approvalDiv.classList.remove("accepted");
+            console.log("not yet reviewed");
+            //approvalDiv.classList.remove("rejected");
+            //approvalDiv.classList.remove("accepted");
         }
     }
 
