@@ -407,10 +407,10 @@ button {
             let username = generateRandomUsername();
             while (await usernameExists(username)) {
                 // Generate a new username if the current one already exists
-                username = generateRandomUsername();
-                console.log("personalizedLogout will run "+username);
-                personalizeLogout(username);
-                console.log("personalizedLogout ran");
+                username = generateRandomUsername().then(() => {
+                    personalizeLogout(username);
+                    console.log("personalizedLogout ran "+username);
+                });
             }
             // Create the user document with the unique username
             return userRef.set({
