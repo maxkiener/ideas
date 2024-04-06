@@ -470,6 +470,12 @@ button {
             const userDocRef = db.collection('users').doc(user.uid);
             console.log(userDocRef);
 
+            if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+                    // This is a new user, create a new user document
+                    console.log("This is a new user, create a new user document")
+                    createUserDocument(user);
+            }
+
             userDocRef.get().then((doc) => {
                 if (doc.exists) {
                 console.log(doc.data().username);
@@ -480,11 +486,7 @@ button {
                 document.getElementById("logoutButton").style.display = "block";
                 // Hide the FirebaseUI authentication container
                 authContainer.style.display = 'none';
-                if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-                    // This is a new user, create a new user document
-                    console.log("This is a new user, create a new user document")
-                    createUserDocument(user);
-                }
+                
             }});
         } else {
             // No user is signed in.
