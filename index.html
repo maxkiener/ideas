@@ -366,7 +366,7 @@ button {
     function createUserDocument(user) {
         const userRef = db.collection('users').doc(user.uid);
 
-        const names = [
+        const firstNames = [
             "Hans", "Karl", "Wilhelm", "Heinrich", "Friedrich",
             "Gerhard", "Walter", "Ernst", "Paul", "Hermann",
             "Otto", "Kurt", "Johann", "Heinz", "Georg",
@@ -378,11 +378,15 @@ button {
             "Ludwig", "Albert", "Rolf", "Werner", "Robert",
             "Martin", "Alfred", "Peter", "Horst", "Willi"
             ];
+        
+        const dishes = [
+            "Knödl", "Wurst", "Sulz", "Palatschinke", "Fritate", "Debreziner", "Einspänner", "Braten", "Schnitzl", "Suppe", "Käsebrot", "Kaiserschmarrn"
+            ];
 
         // Function to generate a random username
         function generateRandomUsername() {
             const firstName1 = firstNames[Math.floor(Math.random() * firstNames.length)];
-            const firstName2 = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const firstName2 = dishes[Math.floor(Math.random() * dishes.length)];
             return `${firstName1}-${firstName2}`; // Combine two random first names
         }
 
