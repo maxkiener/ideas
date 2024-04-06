@@ -466,7 +466,7 @@ button {
     ui.start('#firebaseui-auth-container', uiConfig);
     }
 
-    personalizeLogout(username){
+    function personalizeLogout(username){
         document.getElementById('logoutButton').innerText = `Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
         document.getElementById("logoutButton").style.display = "block";
