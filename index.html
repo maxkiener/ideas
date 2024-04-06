@@ -228,7 +228,7 @@ button {
 
         <!-- Further ideas/todos: 
             # Real-time update interface elements
-            # Remove Accept/Reject buttons on improvements with status Approved/Rejected, also remove the 
+
             # styling of signup
             # Terms of service/Data Privacy
             # make mobile work
@@ -254,6 +254,7 @@ button {
             # Improve visuals for Modals
             # optimize mobile visuals
             # username in improvements
+                        # Remove Accept/Reject buttons on improvements with status Approved/Rejected, also remove the 
         -->
         <!-- Container for new components -->
         <div id="componentContainer">
@@ -467,6 +468,7 @@ button {
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
             const userDocRef = db.collection('users').doc(user.uid);
+            console.log(userDocRef);
 
             userDocRef.get().then((doc) => {
                 if (doc.exists) {
@@ -486,6 +488,7 @@ button {
             }});
         } else {
             // No user is signed in.
+            console.log("no user is signed in");
             document.getElementById("loginButton").style.display = "block";
             document.getElementById("logoutButton").style.display = "none";
         }
