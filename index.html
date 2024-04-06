@@ -430,14 +430,15 @@ button {
                 console.error("Error creating user document:", error);
             });
 
-        // Add the user data to Firestore
+        // Add the user data to Firestore (already done above)
+        /*
         db.collection('users').doc(user.uid).set(userData)
         .then(() => {
             console.log('User document created successfully');
         })
         .catch((error) => {
             console.error('Error creating user document:', error);
-        });
+        });*/
     }
         
     // Initialize the FirebaseUI Widget using Firebase.
