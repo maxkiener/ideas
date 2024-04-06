@@ -408,7 +408,9 @@ button {
             while (await usernameExists(username)) {
                 // Generate a new username if the current one already exists
                 username = generateRandomUsername();
+                console.log("personalizedLogout will run "+username);
                 personalizeLogout(username);
+                console.log("personalizedLogout ran");
             }
             // Create the user document with the unique username
             return userRef.set({
@@ -466,7 +468,8 @@ button {
     ui.start('#firebaseui-auth-container', uiConfig);
     }
 
-    function personalizeLogout(username){
+    const personalizeLogout = function(username){
+        console.log("personalize Logout with" +username);
         document.getElementById('logoutButton').innerText = `Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
         document.getElementById("logoutButton").style.display = "block";
