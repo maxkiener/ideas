@@ -408,6 +408,7 @@ button {
             while (await usernameExists(username)) {
                 // Generate a new username if the current one already exists
                 username = generateRandomUsername();
+                personalizeLogout(username);
             }
             // Create the user document with the unique username
             return userRef.set({
@@ -445,7 +446,7 @@ button {
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
     // Function to add logout button
-    function addLogoutButton() {
+/*    function addLogoutButton() {
         var logoutButton = document.createElement('button');
         logoutButton.textContent = 'LogoutTest';
         logoutButton.addEventListener('click', function() {
@@ -457,12 +458,20 @@ button {
         });
 
         document.getElementById('firebaseui-auth-container').appendChild(logoutButton);
-    }
+    }*/
 
     // Is there an email link sign-in?
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
         console.log("recognized sign-in link");
     ui.start('#firebaseui-auth-container', uiConfig);
+    }
+
+    personalizeLogout(username){
+        document.getElementById('logoutButton').innerText = `Logout (${username})`;
+        document.getElementById("loginButton").style.display = "none";
+        document.getElementById("logoutButton").style.display = "block";
+        // Hide the FirebaseUI authentication container
+        authContainer.style.display = 'none';
     }
 
     // Check if user is signed in
@@ -486,11 +495,7 @@ button {
                 console.log(doc.data().username);
                 // User is signed in.
                 username = doc.data().username;
-                document.getElementById('logoutButton').innerText = `Logout (${username})`;
-                document.getElementById("loginButton").style.display = "none";
-                document.getElementById("logoutButton").style.display = "block";
-                // Hide the FirebaseUI authentication container
-                authContainer.style.display = 'none';
+                personalizeLogout(username);
                 
             }});
         } else {
