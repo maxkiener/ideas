@@ -362,10 +362,6 @@ button {
         privacyPolicyUrl: '<your-privacy-policy-url>'
     };
 
-    //workaround for Safari fetch API issue
-    app.delete();
-    console.log("safari workaround ran");
-
     // Function to create a new user document in Firestore
     function createUserDocument(user) {
         const userRef = db.collection('users').doc(user.uid);
@@ -1218,6 +1214,10 @@ function incorporateImprovement(improvementId) {
         alert("Error getting improvement");
     });
 }
+
+    //workaround for Safari fetch API issue
+    app.delete();
+    console.log("safari workaround ran");
 
     </script>
 
