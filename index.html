@@ -470,6 +470,7 @@ button {
             }
 
             userDocRef.get().then((doc) => {
+                console.log("executing userDocRef.get");
                 if (doc.exists) {
                 console.log(doc.data().username);
                 // User is signed in.
@@ -517,7 +518,7 @@ db.collection("ideas").get()
     ideaSnapshots.forEach((ideaSnapshot) => {
       if (ideaSnapshot.exists) {
         const ideaData = ideaSnapshot.data();
-        console.log(ideaData);
+        //console.log(ideaData);
         ideas.push({
           id: ideaSnapshot.id,
           title: ideaData.title,
@@ -536,7 +537,7 @@ db.collection("ideas").get()
         var improvements = ideaData.improvements || []; // Get the list of improvements or an empty array if it doesn't exist
 
         createIdeaDiv(ideaData.title, ideaData.description, ideaData.time, ideaSnapshot.id, upvotes, downvotes, improvements, ideaData.author);
-        console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes, ideaData.improvements);
+        //console.log(ideaData.title, ideaData.description, ideaSnapshot.time, ideaSnapshot.id, ideaSnapshot.upvotes, ideaSnapshot.downvotes, ideaData.upvotes, ideaData.improvements);
       }
     });
 
@@ -679,7 +680,7 @@ function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, imp
     userRef.get().then((doc) => {
         if (doc.exists){
             const data = doc.data();
-            console.log(data.username);
+            //console.log(data.username);
             authorText.textContent = data.username;
             authorText.classList.add("authorStyling");
             //newComponent.appendChild(authorText);
