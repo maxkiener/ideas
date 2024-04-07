@@ -448,7 +448,7 @@ button {
         console.log("personalize Logout with" +username);
         document.getElementById('logoutButton').innerText = `Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
-        document.getElementById("logoutButton").style.display = "block !important";
+        document.getElementById("logoutButton").style.display = "block";
         // Hide the FirebaseUI authentication container
         //authContainer.style.display = 'none';
     }
@@ -474,6 +474,7 @@ button {
                 console.log(doc);
                 console.log(doc.exists);
                 if (doc) {
+                console.log(doc.data());
                 console.log(doc.data().username);
                 // User is signed in.
                 username = doc.data().username;
