@@ -471,6 +471,8 @@ button {
 
             userDocRef.get().then((doc) => {
                 console.log("executing userDocRef.get");
+                console.log(doc);
+                console.log(doc.exists);
                 if (doc.exists) {
                 console.log(doc.data().username);
                 // User is signed in.
