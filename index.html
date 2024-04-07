@@ -473,12 +473,11 @@ button {
                 console.log("executing userDocRef.get");
                 console.log(doc);
                 console.log(doc.exists);
-                if (doc.exists) {
+                if (doc) {
                 console.log(doc.data().username);
                 // User is signed in.
                 username = doc.data().username;
                 personalizeLogout(username);
-                
             }});
         } else {
             // No user is signed in.
