@@ -362,6 +362,10 @@ button {
         privacyPolicyUrl: '<your-privacy-policy-url>'
     };
 
+    //workaround for Safari fetch API issue
+    app.delete();
+    console.log("safari workaround ran");
+
     // Function to create a new user document in Firestore
     function createUserDocument(user) {
         const userRef = db.collection('users').doc(user.uid);
@@ -473,10 +477,10 @@ button {
                 try {
                     const doc = await userDocRef.get();
                     console.log(doc);
-                    const userData = await doc.getAttribute("username");
+                    const userData = await doc.data();
                     console.log(userData);
-                    //username = userData.username;
-                    personalizeLogout(userData);
+                    username = userData.username;
+                    personalizeLogout(username);
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 }
