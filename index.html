@@ -433,35 +433,10 @@ button {
             .catch((error) => {
                 console.error("Error creating user document:", error);
             });
-
-        // Add the user data to Firestore (already done above)
-        /*
-        db.collection('users').doc(user.uid).set(userData)
-        .then(() => {
-            console.log('User document created successfully');
-        })
-        .catch((error) => {
-            console.error('Error creating user document:', error);
-        });*/
     }
         
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-    // Function to add logout button
-/*    function addLogoutButton() {
-        var logoutButton = document.createElement('button');
-        logoutButton.textContent = 'LogoutTest';
-        logoutButton.addEventListener('click', function() {
-            firebase.auth().signOut().then(function() {
-                // Sign-out successful.
-            }).catch(function(error) {
-                // An error happened.
-            });
-        });
-
-        document.getElementById('firebaseui-auth-container').appendChild(logoutButton);
-    }*/
 
     // Is there an email link sign-in?
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
@@ -473,7 +448,7 @@ button {
         console.log("personalize Logout with" +username);
         document.getElementById('logoutButton').innerText = `Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
-        document.getElementById("logoutButton").style.display = "block";
+        document.getElementById("logoutButton").style.display = "block !important";
         // Hide the FirebaseUI authentication container
         //authContainer.style.display = 'none';
     }
