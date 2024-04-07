@@ -472,12 +472,13 @@ button {
             userDocRef.get().then((doc) => {
                 console.log("executing userDocRef.get");
                 console.log(doc);
+                const userObject = doc;
                 console.log(doc.exists);
-                if (doc) {
-                console.log(doc.data());
-                console.log(doc.data().username);
+                if (userObject) {
+                console.log(userObject.data());
+                console.log(userObject.data().username);
                 // User is signed in.
-                username = doc.data().username;
+                username = userObject.data().username;
                 personalizeLogout(username);
             }});
         } else {
