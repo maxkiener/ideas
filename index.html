@@ -362,8 +362,6 @@ button {
         privacyPolicyUrl: '<your-privacy-policy-url>'
     };
 
-    const username;
-
     // Function to create a new user document in Firestore
     function createUserDocument(user) {
         const userRef = db.collection('users').doc(user.uid);
@@ -406,7 +404,7 @@ button {
 
             // Function to create user document with a unique random username
         async function createUserWithUniqueUsername() {
-            username = generateRandomUsername();
+            const username = generateRandomUsername();
             while (await usernameExists(username)) {
                 // Generate a new username if the current one already exists
                 username = generateRandomUsername().then(() => {
@@ -447,8 +445,8 @@ button {
     }
 
     const personalizeLogout = function(){
-        console.log("personalize Logout with" +username);
-        document.getElementById('logoutButton').innerText = `Logout (${username})`;
+        console.log("personalize Logout without username"); //+username
+        document.getElementById('logoutButton').innerText = "Logout";//`Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
         document.getElementById("logoutButton").style.display = "block";
         // Hide the FirebaseUI authentication container
