@@ -473,8 +473,9 @@ button {
                 try {
                     const doc = await userDocRef.get();
                     console.log(doc);
-                    console.log(doc.data());
-                    username = doc.data().username;
+                    const userData = await doc.data();
+                    console.log(userData);
+                    username = userData.username;
                     personalizeLogout(username);
                 } catch (error) {
                     console.error("Error fetching data:", error);
