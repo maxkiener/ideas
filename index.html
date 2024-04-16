@@ -445,8 +445,8 @@ button {
     ui.start('#firebaseui-auth-container', uiConfig);
     }
 
-    const personalizeLogout = function(){
-
+    const personalizeLogout = function(username){
+        if (username == undefined){username = "stranger"};
         console.log("personalize Logout with username"); //+username
         document.getElementById('logoutButton').innerText = `Logout (${username})`;//`Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
@@ -463,17 +463,19 @@ button {
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
 
-            try{
-                const userDocRef = await db.collection('users').doc(user.uid);
-                console.log(userDocRef);
+            try {
+                const userDocRef = db.collection('users').doc(user.uid);
                 const doc = await userDocRef.get();
-                console.log(doc);
-                    // Access the "username" field from the document data
-                    console.log(doc.data());
+
+                if (doc.exists) {
                     const userSnapshot = doc.data();
+                    console.log(userSnapshot);
                     const username = userSnapshot.username;
-                    console.log("Username:", username);
                     personalizeLogout(username);
+                } else {
+                    console.log('No such document!');
+                }
+
                 
 
                 if (user.metadata.creationTime === user.metadata.lastSignInTime) {
@@ -485,6 +487,7 @@ button {
             }
             catch (error) {
                 console.error("Error getting user document:", error);
+                personalizeLogout("Stranger!");
             }
             
 
