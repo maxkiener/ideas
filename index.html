@@ -392,7 +392,7 @@ button {
 
         // Check if the generated username already exists
         function usernameExists(username) {
-            return db.collection("users").where("username", "==", username).get()
+            return db.collection("users").where("displayName", "==", username).get()
                 .then((querySnapshot) => {
                     return !querySnapshot.empty; // Return true if username already exists, false otherwise
                 })
@@ -408,14 +408,14 @@ button {
             while (await usernameExists(username)) {
                 // Generate a new username if the current one already exists
                 username = generateRandomUsername().then(() => {
-                    //personalizeLogout(username);
-                    //console.log("personalizedLogout ran "+username);
+                    console.log("displayName already exists");
+                    personalizeLogout();
                 });
             }
             // Create the user document with the unique username
             
             return userRef.set({
-                username: username,
+                displayName: username,
                 email: user.email,
                 ideas: [],
                 upvotes: [],
@@ -429,7 +429,7 @@ button {
         createUserWithUniqueUsername()
             .then(() => {
                 console.log("User document created successfully with unique username.");
-                personalizeLogout(username);
+                personalizeLogout();
             })
             .catch((error) => {
                 console.error("Error creating user document:", error);
@@ -446,8 +446,9 @@ button {
     }
 
     const personalizeLogout = function(){
-        console.log("personalize Logout without username"); //+username
-        document.getElementById('logoutButton').innerText = "Logout";//`Logout (${username})`;
+
+        console.log("personalize Logout with username"); //+username
+        document.getElementById('logoutButton').innerText = `Logout (${username})`;//`Logout (${username})`;
         document.getElementById("loginButton").style.display = "none";
         document.getElementById("logoutButton").style.display = "block";
         // Hide the FirebaseUI authentication container
@@ -468,8 +469,10 @@ button {
                 const doc = await userDocRef.get();
                 console.log(doc);
                     // Access the "username" field from the document data
-                    console.log(doc.id);
-                    const username = await doc.data().username;
+                    console.log(doc.displayName);
+                    console.log(user.metadata.username);
+                    console.log(user.metadata.id);
+                    const username = await doc.displayName;
                     console.log("Username:", username);
                     personalizeLogout(username);
                 
