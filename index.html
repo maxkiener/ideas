@@ -470,6 +470,8 @@ button {
                 console.log(doc);
                     // Access the "username" field from the document data
                     console.log(doc.data());
+                    const userSnapshot = doc.data();
+                    const username = userSnapshot.username;
                     console.log("Username:", username);
                     personalizeLogout(username);
                 
@@ -1232,9 +1234,29 @@ function incorporateImprovement(improvementId) {
     });
 }
 
-    //workaround for Safari fetch API issue
-    /*app.delete();
-    console.log("safari workaround ran");*/
+/*Live-update any actions to ideas and improvements
+// Reference to a specific document or collection
+const ideasRef = db.collection('ideas');
+
+// Set up real-time listener for changes to the ideas collection
+ideasRef.onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(change => {
+        const ideaData = change.doc.data();
+        const ideaId = change.doc.id;
+
+        // Update UI based on the change type (added, modified, or removed)
+        if (change.type === 'added') {
+            // Update UI for newly added idea
+            // Example: Append a new idea element to the UI
+        } else if (change.type === 'modified') {
+            // Update UI for modified idea
+            // Example: Update the content of an existing idea element in the UI
+        } else if (change.type === 'removed') {
+            // Update UI for removed idea
+            // Example: Remove the idea element from the UI
+        }
+    });
+});*/
 
     </script>
 
