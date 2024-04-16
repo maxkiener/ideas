@@ -458,8 +458,7 @@ button {
     // Check if user is signed in
     firebase.auth().onAuthStateChanged(async(user) => {
         console.log("onAuthStateChange fired for"+ user);
-        console.log(user);
-        //console.log(user.uid);
+
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
 
@@ -467,7 +466,7 @@ button {
                 const userDocRef = db.collection('users').doc(user.uid);
                 const doc = await userDocRef.get();
 
-                if (doc.exists) {
+                if (await doc.exists) {
                     const userSnapshot = doc.data();
                     console.log(userSnapshot);
                     const username = userSnapshot.username;
@@ -475,8 +474,6 @@ button {
                 } else {
                     console.log('No such document!');
                 }
-
-                
 
                 if (user.metadata.creationTime === user.metadata.lastSignInTime) {
                     // This is a new user, create a new user document
