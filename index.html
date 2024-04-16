@@ -466,6 +466,7 @@ button {
                 const userDocRef = db.collection('users').doc(user.uid);
                 console.log(userDocRef);
                 const doc = await userDocRef.get();
+                console.log(doc);
                     // Access the "username" field from the document data
                     const username = await doc.data().username;
                     console.log("Username:", username);
