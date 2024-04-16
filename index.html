@@ -466,13 +466,10 @@ button {
                 const userDocRef = db.collection('users').doc(user.uid);
                 console.log(userDocRef);
                 const doc = await userDocRef.get();
-                if (doc.exists) {
                     // Access the "username" field from the document data
                     const username = doc.data().username;
                     console.log("Username:", username);
                     personalizeLogout(username);
-                } else {
-                console.log("No such document!");
                 }
 
                 if (user.metadata.creationTime === user.metadata.lastSignInTime) {
