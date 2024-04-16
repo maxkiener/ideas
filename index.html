@@ -467,7 +467,7 @@ button {
                 const doc = await userDocRef.get();
 
                 if (await doc.exists) {
-                    const userSnapshot = doc.data();
+                    const userSnapshot = await doc.data();
                     console.log(userSnapshot);
                     const username = userSnapshot.username;
                     personalizeLogout(username);
