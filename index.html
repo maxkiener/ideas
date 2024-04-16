@@ -468,6 +468,7 @@ button {
                 const doc = await userDocRef.get();
                 console.log(doc);
                     // Access the "username" field from the document data
+                    console.log(doc.id);
                     const username = await doc.data().username;
                     console.log("Username:", username);
                     personalizeLogout(username);
