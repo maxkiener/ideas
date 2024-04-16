@@ -413,7 +413,7 @@ button {
                 });
             }
             // Create the user document with the unique username
-            personalizeLogout();
+            
             return userRef.set({
                 username: username,
                 email: user.email,
@@ -429,6 +429,7 @@ button {
         createUserWithUniqueUsername()
             .then(() => {
                 console.log("User document created successfully with unique username.");
+                personalizeLogout(username);
             })
             .catch((error) => {
                 console.error("Error creating user document:", error);
@@ -454,21 +455,37 @@ button {
     }
 
     // Check if user is signed in
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(async(user) => {
         console.log("onAuthStateChange fired for"+ user);
         console.log(user);
         //console.log(user.uid);
         var authContainer = document.getElementById('firebaseui-auth-container');
         if (user) {
-            const userDocRef = db.collection('users').doc(user.uid);
-            console.log(userDocRef);
 
-            if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+            try{
+                const userDocRef = db.collection('users').doc(user.uid);
+                console.log(userDocRef);
+                const doc = await userDocRef.get();
+                if (doc.exists) {
+                    // Access the "username" field from the document data
+                    const username = doc.data().username;
+                    console.log("Username:", username);
+                    personalizeLogout(username);
+                } else {
+                console.log("No such document!");
+                }
+
+                if (user.metadata.creationTime === user.metadata.lastSignInTime) {
                     // This is a new user, create a new user document
                     console.log("This is a new user, create a new user document")
                     createUserDocument(user);
+                }
+                
             }
-            personalizeLogout();
+            catch (error) {
+                console.error("Error getting user document:", error);
+            }
+            
 
             /*async function fetchData() {
                 try {
