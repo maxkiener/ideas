@@ -549,6 +549,25 @@ const ideasRef = db.collection('ideas');
 
 // Set up real-time listener for changes to the ideas collection
 ideasRef.onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(change => {
+        const ideaData = change.doc.data();
+        const ideaId = change.doc.id;
+
+        // Update UI based on the change type (added, modified, or removed)
+        if (change.type === 'added') {
+            // Update UI for newly added idea
+            // Example: Append a new idea element to the UI
+        } else if (change.type === 'modified') {
+            console.log("modified");
+            console.log(ideaData);
+            // Update UI for modified idea
+            // Example: Update the content of an existing idea element in the UI
+        } else if (change.type === 'removed') {
+            // Update UI for removed idea
+            // Example: Remove the idea element from the UI
+        }
+    });
+/*  
   const newData = snapshot.data();
   const modifiedFields = [];
 
@@ -564,7 +583,7 @@ ideasRef.onSnapshot(snapshot => {
   initialData = newData;
 
   // Now 'modifiedFields' contains the names of fields that were modified
-  console.log('Modified fields:', modifiedFields);
+  console.log('Modified fields:', modifiedFields);*/
 });
 
 
@@ -575,7 +594,7 @@ db.collection("ideas").get()
     const ideas = [];
 
     // Initial retrieval of the document
-    const initialData = ideasRef.data();
+    const initialData = ideaSnapshots;
 
     // Iterate through idea snapshots and extract idea details
     ideaSnapshots.forEach((ideaSnapshot) => {
