@@ -547,49 +547,6 @@ button {
 // Reference to a specific document or collection
 const ideasRef = db.collection('ideas');
 
-// Set up real-time listener for changes to the ideas collection
-ideasRef.onSnapshot(snapshot => {
-    const newData = snapshot.data();
-    console.log("here comes the new changes");
-    console.log(newData);
-  const modifiedFields = [];
-
-  // Compare the new data with the initial data to identify modifications
-  Object.keys(newData).forEach(key => {
-    if (newData[key] !== initialData[key]) {
-      modifiedFields.push(key);
-    }
-  });
-
-  // Update the initial data with the latest snapshot
-  // This ensures that subsequent changes are compared to the latest state
-  initialData = newData;
-
-  // Now 'modifiedFields' contains the names of fields that were modified
-  console.log('Modified fields:', modifiedFields);
-/*    snapshot.docChanges().forEach(change => {
-        const ideaData = change.doc.data();
-        const ideaId = change.doc.id;
-
-        // Update UI based on the change type (added, modified, or removed)
-        if (change.type === 'added') {
-            // Update UI for newly added idea
-            // Example: Append a new idea element to the UI
-        } else if (change.type === 'modified') {
-            console.log("modified");
-            console.log(ideaData);
-            // Update UI for modified idea
-            // Example: Update the content of an existing idea element in the UI
-        } else if (change.type === 'removed') {
-            // Update UI for removed idea
-            // Example: Remove the idea element from the UI
-        }
-    });
-  
-*/
-});
-
-
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("ideas").get()
   .then((ideaSnapshots) => {
@@ -633,6 +590,48 @@ db.collection("ideas").get()
   })
   .catch((error) => {
     console.error("Error getting user's ideas:", error);
+});
+
+// Set up real-time listener for changes to the ideas collection
+ideasRef.onSnapshot(ideaSnapshot => {
+    const newData = ideaSnapshot.data();
+    console.log("here comes the new changes");
+    console.log(newData);
+  const modifiedFields = [];
+
+  // Compare the new data with the initial data to identify modifications
+  Object.keys(newData).forEach(key => {
+    if (newData[key] !== initialData[key]) {
+      modifiedFields.push(key);
+    }
+  });
+
+  // Update the initial data with the latest snapshot
+  // This ensures that subsequent changes are compared to the latest state
+  initialData = newData;
+
+  // Now 'modifiedFields' contains the names of fields that were modified
+  console.log('Modified fields:', modifiedFields);
+/*    snapshot.docChanges().forEach(change => {
+        const ideaData = change.doc.data();
+        const ideaId = change.doc.id;
+
+        // Update UI based on the change type (added, modified, or removed)
+        if (change.type === 'added') {
+            // Update UI for newly added idea
+            // Example: Append a new idea element to the UI
+        } else if (change.type === 'modified') {
+            console.log("modified");
+            console.log(ideaData);
+            // Update UI for modified idea
+            // Example: Update the content of an existing idea element in the UI
+        } else if (change.type === 'removed') {
+            // Update UI for removed idea
+            // Example: Remove the idea element from the UI
+        }
+    });
+  
+*/
 });
 
 // Function to create a new component and add idea to Firestore
