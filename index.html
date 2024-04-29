@@ -595,9 +595,12 @@ db.collection("ideas").get()
 });
 
 ideasRef.onSnapshot(snapshot => {
+    console.log("Ideadata updated");
   snapshot.docChanges().forEach(change => {
+    console.log("Going through change iteration");
     if (change.type === 'modified') {
       const modifiedData = change.doc.data();
+      console.log(modifiedData);
       // Process the modified data
     }
   });
