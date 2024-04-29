@@ -594,47 +594,28 @@ db.collection("ideas").get()
     console.error("Error getting user's ideas:", error);
 });
 
-// Set up real-time listener for changes to the ideas collection
-ideasRef.onSnapshot(ideaSnapshot => {
-    const newData = ideaSnapshot;
-    console.log("here comes the new changes");
-    console.log(newData);
+ideasRef.onSnapshot((snapshot) => {
+  const oldData = snapshot.metadata.hasPendingWrites ? {} : snapshot.data();
+  const newData = snapshot.data();
   const modifiedFields = [];
 
-  // Compare the new data with the initial data to identify modifications
-  Object.keys(newData).forEach(key => {
-    if (newData[key] !== initialData[key]) {
+  // Compare the old and new snapshots to find modified fields
+  Object.keys(newData).forEach((key) => {
+    if (oldData[key] !== newData[key]) {
       modifiedFields.push(key);
     }
   });
 
-
-
-  // Now 'modifiedFields' contains the names of fields that were modified
-  console.log('Modified fields:', modifiedFields);
-  // Update the initial data with the latest snapshot
-  // This ensures that subsequent changes are compared to the latest state
-  initialData = newData;
-/*    snapshot.docChanges().forEach(change => {
-        const ideaData = change.doc.data();
-        const ideaId = change.doc.id;
-
-        // Update UI based on the change type (added, modified, or removed)
-        if (change.type === 'added') {
-            // Update UI for newly added idea
-            // Example: Append a new idea element to the UI
-        } else if (change.type === 'modified') {
-            console.log("modified");
-            console.log(ideaData);
-            // Update UI for modified idea
-            // Example: Update the content of an existing idea element in the UI
-        } else if (change.type === 'removed') {
-            // Update UI for removed idea
-            // Example: Remove the idea element from the UI
-        }
-    });
-  
-*/
+  // Handle the modified fields
+  modifiedFields.forEach((field) => {
+    // Extract information from the modified field and handle it accordingly
+    if (field === 'upvoteCount') {
+      const newUpvoteCount = newData[field];
+      console.log('New upvote count:', newUpvoteCount);
+      // Update the UI with the new upvote count
+    }
+    // Add more conditionals for other fields as needed
+  });
 });
 
 // Function to create a new component and add idea to Firestore
