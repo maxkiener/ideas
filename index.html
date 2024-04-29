@@ -594,27 +594,12 @@ db.collection("ideas").get()
     console.error("Error getting user's ideas:", error);
 });
 
-ideasRef.onSnapshot((snapshot) => {
-  const oldData = snapshot.metadata.hasPendingWrites ? {} : snapshot.data();
-  const newData = snapshot.data();
-  const modifiedFields = [];
-
-  // Compare the old and new snapshots to find modified fields
-  Object.keys(newData).forEach((key) => {
-    if (oldData[key] !== newData[key]) {
-      modifiedFields.push(key);
+ideasRef.onSnapshot(snapshot => {
+  snapshot.docChanges().forEach(change => {
+    if (change.type === 'modified') {
+      const modifiedData = change.doc.data();
+      // Process the modified data
     }
-  });
-
-  // Handle the modified fields
-  modifiedFields.forEach((field) => {
-    // Extract information from the modified field and handle it accordingly
-    if (field === 'upvoteCount') {
-      const newUpvoteCount = newData[field];
-      console.log('New upvote count:', newUpvoteCount);
-      // Update the UI with the new upvote count
-    }
-    // Add more conditionals for other fields as needed
   });
 });
 
