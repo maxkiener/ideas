@@ -547,6 +547,8 @@ button {
 // Reference to a specific document or collection
 const ideasRef = db.collection('ideas');
 
+const initialData = [];
+
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("ideas").get()
   .then((ideaSnapshots) => {
