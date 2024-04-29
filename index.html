@@ -594,7 +594,7 @@ db.collection("ideas").get()
 
 // Set up real-time listener for changes to the ideas collection
 ideasRef.onSnapshot(ideaSnapshot => {
-    const newData = ideaSnapshot.data();
+    const newData = ideaSnapshot;
     console.log("here comes the new changes");
     console.log(newData);
   const modifiedFields = [];
