@@ -547,7 +547,7 @@ button {
 // Reference to a specific document or collection
 const ideasRef = db.collection('ideas');
 
-const initialData = [];
+var initialData = [];
 
 // Query the "users" collection to retrieve the idea IDs of the current user
 db.collection("ideas").get()
@@ -608,12 +608,13 @@ ideasRef.onSnapshot(ideaSnapshot => {
     }
   });
 
-  // Update the initial data with the latest snapshot
-  // This ensures that subsequent changes are compared to the latest state
-  initialData = newData;
+
 
   // Now 'modifiedFields' contains the names of fields that were modified
   console.log('Modified fields:', modifiedFields);
+  // Update the initial data with the latest snapshot
+  // This ensures that subsequent changes are compared to the latest state
+  initialData = newData;
 /*    snapshot.docChanges().forEach(change => {
         const ideaData = change.doc.data();
         const ideaId = change.doc.id;
