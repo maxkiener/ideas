@@ -691,6 +691,8 @@ function handleVote(ideaId, isUpvote) {
             .then(() => {
                 console.log('User votes updated successfully');
                 // Fetch updated vote counts from Firestore and update UI
+                //not necessary anymore since updated via snapshot
+                /*
                 ideaRef.get().then((doc) => {
                     if (doc.exists) {
                         const { upvotes, downvotes } = doc.data();
@@ -700,8 +702,8 @@ function handleVote(ideaId, isUpvote) {
                     }
                 }).catch((error) => {
                 console.log('Error getting document:', error);
-            });
-        })
+                });*/
+            })
         .catch((error) => {
             console.error('Error updating user votes:', error);
         });
