@@ -598,10 +598,13 @@ ideasRef.onSnapshot(snapshot => {
     console.log("Ideadata updated");
   snapshot.docChanges().forEach(change => {
     console.log("Going through change iteration");
+    const ideaId = change.doc.id;
     if (change.type === 'modified') {
       const modifiedData = change.doc.data();
       console.log(modifiedData);
+      console.log(ideaId);
       // Process the modified data
+      updateVoteCounts(ideaId, modifiedData.upvotes, modifiedData.downvotes)
     }
   });
 });
