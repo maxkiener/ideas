@@ -84,6 +84,7 @@ button {
     background-color: white;
     margin-top: 15px;
     margin-bottom: 15px;
+    transition: transform 0.5s ease-in-out;
 }
 
 .button-container {
@@ -175,21 +176,8 @@ button {
 }
 
 .animate-upvote {
-  animation: upvote-animation 1s ease-in-out;
+    transform: scale(2);
 }
-
-@keyframes upvote-animation {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 
 @media (max-width: 600px) {
     .container {
@@ -214,7 +202,7 @@ button {
     }
 
     .component, .improvement {
-        padding: 15px; /* Reduce padding inside components */
+        padding: 10px; /* Reduce padding inside components */
         /*margin: 10px 0; /* Reduce vertical margin */
         border-radius: 5px;
     }
@@ -679,6 +667,7 @@ function updateVoteCounts(ideaId, upvotes, downvotes) {
     if (component) {
         const upvoteCount = component.querySelector('.upCount');
         const downvoteCount = component.querySelector('.downCount');
+        const upvoteButton = component.querySelector('.upCount');
         if (upvoteCount && downvoteCount) {
             upvoteCount.textContent = new String(upvotes);
             downvoteCount.textContent = new String(downvotes);
