@@ -79,7 +79,7 @@ button {
     padding: 10px 20px;
     cursor: pointer;
     margin-right: 10px;
-    border: 2px solid lightgrey;
+    border: 2px solid #666666;
     border-radius: 32px;
     background-color: white;
     margin-top: 15px;
@@ -127,7 +127,7 @@ button {
 
 .upCount, .downCount, .improve-button, .improveCount, .delete-button, #improvementSubmitBtn, #logoutButton, #loginButton, #submitBtn, #addComponent{
     font-size: 15px;
-    color: #b4b2b2;
+    color: #666666;
     line-height: 22px; /* Ensure the text is vertically centered */
 }
 
@@ -186,7 +186,7 @@ button {
 }
 
 .animate-upvote {
-    transform: scale(2);
+    transform: scale(1.2);
 }
 
 .intro{
@@ -516,35 +516,7 @@ button {
                 console.error("Error getting user document:", error);
                 personalizeLogout("Stranger!");
             }
-            
 
-            /*async function fetchData() {
-                try {
-                    const doc = await userDocRef.get();
-                    console.log(doc);
-                    const userData = await doc.data();
-                    console.log(userData);
-                    username = userData.username;
-                    personalizeLogout(username);
-                } catch (error) {
-                    console.error("Error fetching data:", error);
-                }
-            }
-
-            fetchData();*/
-
-            /*userDocRef.get().then((doc) => {
-                console.log("executing userDocRef.get");
-                console.log(doc);
-                const userObject = doc;
-                console.log(doc.exists);
-                if (userObject) {
-                console.log(userObject.data());
-                console.log(userObject.data().username);
-                // User is signed in.
-                username = userObject.data().username;
-                personalizeLogout(username);
-            }});*/
         } else {
             // No user is signed in.
             console.log("no user is signed in");
@@ -625,6 +597,9 @@ db.collection("ideas").get()
     console.error("Error getting user's ideas:", error);
 });
 
+let previousUpvotes = {};
+let previousDownvotes = {};
+
 ideasRef.onSnapshot(snapshot => {
     console.log("Ideadata updated");
   snapshot.docChanges().forEach(change => {
@@ -697,14 +672,32 @@ function updateVoteCounts(ideaId, upvotes, downvotes) {
         if (upvoteCount && downvoteCount) {
             upvoteCount.textContent = new String(upvotes);
             downvoteCount.textContent = new String(downvotes);
-            // Add animation class to the upvote counter
-            upvoteButton.classList.add('animate-upvote');
-            downvoteButton.classList.add('animate-upvote');
-            // Remove animation class after animation completes
-            setTimeout(() => {
-            upvoteButton.classList.remove('animate-upvote');
-            downvoteButton.classList.remove('animate-upvote');
-            }, 1000); // Adjust the duration as needed
+
+            // Check if upvotes have changed
+            if (previousUpvotes[ideaId] !== upvotes) {
+                // Add animation class to the upvote button
+                upvoteButton.classList.add('animate-upvote');
+
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                upvoteButton.classList.remove('animate-upvote');
+                }, 300); // Adjust the duration as needed
+            }
+
+            // Check if downvotes have changed
+            if (previousDownvotes[ideaId] !== downvotes) {
+                // Add animation class to the downvote button
+                downvoteButton.classList.add('animate-upvote');
+
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                downvoteButton.classList.remove('animate-upvote');
+                }, 300); // Adjust the duration as needed
+            }
+
+            // Update the previous vote counts
+            previousUpvotes[ideaId] = upvotes;
+            previousDownvotes[ideaId] = downvotes;
         }
     }
 }
@@ -776,7 +769,11 @@ function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, imp
     const bodyText = document.createElement("p");
     bodyText.textContent = description;
 
-
+    previousUpvotes[ideaId] = upvotes;
+    previousDownvotes[ideaId] = downvotes;
+    
+    console.log(previousDownvotes);
+    console.log(previousUpvotes);
 
     const authorText = document.createElement("p");
     const userRef = db.collection("users").doc(authorId);
