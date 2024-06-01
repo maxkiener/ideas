@@ -83,7 +83,7 @@ button {
     border-radius: 32px;
     background-color: white;
     margin-top: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     transition: transform 0.5s ease-in-out;
 }
 
@@ -129,6 +129,11 @@ button {
     font-size: 15px;
     color: #b4b2b2;
     line-height: 22px; /* Ensure the text is vertically centered */
+}
+
+
+.delete-button{
+    color: red;
 }
 
 .notification-toast {
@@ -312,7 +317,14 @@ button {
                     <span id="improvementModalClose" class="close">&times;</span>
                     <h2>Propose Improvement</h2>
                     <p class="descrText">Modify the existing idea or start from scratch:</p>
-                    <textarea id="improvementInput" placeholder="" rows="4" autofocus></textarea><br>
+                    <form>
+                        <!-- Other form elements -->
+                      
+                        <!-- Text box with autofocus -->
+                        <input type="text" id="improvementInput" placeholder="" name="textbox" autofocus>
+                      
+                        <!-- Other form elements -->
+                    </form>
                     <button id="improvementSubmitBtn">Submit</button>
                 </div>
             </div>
@@ -680,17 +692,18 @@ function updateVoteCounts(ideaId, upvotes, downvotes) {
     if (component) {
         const upvoteCount = component.querySelector('.upCount');
         const downvoteCount = component.querySelector('.downCount');
-        const upvoteButton = component.querySelector('.upCount');
+        const upvoteButton = component.querySelector('.good-button');
+        const downvoteButton = component.querySelector('.bad-button');
         if (upvoteCount && downvoteCount) {
             upvoteCount.textContent = new String(upvotes);
             downvoteCount.textContent = new String(downvotes);
             // Add animation class to the upvote counter
-            upvoteCount.classList.add('animate-upvote');
-            downvoteCount.classList.add('animate-upvote');
+            upvoteButton.classList.add('animate-upvote');
+            downvoteButton.classList.add('animate-upvote');
             // Remove animation class after animation completes
             setTimeout(() => {
-            upvoteCount.classList.remove('animate-upvote');
-            downvoteCount.classList.remove('animate-upvote');
+            upvoteButton.classList.remove('animate-upvote');
+            downvoteButton.classList.remove('animate-upvote');
             }, 1000); // Adjust the duration as needed
         }
     }
