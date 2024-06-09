@@ -109,7 +109,7 @@ button {
   position: relative;
   padding: 10px 20px;
   border: none;
-  background: none;
+  background-color: white;
   cursor: pointer;
   outline: none;
   overflow: hidden;
@@ -133,17 +133,18 @@ button {
 
 .border-svg rect {
   fill: none;
-  stroke: black;
+  stroke: #b2b2b2;
   stroke-width: 2;
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+  stroke-width: 12;
   transition: stroke-width 0.3s ease, stroke-dashoffset 0.3s ease;
 }
 
 /* Hover effect */
 .good-button:hover .border-svg rect, .bad-button:hover .border-svg rect {
-  stroke-dashoffset: 0;
-  stroke-width: 12;
+  stroke-dashoffset: 40;
+  
 }
 
 .modal {
