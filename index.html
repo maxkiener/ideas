@@ -78,7 +78,7 @@ p, #improvementInput, #ideaDescription, #ideaTitle {
         }
 
 .component, .improvement {
-    background-color: rgb(235 235 255); /* Light-grey background */
+    background-color: #e8eaf6; /*rgb(235 235 255); Light-grey background */
     border-radius: 15px; /* Rounded corners */
     padding: 20px;
     margin: 20px 0;
@@ -102,6 +102,32 @@ button {
     display: flex;
     justify-content: center; /* Center the button horizontally */
     margin-top: 20px; /* Add margin to separate from components */
+}
+
+
+.border-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.border-svg rect {
+  fill: none;
+  stroke: black;
+  stroke-width: 2;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: stroke-width 0.3s ease, stroke-dashoffset 0.3s ease;
+}
+
+/* Hover effect */
+.upvote-button:hover .border-svg rect, .downvote-button:hover .border-svg rect {
+  stroke-dashoffset: 0;
+  stroke-width: 6;
 }
 
 .modal {
@@ -140,6 +166,10 @@ button {
     font-size: 15px;
     color: #666666;
     line-height: 22px; /* Ensure the text is vertically centered */
+}
+
+#logoutButton{
+    margin-top: 0px;
 }
 
 
@@ -814,7 +844,7 @@ function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, imp
 
     // Create "good" button
     const goodButton = document.createElement("button");
-    goodButton.innerHTML = "👍 "+ "<span class='upCount'>"+upvotes+"</span>";
+    goodButton.innerHTML = "<svg class='border-svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect x='2' y='2' width='96' height='96'></rect></svg>"+"👍 "+ "<span class='upCount'>"+upvotes+"</span>";
     goodButton.classList.add("good-button");
     // Add event listener to thumbs-up button
     goodButton.addEventListener('click', (event) => {
