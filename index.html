@@ -862,7 +862,8 @@ function createIdeaDiv(title, description, date, ideaId, upvotes, downvotes, imp
 
     // Create "good" button
     const goodButton = document.createElement("button");
-    goodButton.innerHTML = "<svg class='border-svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect x='2' y='2' width='96' height='96'></rect></svg>"+"👍 "+ "<span class='upCount'>"+upvotes+"</span>";
+    goodButton.innerHTML = "👍 "+ "<span class='upCount'>"+upvotes+"</span>";
+    //goodButton.innerHTML = "<svg class='border-svg' viewBox='0 0 100 100' preserveAspectRatio='none'><rect x='2' y='2' width='96' height='96'></rect></svg>"+"👍 "+ "<span class='upCount'>"+upvotes+"</span>";
     goodButton.classList.add("good-button");
     // Add event listener to thumbs-up button
     goodButton.addEventListener('click', (event) => {
